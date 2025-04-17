@@ -76,25 +76,19 @@ Whether you're in a meeting, a brainstorming session, or just talking with someo
 1. Clone the repository:
 
    ```
-   git clone https://github.com/Hans-Breyholtz/starter_server.git
+   git clone https://github.com/arti-consult/arti-notes-v2.git
    ```
 
-2. Navigate to the project directory:
-
-   ```
-   cd starter_server
-   ```
-
-3. Install the required dependencies:
+2. Install the required dependencies:
 
    ```
    npm install
    ```
 
-4. Run the development:
+3. Run the development:
 
    ```
-   npm start
+   npm run dev
    ```
 
 ## Environment Variables
