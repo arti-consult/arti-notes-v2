@@ -44,27 +44,32 @@ Whether you're in a meeting, a brainstorming session, or just talking with someo
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/Hans-Breyholtz/starter_server.git
-Navigate to the project directory:
+   ```
+   git clone https://github.com/Hans-Breyholtz/starter_server.git
+   ```
 
-bash
-Copy
-Edit
-cd starter_server
-Install the required dependencies:
+2. Navigate to the project directory:
 
-bash
-Copy
-Edit
-npm install
-Run the development:
+   ```
+   cd starter_server
+   ```
 
-bash
-Copy
-Edit
-npm start
+3. Install the required dependencies:
+
+   ```
+   npm install
+   ```
+
+4. Run the development:
+
+   ```
+   npm start
+   ```
+
+## Environment Variables
+
+[.env.sample]()
