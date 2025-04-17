@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://E%3A/breyholtz%20holding/arti-notes/project/src/app/admin/page.tsx"],"sourcesContent":["'use client';\r\n\r\nimport { useEffect } from 'react';\r\nimport { useRouter } from 'next/navigation';\r\nimport AdminDashboard from '@/pages/admin/AdminDashboard';\r\nimport { useSupabaseClient } from '@supabase/auth-helpers-react';\r\n\r\nexport default function Page() {\r\n  const router = useRouter();\r\n  const supabase = useSupabaseClient();\r\n\r\n  useEffect(() => {\r\n    const checkSession = async () => {\r\n      const { data: { session } } = await supabase.auth.getSession();\r\n      if (!session) {\r\n        router.push('/login');\r\n      }\r\n    };\r\n    checkSession();\r\n  }, [router, supabase]);\r\n\r\n  return <AdminDashboard />;\r\n} "],"names":[],"mappings":";;;;AAEA;AACA;;;;;;;;;;;AAHA;;;;;;AAOe,SAAS;IACtB,MAAM,SAAS,CAAA,GAAA,kIAAA,CAAA,YAAS,AAAD;IACvB,MAAM,WAAW;IAEjB,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,MAAM,eAAe;YACnB,MAAM,EAAE,MAAM,EAAE,OAAO,EAAE,EAAE,GAAG,MAAM,SAAS,IAAI,CAAC,UAAU;YAC5D,IAAI,CAAC,SAAS;gBACZ,OAAO,IAAI,CAAC;YACd;QACF;QACA;IACF,GAAG;QAAC;QAAQ;KAAS;IAErB,qBAAO,8OAAC;;;;;AACV","debugId":null}}]
+}
