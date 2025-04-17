@@ -33,6 +33,33 @@ Whether you're in a meeting, a brainstorming session, or just talking with someo
 
 ---
 
+## Project structure
+
+```
+.
+├── src             # Source folder
+│ ├── auth          # Authentication module
+│ ├── config        # Configuration files
+│ ├── controllers   # Controllers for handling routes
+│ ├── db            # Database connection and queries
+│ ├── emails        # Email templates and functions
+│ ├── library       # Utility libraries
+│ ├── logs          # Logging setup and logs
+│ ├── middleware    # Express middleware
+│ ├── models        # Database models
+│ ├── public        # Public assets
+│ ├── router        # Routing configuration
+│ ├── service       # Service layer logic
+│ ├── types         # Type definitions
+│ └── utils         # Utility functions
+├── .env.template   # Sample environment variables file
+├── .gitignore      # Git ignore rules
+├── nodemon.json    # Nodemon configuration
+├── README.md       # README file
+└── tsconfig.json   # TypeScript configuration
+
+---
+
 ## ⚙️ Tech Stack
 
 - [Next.js](https://nextjs.org/) — React framework  
