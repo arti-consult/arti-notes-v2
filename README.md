@@ -37,6 +37,7 @@ Whether you're in a meeting, a brainstorming session, or just talking with someo
 
 - [Next.js](https://nextjs.org/) — React framework
 - [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS
+- [ShadCN UI](https://ui.shadcn.dev/) — Accessible and beautiful UI components
 - *(Upcoming)* AI + Speech-to-Text (Whisper or similar)
 
 ---
