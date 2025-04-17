@@ -35,9 +35,11 @@ Whether you're in a meeting, a brainstorming session, or just talking with someo
 
 ## ⚙️ Tech Stack
 
-- [Next.js](https://nextjs.org/) — React framework
-- [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS
-- [ShadCN UI](https://ui.shadcn.dev/) — Accessible and beautiful UI components
+- [Next.js](https://nextjs.org/) — React framework  
+- [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS  
+- [ShadCN UI](https://ui.shadcn.dev/) — Accessible and beautiful UI components  
+- [Supabase](https://supabase.com/) — Auth and database as a service  
+- [Stripe](https://stripe.com/) — Payments and billing integration  
 - *(Upcoming)* AI + Speech-to-Text (Whisper or similar)
 
 ---
