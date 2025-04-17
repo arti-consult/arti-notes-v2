@@ -21,22 +21,136 @@ module.exports = mod;
 
 var { g: global, __dirname } = __turbopack_context__;
 {
+// src/middleware.ts
 __turbopack_context__.s({
     "config": (()=>config),
     "middleware": (()=>middleware)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$api$2f$server$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/api/server.js [middleware-edge] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/server/web/spec-extension/response.js [middleware-edge] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/@supabase/ssr/dist/module/index.js [middleware-edge] (ecmascript) <module evaluation>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$createServerClient$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@supabase/ssr/dist/module/createServerClient.js [middleware-edge] (ecmascript)");
 ;
-async function middleware(req) {
-    const res = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
-    // TODO: Implement your authentication logic here
-    // For now, we'll just pass through all requests
-    return res;
+;
+// Define protection rules for routes
+const protectedRoutes = [
+    {
+        path: "/dashboard",
+        requireAuth: true,
+        minTier: "free"
+    },
+    {
+        path: "/admin",
+        requireAuth: true,
+        minTier: "admin"
+    },
+    {
+        path: "/settings",
+        requireAuth: true,
+        minTier: "free"
+    },
+    {
+        path: "/meetings",
+        requireAuth: true,
+        minTier: "free"
+    },
+    {
+        path: "/api/recordings",
+        requireAuth: true,
+        minTier: "free"
+    }
+];
+async function middleware(request) {
+    let response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next({
+        request: {
+            headers: request.headers
+        }
+    });
+    const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$createServerClient$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["createServerClient"])(("TURBOPACK compile-time value", "https://wnxwqdupndeqijmamdkp.supabase.co"), ("TURBOPACK compile-time value", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndueHdxZHVwbmRlcWlqbWFtZGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE4NDU4NTksImV4cCI6MjA0NzQyMTg1OX0.pJ2CF508xkmP2IPEoSkqJ45lMmNySVxHJYxeZ_Ge3Pw"), {
+        cookies: {
+            getAll () {
+                return request.cookies.getAll();
+            },
+            setAll (cookiesToSet) {
+                cookiesToSet.forEach(({ name, value, options })=>request.cookies.set(name, value));
+                response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next({
+                    request: {
+                        headers: request.headers
+                    }
+                });
+                cookiesToSet.forEach(({ name, value, options })=>response.cookies.set(name, value, options));
+            }
+        }
+    });
+    const { data: { session } } = await supabase.auth.getSession();
+    const pathname = request.nextUrl.pathname;
+    // Check if the path is protected
+    const protectedRoute = protectedRoutes.find((route)=>pathname.startsWith(route.path));
+    // If route is protected and user is not authenticated, redirect to login
+    if (protectedRoute?.requireAuth && !session) {
+        const redirectUrl = new URL("/login", request.url);
+        redirectUrl.searchParams.set("redirect", pathname);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(redirectUrl);
+    }
+    // If authenticated and route requires a minimum tier
+    if (session && protectedRoute?.minTier) {
+        // Skip tier check for admin paths if the path itself requires admin access
+        if (pathname.startsWith("/admin") && protectedRoute.minTier === "admin") {
+            // Check if user is admin
+            const { data } = await supabase.from("user_roles").select(`
+          roles!inner (
+            name
+          )
+        `).eq("user_id", session.user.id).eq("roles.name", "admin");
+            // If not admin, redirect to dashboard
+            if (!data || data.length === 0) {
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
+            }
+        } else if (protectedRoute.minTier !== "free") {
+            // For non-admin paths that require a minimum tier other than free
+            // Function to get tier level
+            const getTierLevel = (tier)=>{
+                const levels = {
+                    free: 0,
+                    basic: 1,
+                    premium: 2,
+                    admin: 3
+                };
+                return levels[tier] || 0;
+            };
+            // Get user roles
+            const { data: userRoles } = await supabase.from("user_roles").select(`
+          roles!inner (
+            name
+          )
+        `).eq("user_id", session.user.id);
+            // Check if user has the required tier
+            const minTierLevel = getTierLevel(protectedRoute.minTier);
+            const userTiers = userRoles?.map((ur)=>getTierLevel(ur.roles.name)) || [];
+            const maxUserTier = Math.max(...userTiers, 0);
+            // If user's max tier is less than required, redirect
+            if (maxUserTier < minTierLevel) {
+                // Redirect to pricing page if tier is insufficient
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/pricing?upgrade=true", request.url));
+            }
+        }
+    }
+    // Special handling for auth pages when user is already logged in
+    if (session && (pathname === "/login" || pathname === "/register" || pathname === "/")) {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
+    }
+    return response;
 }
 const config = {
     matcher: [
-        '/((?!api|_next/static|_next/image|favicon.ico).*)'
+        /*
+     * Match all request paths except for:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public files (assets)
+     * - api/webhooks (webhook endpoints)
+     */ "/((?!_next/static|_next/image|favicon.ico|api/webhooks|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
     ]
 };
 }}),
