@@ -33,35 +33,64 @@ Whether you're in a meeting, a brainstorming session, or just talking with someo
 
 ---
 
+## Project structure
+
+```
+.
+├── src             # Source folder
+│ ├── auth          # Authentication module
+│ ├── config        # Configuration files
+│ ├── controllers   # Controllers for handling routes
+│ ├── db            # Database connection and queries
+│ ├── emails        # Email templates and functions
+│ ├── library       # Utility libraries
+│ ├── logs          # Logging setup and logs
+│ ├── middleware    # Express middleware
+│ ├── models        # Database models
+│ ├── public        # Public assets
+│ ├── router        # Routing configuration
+│ ├── service       # Service layer logic
+│ ├── types         # Type definitions
+│ └── utils         # Utility functions
+├── .env.template   # Sample environment variables file
+├── .gitignore      # Git ignore rules
+├── nodemon.json    # Nodemon configuration
+├── README.md       # README file
+└── tsconfig.json   # TypeScript configuration
+```
+---
+
 ## ⚙️ Tech Stack
 
-- [Next.js](https://nextjs.org/) — React framework
-- [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS
+- [Next.js](https://nextjs.org/) — React framework  
+- [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS  
+- [ShadCN UI](https://ui.shadcn.dev/) — Accessible and beautiful UI components  
+- [Supabase](https://supabase.com/) — Auth and database as a service  
+- [Stripe](https://stripe.com/) — Payments and billing integration  
 - *(Upcoming)* AI + Speech-to-Text (Whisper or similar)
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/Hans-Breyholtz/starter_server.git
-Navigate to the project directory:
+   ```
+   git clone https://github.com/arti-consult/arti-notes-v2.git
+   ```
 
-bash
-Copy
-Edit
-cd starter_server
-Install the required dependencies:
+2. Install the required dependencies:
 
-bash
-Copy
-Edit
-npm install
-Run the development:
+   ```
+   npm install
+   ```
 
-bash
-Copy
-Edit
-npm start
+3. Run the development:
+
+   ```
+   npm run dev
+   ```
+
+## Environment Variables
+
+[.env.sample]()
