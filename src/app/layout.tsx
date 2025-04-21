@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { AuthProvider } from '@/contexts/AuthContext';
-import './globals.css';
-import { Inter } from "next/font/google"
+import { AuthProvider } from "@/contexts/AuthContext";
+import TrackingProvider from "@/components/providers/TrackingProvider";
+import "./globals.css";
+import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -15,9 +16,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
-          {children}
+          <TrackingProvider>{children}</TrackingProvider>
         </AuthProvider>
       </body>
     </html>
   );
-} 
+}

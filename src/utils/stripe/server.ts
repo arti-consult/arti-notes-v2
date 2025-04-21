@@ -1,7 +1,11 @@
 // src/utils/stripe/server.ts
 import { Stripe } from "stripe";
 import { createClient } from "@/utils/supabase/server";
-import { PricingPlan, Subscription } from "@/types/subscription";
+import {
+  PricingTier,
+  CreditPackage,
+  UserSubscription,
+} from "@/types/subscription";
 
 export type StripeSubscription = Stripe.Response<Stripe.Subscription> & {
   current_period_start: number;
@@ -128,7 +132,7 @@ export async function createPortalSession(
 /**
  * Fetch all available pricing plans from the database
  */
-export async function getPricingPlans(): Promise<PricingPlan[]> {
+export async function getPricingPlans(): Promise<PricingTier[]> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -155,7 +159,7 @@ export async function getPricingPlans(): Promise<PricingPlan[]> {
  */
 export async function getUserSubscription(
   userId: string
-): Promise<Subscription | null> {
+): Promise<UserSubscription | null> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -176,7 +180,7 @@ export async function getUserSubscription(
 
   return {
     ...data,
-    plan: data.plan as PricingPlan,
+    plan: data.plan as PricingTier,
   };
 }
 

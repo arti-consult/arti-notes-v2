@@ -1,204 +1,388 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  User,
+  Sparkles,
+  Users,
+  Settings,
+  Plus,
+  Calendar,
   Mic,
+  Settings2,
+  Clock,
+  MoreVertical,
   FileText,
-  BarChart,
-  Timer as TimerIcon,
-  Clock as ClockIcon,
-  Clock3,
+  Download,
+  Bot,
+  List,
+  CreditCard,
+  LogOut,
 } from "lucide-react";
-import { UploadDialog } from "./components/UploadDialog";
-import { SearchBar } from "./components/SearchBar";
-import { SidebarNavigation } from "./components/SidebarNavigation";
+import { SearchDialog } from "./components/search-dialog";
+import { PurchaseCreditsDialog } from "./components/purchase-credits-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
+import { UploadArea } from "./components/upload-area";
+import { NewMeetingArea } from "./components/new-meeting-area";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { LiveRecording } from "./components/live-recording";
+import { NewMeetingDropdown } from "./components/new-meeting-dropdown";
+import { CalendarConnect } from "./components/calendar-connect";
+import { LiveMeetingDialog } from "./components/live-meeting-dialog";
 
-export default function DashboardPage() {
-  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
-  const [selectedFolder, setSelectedFolder] = useState("all");
-  const [selectedTag, setSelectedTag] = useState<string>();
-
-  // Example data - replace with real data from your backend
-  const folders = [
-    { name: "Møter", count: 5 },
-    { name: "Intervjuer", count: 3 },
-    { name: "Personlig", count: 2 },
-  ];
-
-  const tags = [
-    { name: "Viktig", count: 3 },
-    { name: "Følg opp", count: 2 },
-    { name: "Ferdig", count: 4 },
-  ];
-
-  const DashboardContent = () => (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="hover:shadow-lg transition-shadow hover:shadow-violet-200">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-purple-600 font-medium mb-1">
-                  Totalt antall opptak
-                </p>
-                <h3 className="text-2xl font-semibold">0</h3>
-              </div>
-              <div className="p-3 rounded-lg">
-                <BarChart className="h-8 w-8 text-violet-600" />
+function MeetingCard({
+  id,
+  title,
+  date,
+  duration,
+  participants,
+  meetingType,
+}: {
+  id: string;
+  title: string;
+  date: string;
+  duration: string;
+  participants: { name: string; avatar?: string }[];
+  meetingType: "teams" | "google-meet";
+}) {
+  return (
+    <Link href={`/dashboard/meeting/${id}`}>
+      <div className="p-4 border rounded-lg bg-white hover:bg-gray-50 transition-colors cursor-pointer mb-4">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h3 className="font-medium">{title}</h3>
+              {meetingType === "teams" ? (
+                <img src="/teams-icon.png" alt="Teams" className="h-4 w-4" />
+              ) : (
+                <img
+                  src="/google-meet-icon.png"
+                  alt="Google Meet"
+                  className="h-4 w-4"
+                />
+              )}
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Calendar className="h-4 w-4" />
+              <span>{date}</span>
+              <Clock className="h-4 w-4 ml-2" />
+              <span>{duration}</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <Users className="h-4 w-4 text-muted-foreground" />
+              <div className="flex flex-wrap gap-2">
+                {participants.map((participant, index) => (
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="flex items-center gap-1.5 px-2 py-1"
+                  >
+                    {participant.avatar ? (
+                      <img
+                        src={participant.avatar}
+                        alt={participant.name}
+                        className="h-4 w-4 rounded-full"
+                      />
+                    ) : (
+                      <div className="h-4 w-4 rounded-full bg-gray-200 flex items-center justify-center text-xs">
+                        {participant.name.charAt(0)}
+                      </div>
+                    )}
+                    <span className="text-xs">{participant.name}</span>
+                  </Badge>
+                ))}
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow hover:shadow-violet-200">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-purple-600 font-medium mb-1">
-                  Timer totalt
-                </p>
-                <h3 className="text-2xl font-semibold">0t 0m</h3>
-              </div>
-              <div className="p-3 rounded-lg">
-                <Clock3 className="h-8 w-8 text-violet-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow hover:shadow-violet-200">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-purple-600 font-medium mb-1">
-                  Tid spart
-                </p>
-                <h3 className="text-2xl font-semibold">0m</h3>
-              </div>
-              <div className="p-3 rounded-lg">
-                <TimerIcon className="h-8 w-8 text-violet-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow hover:shadow-violet-200">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-purple-600 font-medium mb-1">
-                  Snitt varighet
-                </p>
-                <h3 className="text-2xl font-semibold">0s</h3>
-              </div>
-              <div className="p-3 rounded-lg">
-                <ClockIcon className="h-8 w-8 text-violet-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <Card className="hover:shadow-lg transition-shadow hover:shadow-violet-200 cursor-pointer group">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-4 rounded-lg bg-violet-600 group-hover:bg-violet-700 transition-colors">
-                <Mic className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-1">Start opptak</h3>
-                <p className="text-sm text-muted-foreground">
-                  Begynn å ta opp et møte nå
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card
-          className="hover:shadow-lg transition-shadow hover:shadow-violet-200 cursor-pointer group"
-          onClick={() => setUploadDialogOpen(true)}
-        >
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-4 rounded-lg bg-violet-100 group-hover:bg-violet-200 transition-colors">
-                <FileText className="h-8 w-8 text-violet-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-1">Last opp opptak</h3>
-                <p className="text-sm text-muted-foreground">
-                  Last opp eksisterende lydopptak
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="mt-6">
-        <SearchBar />
-      </div>
-
-      <div className="grid grid-cols-5 gap-6 mt-6">
-        <div className="col-span-1">
-          <SidebarNavigation
-            folders={folders}
-            tags={tags}
-            selectedFolder={selectedFolder}
-            selectedTag={selectedTag}
-            onFolderSelect={setSelectedFolder}
-            onTagSelect={setSelectedTag}
-          />
-        </div>
-        <div className="col-span-4 bg-white rounded-lg p-4 shadow-sm border min-h-[calc(100vh-24rem)]">
-          <div className="text-center text-gray-500 py-8">
-            Ingen opptak funnet
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              title="Se notater"
+            >
+              <FileText className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              title="AI-analyse"
+            >
+              <Bot className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              title="Last ned"
+            >
+              <Download className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>
-    </>
+    </Link>
   );
+}
+
+export default function DashboardPage() {
+  const [isUploading, setIsUploading] = useState(false);
+  const [showLiveMeeting, setShowLiveMeeting] = useState(false);
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+  };
+
+  const handleFileUpload = (file: File) => {
+    setIsUploading(true);
+    // TODO: Implement file upload logic
+    console.log("Uploading file:", file.name);
+    // Simulate upload completion
+    setTimeout(() => {
+      setIsUploading(false);
+    }, 2000);
+  };
+
+  const handleNewMeeting = () => {
+    // TODO: Implement new meeting logic
+    console.log("Starting new meeting");
+  };
 
   return (
-    <>
-      <div className="container mx-auto p-6 space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-semibold">Mine opptak</h1>
+    <div className="w-full h-full">
+      <div className="border-b">
+        <div className="flex h-16 items-center px-4">
+          <div className="flex-1" />
+          <div className="flex items-center justify-center flex-1">
+            <SearchDialog />
+          </div>
+          <div className="flex items-center justify-end gap-4 flex-1">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <CreditCard className="h-4 w-4" />
+              <span>100 kreditter igjen</span>
+            </div>
+            <PurchaseCreditsDialog />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-8 w-8 rounded-full"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/avatars/01.png" alt="@user" />
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      User Name
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      user@example.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profil</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Innstillinger</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logg ut</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
+      </div>
+      <div className="p-4">
+        <div className="grid grid-cols-[1fr,350px] gap-4">
+          {/* Main Column - Meetings */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="space-y-8">
+                <div className="flex flex-col items-center gap-4">
+                  <NewMeetingArea onFileUpload={handleFileUpload} />
+                </div>
+                <div className="space-y-3">
+                  <MeetingCard
+                    id="1"
+                    title="Ukentlig teamsmøte"
+                    date="15. mars 2024"
+                    duration="45 min"
+                    meetingType="teams"
+                    participants={[
+                      { name: "Ola Nordmann", avatar: "/avatars/01.png" },
+                      { name: "Kari Hansen" },
+                      { name: "Per Olsen" },
+                      { name: "Mari Larsen" },
+                    ]}
+                  />
+                  <MeetingCard
+                    id="2"
+                    title="Prosjektgjennomgang"
+                    date="14. mars 2024"
+                    duration="1t 15min"
+                    meetingType="google-meet"
+                    participants={[
+                      { name: "Erik Johansen" },
+                      { name: "Lisa Berg" },
+                      { name: "Tom Andersen" },
+                    ]}
+                  />
+                  <MeetingCard
+                    id="3"
+                    title="Kundemøte - Innovasjon AS"
+                    date="13. mars 2024"
+                    duration="30 min"
+                    meetingType="teams"
+                    participants={[
+                      { name: "Sara Nilsen" },
+                      { name: "Anders Bakke" },
+                      { name: "Maria Solberg" },
+                      { name: "Jonas Larsen" },
+                    ]}
+                  />
+                  <MeetingCard
+                    id="4"
+                    title="Strategimøte Q2"
+                    date="12. mars 2024"
+                    duration="2t"
+                    meetingType="teams"
+                    participants={[
+                      { name: "Lars Johansen", avatar: "/avatars/04.png" },
+                      { name: "Ingrid Berg" },
+                      { name: "Morten Solberg" },
+                      { name: "Eva Larsen" },
+                      { name: "Thomas Olsen" },
+                    ]}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-center mt-8">
+                <Link href="/dashboard/meetings">
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <List className="h-4 w-4" />
+                    Se alle møter
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Tabs defaultValue="totalt" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="totalt">Totalt</TabsTrigger>
-            <TabsTrigger value="idag">I dag</TabsTrigger>
-            <TabsTrigger value="denneuken">Denne uken</TabsTrigger>
-            <TabsTrigger value="dennemaneden">Denne måneden</TabsTrigger>
-          </TabsList>
+          {/* Right Column - Controls and Upcoming Meetings */}
+          <div className="space-y-4">
+            {/* Live Meeting Button */}
+            <Card>
+              <CardContent className="pt-6">
+                <Button
+                  className="w-full bg-violet-600 hover:bg-violet-700 gap-2"
+                  size="lg"
+                  onClick={() => setShowLiveMeeting(true)}
+                >
+                  <Mic className="h-5 w-5" />
+                  Start live møte
+                </Button>
+              </CardContent>
+            </Card>
 
-          <TabsContent value="totalt" className="space-y-6">
-            <DashboardContent />
-          </TabsContent>
+            {/* Note Taking Settings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Settings2 className="h-5 w-5" />
+                  Innstillinger for notatskriving
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Språk</label>
+                  <Select defaultValue="no">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Velg språk" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="no">Norsk</SelectItem>
+                      <SelectItem value="en">Engelsk</SelectItem>
+                      <SelectItem value="sv">Svensk</SelectItem>
+                      <SelectItem value="da">Dansk</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Notatstil</label>
+                  <Select defaultValue="detailed">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Velg notatstil" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="detailed">Detaljert</SelectItem>
+                      <SelectItem value="summary">Sammendrag</SelectItem>
+                      <SelectItem value="bullet">Punktliste</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
 
-          <TabsContent value="idag" className="space-y-6">
-            <DashboardContent />
-          </TabsContent>
-
-          <TabsContent value="denneuken" className="space-y-6">
-            <DashboardContent />
-          </TabsContent>
-
-          <TabsContent value="dennemaneden" className="space-y-6">
-            <DashboardContent />
-          </TabsContent>
-        </Tabs>
+            {/* Upcoming Meetings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Calendar className="h-5 w-5" />
+                  Kommende møter
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="text-center text-sm text-muted-foreground">
+                    Connect your calendar to see upcoming meetings
+                  </div>
+                  <CalendarConnect />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
 
-      <UploadDialog
-        open={uploadDialogOpen}
-        onOpenChange={setUploadDialogOpen}
+      <LiveMeetingDialog
+        isOpen={showLiveMeeting}
+        onClose={() => setShowLiveMeeting(false)}
       />
-    </>
+    </div>
   );
 }

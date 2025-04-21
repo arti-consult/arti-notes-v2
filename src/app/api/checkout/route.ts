@@ -1,7 +1,10 @@
 // src/app/api/checkout/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import { createCheckoutSession } from "@/utils/stripe/server";
+import {
+  createSubscriptionCheckout,
+  createCreditPackageCheckout,
+} from "@/utils/stripe/stripe-service";
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     // Get request body
     const body = await req.json();
-    const { priceId } = body;
+    const { type, priceId } = body;
 
     if (!priceId) {
       return NextResponse.json(
@@ -31,14 +34,32 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create checkout session URL
-    const url = await createCheckoutSession(
-      user.id,
-      priceId,
-      `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`
-    );
+    let checkoutUrl: string;
+    const returnUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`;
 
-    return NextResponse.json({ url });
+    // Handle different checkout types
+    if (type === "subscription") {
+      // Create subscription checkout
+      checkoutUrl = await createSubscriptionCheckout(
+        user.id,
+        priceId,
+        returnUrl
+      );
+    } else if (type === "credits") {
+      // Create credit package checkout
+      checkoutUrl = await createCreditPackageCheckout(
+        user.id,
+        priceId,
+        returnUrl
+      );
+    } else {
+      return NextResponse.json(
+        { error: "Invalid checkout type" },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json({ url: checkoutUrl });
   } catch (error: any) {
     console.error("Error creating checkout session:", error);
     return NextResponse.json(

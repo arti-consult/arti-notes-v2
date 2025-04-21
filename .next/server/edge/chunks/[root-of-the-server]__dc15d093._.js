@@ -108,7 +108,6 @@ async function middleware(request) {
             }
         } else if (protectedRoute.minTier !== "free") {
             // For non-admin paths that require a minimum tier other than free
-            // Function to get tier level
             const getTierLevel = (tier)=>{
                 const levels = {
                     free: 0,
@@ -118,25 +117,28 @@ async function middleware(request) {
                 };
                 return levels[tier] || 0;
             };
-            // Get user roles
             const { data: userRoles } = await supabase.from("user_roles").select(`
           roles!inner (
             name
           )
         `).eq("user_id", session.user.id);
-            // Check if user has the required tier
             const minTierLevel = getTierLevel(protectedRoute.minTier);
             const userTiers = userRoles?.map((ur)=>getTierLevel(ur.roles.name)) || [];
             const maxUserTier = Math.max(...userTiers, 0);
-            // If user's max tier is less than required, redirect
             if (maxUserTier < minTierLevel) {
-                // Redirect to pricing page if tier is insufficient
                 return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/pricing?upgrade=true", request.url));
             }
         }
     }
+    // Check if the user has completed onboarding
+    if (session && pathname === "/dashboard") {
+        const { data: onboardingData, error: onboardingError } = await supabase.from("user_onboarding").select("completed_at").eq("user_id", session.user.id).not("completed_at", "is", null).single();
+        if (!onboardingData && !onboardingError?.code?.includes("not_found")) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/onboarding", request.url));
+        }
+    }
     // Special handling for auth pages when user is already logged in
-    if (session && (pathname === "/login" || pathname === "/register" || pathname === "/")) {
+    if (session && (pathname === "/login" || pathname === "/register")) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
     }
     return response;
@@ -150,7 +152,8 @@ const config = {
      * - favicon.ico (favicon file)
      * - public files (assets)
      * - api/webhooks (webhook endpoints)
-     */ "/((?!_next/static|_next/image|favicon.ico|api/webhooks|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
+     * - auth pages (to prevent redirect loops)
+     */ "/((?!_next/static|_next/image|favicon.ico|api/webhooks|login|register|onboarding|pricing|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
     ]
 };
 }}),

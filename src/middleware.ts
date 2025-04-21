@@ -104,14 +104,11 @@ export async function middleware(request: NextRequest) {
       }
     } else if (protectedRoute.minTier !== "free") {
       // For non-admin paths that require a minimum tier other than free
-
-      // Function to get tier level
       const getTierLevel = (tier: string): number => {
         const levels = { free: 0, basic: 1, premium: 2, admin: 3 };
         return levels[tier as keyof typeof levels] || 0;
       };
 
-      // Get user roles
       const { data: userRoles } = await supabase
         .from("user_roles")
         .select(
@@ -123,15 +120,12 @@ export async function middleware(request: NextRequest) {
         )
         .eq("user_id", session.user.id);
 
-      // Check if user has the required tier
       const minTierLevel = getTierLevel(protectedRoute.minTier);
       const userTiers =
         userRoles?.map((ur) => getTierLevel((ur.roles as any).name)) || [];
       const maxUserTier = Math.max(...userTiers, 0);
 
-      // If user's max tier is less than required, redirect
       if (maxUserTier < minTierLevel) {
-        // Redirect to pricing page if tier is insufficient
         return NextResponse.redirect(
           new URL("/pricing?upgrade=true", request.url)
         );
@@ -139,11 +133,22 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Check if the user has completed onboarding
+  if (session && pathname === "/dashboard") {
+    const { data: onboardingData, error: onboardingError } = await supabase
+      .from("user_onboarding")
+      .select("completed_at")
+      .eq("user_id", session.user.id)
+      .not("completed_at", "is", null)
+      .single();
+
+    if (!onboardingData && !onboardingError?.code?.includes("not_found")) {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
+  }
+
   // Special handling for auth pages when user is already logged in
-  if (
-    session &&
-    (pathname === "/login" || pathname === "/register" || pathname === "/")
-  ) {
+  if (session && (pathname === "/login" || pathname === "/register")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -159,7 +164,8 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public files (assets)
      * - api/webhooks (webhook endpoints)
+     * - auth pages (to prevent redirect loops)
      */
-    "/((?!_next/static|_next/image|favicon.ico|api/webhooks|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/webhooks|login|register|onboarding|pricing|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

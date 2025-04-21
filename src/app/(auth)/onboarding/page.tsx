@@ -1,68 +1,72 @@
-'use client'
+"use client";
 
-import { updateProfile } from './actions'
-import { useRouter } from 'next/navigation'
+import { OnboardingProvider } from "@/contexts/OnboardingContext";
+import { OnboardingSteps } from "./components/OnboardingSteps";
+import { useAuth } from "@/contexts/AuthContext";
+import { Suspense, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
-export default function OnboardingPage() {
-  const router = useRouter()
-
+function LoadingFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Welcome to Arti Notes</h2>
-          <p className="mt-2 text-sm text-gray-600">Let's set up your profile</p>
-        </div>
-
-        <form className="mt-8 space-y-6" action={updateProfile}>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
-              <input
-                id="fullName"
-                name="fullName"
-                type="text"
-                required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
-                Bio (Optional)
-              </label>
-              <textarea
-                id="bio"
-                name="bio"
-                rows={3}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform hover:scale-[1.02] active:scale-[0.98]"
-            >
-              Complete Setup
-            </button>
-          </div>
-        </form>
+      <div className="flex flex-col items-center">
+        <Loader className="animate-spin h-8 w-8 text-indigo-600 mb-4" />
+        <p className="text-indigo-600">Loading...</p>
       </div>
     </div>
-  )
-} 
+  );
+}
+
+function OnboardingContent() {
+  const { user, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return <LoadingFallback />;
+  }
+
+  if (!user) {
+    return null; // Will redirect to login via the useEffect
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="w-full max-w-2xl space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900">
+            Welcome to ARTI Notes
+          </h1>
+          <p className="mt-2 text-sm text-gray-600">
+            Let's set up your account
+          </p>
+        </div>
+
+        <OnboardingSteps />
+
+        <div className="text-center text-sm text-gray-500">
+          <p>
+            Step {user ? "1 of 6" : ""} - This will help us customize your
+            experience
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function OnboardingPage() {
+  return (
+    <OnboardingProvider>
+      <Suspense fallback={<LoadingFallback />}>
+        <OnboardingContent />
+      </Suspense>
+    </OnboardingProvider>
+  );
+}

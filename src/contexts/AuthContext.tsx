@@ -54,6 +54,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(session?.user || null);
 
         if (session?.user) {
+          // Link anonymous tracking data to the user
+          try {
+            // Dynamic import to avoid issues with SSR
+            const { linkTrackingDataToUser } = await import(
+              "@/utils/tracking/server"
+            );
+            await linkTrackingDataToUser(session.user.id);
+          } catch (err) {
+            // Non-fatal error
+            console.error("Error linking tracking data:", err);
+          }
+
           // Get profile
           const { data: profileData } = await supabase
             .from("profiles")
