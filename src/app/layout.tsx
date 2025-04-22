@@ -2,6 +2,7 @@
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import TrackingProvider from "@/components/providers/TrackingProvider";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -16,7 +17,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
-          <TrackingProvider>{children}</TrackingProvider>
+          <TrackingProvider>
+            {children}
+            <Toaster />
+          </TrackingProvider>
         </AuthProvider>
       </body>
     </html>

@@ -10,14 +10,19 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { AudioVisualizer } from "./audio-visualizer";
 import { DeleteRecordingDialog } from "./delete-recording-dialog";
 import { Separator } from "@/components/ui/separator";
+import { saveRecording } from "@/utils/recordings/recording-service";
+import { toast } from "@/components/ui/use-toast";
+import { createMeeting } from "@/utils/meetings/meeting-service";
 
 interface LiveRecordingProps {
   onClose?: () => void;
-  onComplete?: (audioBlob: Blob) => void;
+  onComplete?: (recordingId: string) => void;
   onRecordingStateChange?: (isRecording: boolean) => void;
 }
 
@@ -28,10 +33,13 @@ export function LiveRecording({
 }: LiveRecordingProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [audioURL, setAudioURL] = useState<string>("");
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [showAnimation, setShowAnimation] = useState(false);
   const [audioData, setAudioData] = useState<number[]>(new Array(32).fill(0));
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [recordingTitle, setRecordingTitle] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -97,8 +105,14 @@ export function LiveRecording({
         });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioURL(audioUrl);
+        setAudioBlob(audioBlob);
         cleanupAudioResources();
         setAudioData(new Array(32).fill(0));
+
+        // Set a default recording title based on date and time
+        const now = new Date();
+        const defaultTitle = `Recording ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+        setRecordingTitle(defaultTitle);
       };
 
       setTimeout(() => {
@@ -116,6 +130,12 @@ export function LiveRecording({
       console.error("Error accessing microphone:", error);
       setShowAnimation(false);
       cleanupAudioResources();
+      toast({
+        title: "Microphone Error",
+        description:
+          "Failed to access your microphone. Please check permissions.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -151,22 +171,78 @@ export function LiveRecording({
   };
 
   const handleDownload = () => {
+    if (!audioURL) return;
+
     const a = document.createElement("a");
     a.href = audioURL;
-    a.download = `recording-${new Date().toISOString()}.wav`;
+    a.download = `${recordingTitle.trim() || "recording"}.wav`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   };
 
-  const handleComplete = () => {
-    if (audioURL) {
-      fetch(audioURL)
-        .then((response) => response.blob())
-        .then((blob) => {
-          onComplete?.(blob);
-          onClose?.();
-        });
+  const handleSaveRecording = async () => {
+    if (!audioBlob) return;
+
+    try {
+      setIsSaving(true);
+
+      // Create a meeting first
+      const meeting = await createMeeting(
+        recordingTitle.trim() || `Meeting ${new Date().toISOString()}`,
+        "Meeting created from recording"
+      );
+
+      if (!meeting) {
+        throw new Error("Failed to create meeting");
+      }
+
+      // Format the title to be more readable
+      const formattedTitle = recordingTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+
+      // Create a File object from the blob
+      const audioFile = new File([audioBlob], `${formattedTitle}.webm`, {
+        type: "audio/webm",
+      });
+
+      // Save the recording with the meeting ID
+      const result = await saveRecording({
+        title: recordingTitle.trim() || `Recording ${new Date().toISOString()}`,
+        duration: recordingDuration,
+        audio_file: audioFile,
+        status: "processing",
+        meeting_id: meeting.id,
+      });
+
+      if (!result) {
+        throw new Error("Failed to save recording");
+      }
+
+      toast({
+        title: "Recording Saved",
+        description: "Your recording has been saved successfully.",
+      });
+
+      if (onComplete) {
+        onComplete(meeting.id);
+      }
+
+      onClose?.();
+    } catch (error) {
+      console.error("Error saving recording:", error);
+      toast({
+        title: "Save Failed",
+        description:
+          error instanceof Error
+            ? error.message
+            : "There was an error saving your recording. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -184,8 +260,13 @@ export function LiveRecording({
           .forEach((track) => track.stop());
       }
       cleanupAudioResources();
+
+      // Clean up object URLs
+      if (audioURL) {
+        URL.revokeObjectURL(audioURL);
+      }
     };
-  }, []);
+  }, [audioURL]);
 
   return (
     <>
@@ -245,13 +326,28 @@ export function LiveRecording({
 
           {audioURL && (
             <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">Recording Title</Label>
+                <Input
+                  id="title"
+                  value={recordingTitle}
+                  onChange={(e) => setRecordingTitle(e.target.value)}
+                  placeholder="Enter a title for your recording"
+                />
+              </div>
+
               <audio
                 ref={audioRef}
                 controls
                 src={audioURL}
                 className="w-full"
               />
+
               <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={handleDownload}>
+                  <Download className="mr-2 h-4 w-4" />
+                  Download
+                </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowDeleteDialog(true)}
@@ -260,11 +356,40 @@ export function LiveRecording({
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleComplete}
+                  onClick={handleSaveRecording}
                   className="bg-violet-600 hover:bg-violet-700"
+                  disabled={isSaving}
                 >
-                  <Check className="mr-2 h-4 w-4" />
-                  Complete
+                  {isSaving ? (
+                    <span className="flex items-center gap-2">
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Saving...
+                    </span>
+                  ) : (
+                    <>
+                      <Check className="mr-2 h-4 w-4" />
+                      Save Recording
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
@@ -277,6 +402,7 @@ export function LiveRecording({
         onClose={() => setShowDeleteDialog(false)}
         onConfirm={() => {
           setAudioURL("");
+          setAudioBlob(null);
           setShowDeleteDialog(false);
           onClose?.();
         }}
