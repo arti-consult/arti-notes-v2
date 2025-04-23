@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   User,
   Sparkles,
@@ -49,6 +49,7 @@ import { LiveRecording } from "./components/live-recording";
 import { NewMeetingDropdown } from "./components/new-meeting-dropdown";
 import { CalendarConnect } from "./components/calendar-connect";
 import { LiveMeetingDialog } from "./components/live-meeting-dialog";
+import { MeetingList, Meeting } from "./components/meeting-list";
 
 function MeetingCard({
   id,
@@ -149,7 +150,62 @@ function MeetingCard({
 export default function DashboardPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [showLiveMeeting, setShowLiveMeeting] = useState(false);
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          throw new Error("User not authenticated");
+        }
+
+        const { data, error } = await supabase
+          .from("meetings")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          throw error;
+        }
+
+        // Transform the data to match the Meeting type
+        const transformedMeetings: Meeting[] = (data || []).map(meeting => {
+          const startTime = meeting.start_time ? new Date(meeting.start_time) : new Date(meeting.created_at);
+          const endTime = meeting.end_time ? new Date(meeting.end_time) : new Date(startTime.getTime() + 3600000);
+          
+          return {
+            id: meeting.id,
+            title: meeting.title,
+            startTime,
+            endTime,
+            meeting_type: meeting.meeting_type,
+            transcription_status: meeting.transcription_status || 'pending',
+            summary_status: meeting.summary_status || 'pending',
+            participants: [
+              { name: "Ola Nordmann", avatar: "/avatars/01.png" },
+              { name: "Kari Hansen" },
+            ],
+          };
+        });
+
+        setMeetings(transformedMeetings);
+      } catch (error) {
+        console.error("Error fetching meetings:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMeetings();
+  }, []);
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -238,58 +294,13 @@ export default function DashboardPage() {
                   <NewMeetingArea onFileUpload={handleFileUpload} />
                 </div>
                 <div className="space-y-3">
-                  <MeetingCard
-                    id="1"
-                    title="Ukentlig teamsmøte"
-                    date="15. mars 2024"
-                    duration="45 min"
-                    meetingType="teams"
-                    participants={[
-                      { name: "Ola Nordmann", avatar: "/avatars/01.png" },
-                      { name: "Kari Hansen" },
-                      { name: "Per Olsen" },
-                      { name: "Mari Larsen" },
-                    ]}
-                  />
-                  <MeetingCard
-                    id="2"
-                    title="Prosjektgjennomgang"
-                    date="14. mars 2024"
-                    duration="1t 15min"
-                    meetingType="google-meet"
-                    participants={[
-                      { name: "Erik Johansen" },
-                      { name: "Lisa Berg" },
-                      { name: "Tom Andersen" },
-                    ]}
-                  />
-                  <MeetingCard
-                    id="3"
-                    title="Kundemøte - Innovasjon AS"
-                    date="13. mars 2024"
-                    duration="30 min"
-                    meetingType="teams"
-                    participants={[
-                      { name: "Sara Nilsen" },
-                      { name: "Anders Bakke" },
-                      { name: "Maria Solberg" },
-                      { name: "Jonas Larsen" },
-                    ]}
-                  />
-                  <MeetingCard
-                    id="4"
-                    title="Strategimøte Q2"
-                    date="12. mars 2024"
-                    duration="2t"
-                    meetingType="teams"
-                    participants={[
-                      { name: "Lars Johansen", avatar: "/avatars/04.png" },
-                      { name: "Ingrid Berg" },
-                      { name: "Morten Solberg" },
-                      { name: "Eva Larsen" },
-                      { name: "Thomas Olsen" },
-                    ]}
-                  />
+                  {isLoading ? (
+                    <div className="text-center text-muted-foreground">
+                      Loading meetings...
+                    </div>
+                  ) : (
+                    <MeetingList meetings={meetings} showEmpty={false} />
+                  )}
                 </div>
               </div>
               <div className="flex justify-center mt-8">

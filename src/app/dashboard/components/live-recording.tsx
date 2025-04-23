@@ -40,6 +40,7 @@ export function LiveRecording({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [recordingTitle, setRecordingTitle] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [startTime, setStartTime] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -78,6 +79,7 @@ export function LiveRecording({
     try {
       setShowAnimation(true);
       setRecordingDuration(0);
+      setStartTime(new Date().toISOString());
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       cleanupAudioResources();
@@ -182,15 +184,20 @@ export function LiveRecording({
   };
 
   const handleSaveRecording = async () => {
-    if (!audioBlob) return;
+    if (!audioBlob || !startTime) return;
 
     try {
       setIsSaving(true);
 
+      const endTime = new Date().toISOString();
+
       // Create a meeting first
       const meeting = await createMeeting(
         recordingTitle.trim() || `Meeting ${new Date().toISOString()}`,
-        "Meeting created from recording"
+        "Meeting created from recording",
+        'live',
+        startTime,
+        endTime
       );
 
       if (!meeting) {

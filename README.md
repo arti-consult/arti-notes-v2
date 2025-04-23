@@ -104,4 +104,4 @@ Whether you're in a meeting, a brainstorming session, or just talking with someo
 
 ## Environment Variables
 
-[.env.sample]()
+[.env.sample](https://github.com/arti-consult/arti-notes-v2/blob/main/.env.example)

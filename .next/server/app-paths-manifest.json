@@ -1,10 +1,9 @@
 {
-  "/(auth)/login/page": "app/(auth)/login/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/users/page": "app/admin/users/page.js",
   "/dashboard/meeting/[id]/page": "app/dashboard/meeting/[id]/page.js",
   "/dashboard/meetings/page": "app/dashboard/meetings/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/subscription/page": "app/dashboard/subscription/page.js",
-  "/dashboard/team/page": "app/dashboard/team/page.js",
-  "/page": "app/page.js"
+  "/dashboard/team/page": "app/dashboard/team/page.js"
 }

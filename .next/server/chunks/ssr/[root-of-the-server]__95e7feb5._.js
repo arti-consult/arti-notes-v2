@@ -65,17 +65,22 @@ async function createClient() {
     const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cookies"])();
     return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$createServerClient$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["createServerClient"])(("TURBOPACK compile-time value", "https://wnxwqdupndeqijmamdkp.supabase.co"), ("TURBOPACK compile-time value", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndueHdxZHVwbmRlcWlqbWFtZGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE4NDU4NTksImV4cCI6MjA0NzQyMTg1OX0.pJ2CF508xkmP2IPEoSkqJ45lMmNySVxHJYxeZ_Ge3Pw"), {
         cookies: {
-            getAll () {
-                return cookieStore.getAll();
+            get (name) {
+                return cookieStore.get(name)?.value;
             },
-            setAll (cookiesToSet) {
-                try {
-                    cookiesToSet.forEach(({ name, value, options })=>cookieStore.set(name, value, options));
-                } catch  {
-                // The `setAll` method was called from a Server Component.
-                // This can be ignored if you have middleware refreshing
-                // user sessions.
-                }
+            set (name, value, options) {
+                cookieStore.set({
+                    name,
+                    value,
+                    ...options
+                });
+            },
+            remove (name, options) {
+                cookieStore.set({
+                    name,
+                    value: "",
+                    ...options
+                });
             }
         }
     });

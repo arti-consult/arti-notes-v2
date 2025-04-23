@@ -323,7 +323,8 @@ export async function getRecordingFileUrl(
  */
 export async function createMeeting(
   title: string,
-  description?: string
+  description?: string,
+  meetingType: 'live' | 'google-meets' | 'microsoft-teams' = 'live'
 ): Promise<{ id: string } | null> {
   try {
     const supabase = createClient();
@@ -346,6 +347,7 @@ export async function createMeeting(
         title,
         description,
         user_id: user.id,
+        meeting_type: meetingType,
       })
       .select("id")
       .single();

@@ -5,7 +5,9 @@ export interface Meeting {
   title: string;
   description?: string;
   user_id: string;
+  meeting_type: 'live' | 'google-meets' | 'microsoft-teams';
   start_time: string;
+  end_time?: string;
   created_at: string;
   updated_at: string;
 }
@@ -15,7 +17,10 @@ export interface Meeting {
  */
 export async function createMeeting(
   title: string,
-  description?: string
+  description?: string,
+  meetingType: 'live' | 'google-meets' | 'microsoft-teams' = 'live',
+  startTime?: string,
+  endTime?: string
 ): Promise<Meeting | null> {
   try {
     const supabase = createClient();
@@ -35,6 +40,9 @@ export async function createMeeting(
       title,
       description,
       userId: user.id,
+      meetingType,
+      startTime,
+      endTime,
     });
 
     // Create the meeting entry in the database
@@ -44,7 +52,9 @@ export async function createMeeting(
         title,
         description,
         user_id: user.id,
-        start_time: new Date().toISOString(),
+        meeting_type: meetingType,
+        start_time: startTime || new Date().toISOString(),
+        end_time: endTime,
       })
       .select()
       .single();

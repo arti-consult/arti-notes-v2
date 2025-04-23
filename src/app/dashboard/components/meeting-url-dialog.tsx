@@ -26,6 +26,7 @@ interface MeetingData {
   title: string;
   url: string;
   language: string;
+  meeting_type: 'google-meets' | 'microsoft-teams';
 }
 
 export function MeetingUrlDialog({ onClose }: MeetingUrlDialogProps) {
@@ -33,6 +34,7 @@ export function MeetingUrlDialog({ onClose }: MeetingUrlDialogProps) {
     title: "",
     url: "",
     language: "no", // Default to Norwegian
+    meeting_type: "microsoft-teams", // Default to Teams
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -63,10 +65,31 @@ export function MeetingUrlDialog({ onClose }: MeetingUrlDialogProps) {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="meeting_type">Meeting Type</Label>
+            <Select
+              value={formData.meeting_type}
+              onValueChange={(value: 'google-meets' | 'microsoft-teams') =>
+                setFormData({ ...formData, meeting_type: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select meeting type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="microsoft-teams">Microsoft Teams</SelectItem>
+                <SelectItem value="google-meets">Google Meet</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="url">Meeting URL</Label>
             <Input
               id="url"
-              placeholder="https://teams.microsoft.com/..."
+              placeholder={formData.meeting_type === 'microsoft-teams' ? 
+                "https://teams.microsoft.com/..." : 
+                "https://meet.google.com/..."
+              }
               value={formData.url}
               onChange={(e) =>
                 setFormData({ ...formData, url: e.target.value })

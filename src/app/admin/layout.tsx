@@ -1,23 +1,36 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
-import { SidebarWrapper } from "./components/sidebar-wrapper"
+"use client";
 
-export default async function DashboardLayout({
+import { Sidebar } from "./components/sidebar";
+import { createClient } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
+
+export default function AdminLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const supabase = await createClient()
+  const [user, setUser] = useState<User | null>(null);
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data?.user) {
-    redirect('/login')
-  }
+  useEffect(() => {
+    const supabase = createClient();
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, []);
+
+  if (!user) return null;
 
   return (
-    <div className="flex min-h-screen">
-      <SidebarWrapper />
-      <main className="flex-1">{children}</main>
+    <div className="flex h-screen">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto bg-gray-50">
+        {children}
+      </main>
     </div>
-  )
+  );
 } 
