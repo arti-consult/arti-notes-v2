@@ -792,6 +792,10 @@ body {
   height: .875rem;
 }
 
+.h-32 {
+  height: 8rem;
+}
+
 .h-4 {
   height: 1rem;
 }
@@ -3131,10 +3135,6 @@ body {
   background-color: rgb(109 40 217 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-destructive\/10:hover {
-  background-color: hsl(var(--destructive) / .1);
-}
-
 .hover\:text-accent-foreground:hover {
   color: hsl(var(--accent-foreground));
 }
@@ -3187,10 +3187,6 @@ body {
 .hover\:text-violet-700:hover {
   --tw-text-opacity: 1;
   color: rgb(109 40 217 / var(--tw-text-opacity, 1));
-}
-
-.hover\:text-destructive:hover {
-  color: hsl(var(--destructive));
 }
 
 .hover\:underline:hover {
@@ -3997,10 +3993,6 @@ body {
     flex: none;
   }
 
-  .sm\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .sm\:flex-row {
     flex-direction: row;
   }
@@ -4043,10 +4035,6 @@ body {
 
   .sm\:rounded-lg {
     border-radius: var(--radius);
-  }
-
-  .sm\:p-6 {
-    padding: 1.5rem;
   }
 
   .sm\:px-3 {
@@ -4227,10 +4215,6 @@ body {
 @media (width >= 1280px) {
   .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .xl\:grid-cols-\[1fr\,350px\] {
-    grid-template-columns: 1fr 350px;
   }
 }
 

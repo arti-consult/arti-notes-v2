@@ -18,6 +18,8 @@ import {
   List,
   CreditCard,
   LogOut,
+  Loader2,
+  RefreshCw,
 } from "lucide-react";
 import { SearchDialog } from "./components/search-dialog";
 import { PurchaseCreditsDialog } from "./components/purchase-credits-dialog";
@@ -50,6 +52,8 @@ import { NewMeetingDropdown } from "./components/new-meeting-dropdown";
 import { CalendarConnect } from "./components/calendar-connect";
 import { LiveMeetingDialog } from "./components/live-meeting-dialog";
 import { MeetingList, Meeting } from "./components/meeting-list";
+import { UpcomingMeetings } from "./components/upcoming-meetings";
+import { toast } from "@/components/ui/use-toast";
 
 function MeetingCard({
   id,
@@ -151,60 +155,120 @@ export default function DashboardPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [showLiveMeeting, setShowLiveMeeting] = useState(false);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [calendarEvents, setCalendarEvents] = useState<Meeting[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchMeetings = async () => {
-      try {
-        const supabase = createClient();
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
+  const syncCalendarEvents = async () => {
+    try {
+      setIsSyncing(true);
+      // Sync calendar events
+      const response = await fetch('/api/calendar/google/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ daysAhead: 30 }), // Fetch next 30 days
+      });
 
-        if (!user) {
-          throw new Error("User not authenticated");
-        }
-
-        const { data, error } = await supabase
-          .from("meetings")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false });
-
-        if (error) {
-          throw error;
-        }
-
-        // Transform the data to match the Meeting type
-        const transformedMeetings: Meeting[] = (data || []).map(meeting => {
-          const startTime = meeting.start_time ? new Date(meeting.start_time) : new Date(meeting.created_at);
-          const endTime = meeting.end_time ? new Date(meeting.end_time) : new Date(startTime.getTime() + 3600000);
-          
-          return {
-            id: meeting.id,
-            title: meeting.title,
-            startTime,
-            endTime,
-            meeting_type: meeting.meeting_type,
-            transcription_status: meeting.transcription_status || 'pending',
-            summary_status: meeting.summary_status || 'pending',
-            participants: [
-              { name: "Ola Nordmann", avatar: "/avatars/01.png" },
-              { name: "Kari Hansen" },
-            ],
-          };
-        });
-
-        setMeetings(transformedMeetings);
-      } catch (error) {
-        console.error("Error fetching meetings:", error);
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        throw new Error('Failed to sync calendar events');
       }
-    };
 
-    fetchMeetings();
+      // Refresh the events list
+      fetchData();
+    } catch (error) {
+      console.error('Error syncing calendar:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
+      // Fetch meetings
+      const { data: meetingsData, error: meetingsError } = await supabase
+        .from("meetings")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (meetingsError) {
+        throw meetingsError;
+      }
+
+      // Transform meetings data
+      const transformedMeetings: Meeting[] = (meetingsData || []).map(meeting => {
+        const startTime = meeting.start_time ? new Date(meeting.start_time) : new Date(meeting.created_at);
+        const endTime = meeting.end_time ? new Date(meeting.end_time) : new Date(startTime.getTime() + 3600000);
+        
+        return {
+          id: meeting.id,
+          title: meeting.title,
+          startTime,
+          endTime,
+          meeting_type: meeting.meeting_type,
+          transcription_status: meeting.transcription_status || 'pending',
+          summary_status: meeting.summary_status || 'pending',
+          participants: [
+            { name: "Ola Nordmann", avatar: "/avatars/01.png" },
+            { name: "Kari Hansen" },
+          ],
+        };
+      });
+
+      setMeetings(transformedMeetings);
+
+      // Fetch calendar events with meeting links
+      const { data: calendarEventsData, error: calendarError } = await supabase
+        .from("calendar_events")
+        .select("*")
+        .eq("user_id", user.id)
+        .not("meeting_link", "is", null)
+        .gte("start_time", new Date().toISOString())
+        .lte("start_time", new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()) // Next 30 days
+        .order("start_time", { ascending: true });
+
+      if (calendarError) {
+        throw calendarError;
+      }
+
+      // Transform calendar events data
+      const transformedCalendarEvents: Meeting[] = (calendarEventsData || []).map(event => ({
+        id: event.id,
+        title: event.title,
+        startTime: new Date(event.start_time),
+        endTime: new Date(event.end_time),
+        meeting_type: "google-meets",
+        transcription_status: "pending",
+        summary_status: "pending",
+        participants: event.attendees?.map((attendee: { name?: string; email: string }) => ({
+          name: attendee.name || attendee.email,
+          email: attendee.email
+        })) || [],
+        meeting_link: event.meeting_link
+      }));
+
+      setCalendarEvents(transformedCalendarEvents);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const handleSignOut = async () => {
@@ -370,22 +434,7 @@ export default function DashboardPage() {
             </Card>
 
             {/* Upcoming Meetings */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Calendar className="h-5 w-5" />
-                  Kommende møter
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="text-center text-sm text-muted-foreground">
-                    Connect your calendar to see upcoming meetings
-                  </div>
-                  <CalendarConnect />
-                </div>
-              </CardContent>
-            </Card>
+            <UpcomingMeetings daysAhead={7} />
           </div>
         </div>
       </div>

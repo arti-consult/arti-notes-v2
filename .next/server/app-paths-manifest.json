@@ -1,9 +1,6 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/users/page": "app/admin/users/page.js",
-  "/dashboard/meeting/[id]/page": "app/dashboard/meeting/[id]/page.js",
-  "/dashboard/meetings/page": "app/dashboard/meetings/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/team/page": "app/dashboard/team/page.js"
+  "/api/auth/google/callback/route": "app/api/auth/google/callback/route.js",
+  "/api/auth/google/route": "app/api/auth/google/route.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }

@@ -348,26 +348,30 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/tracking/client.ts [app-ssr] (ecmascript)");
 ;
-async function captureUTMParameters(url) {
-    // Use provided URL or current window URL
-    const currentUrl = url || (("TURBOPACK compile-time falsy", 0) ? ("TURBOPACK unreachable", undefined) : "");
-    if (!currentUrl) return {};
+async function captureUTMParameters(searchParamsString) {
     try {
-        const urlObj = new URL(currentUrl);
-        const searchParams = urlObj.searchParams;
-        // Extract UTM parameters
-        const utmParams = {
-            utm_source: searchParams.get("utm_source") || undefined,
-            utm_medium: searchParams.get("utm_medium") || undefined,
-            utm_campaign: searchParams.get("utm_campaign") || undefined,
-            utm_term: searchParams.get("utm_term") || undefined,
-            utm_content: searchParams.get("utm_content") || undefined
-        };
-        // Only save if at least one UTM parameter is present
-        if (Object.values(utmParams).some((value)=>value)) {
-            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setClientUTMData"])(utmParams);
+        // If we have a search params string, parse it directly
+        if (searchParamsString) {
+            const searchParams = new URLSearchParams(searchParamsString);
+            // Extract UTM parameters
+            const utmParams = {
+                utm_source: searchParams.get("utm_source") || undefined,
+                utm_medium: searchParams.get("utm_medium") || undefined,
+                utm_campaign: searchParams.get("utm_campaign") || undefined,
+                utm_term: searchParams.get("utm_term") || undefined,
+                utm_content: searchParams.get("utm_content") || undefined
+            };
+            // Only save if at least one UTM parameter is present
+            if (Object.values(utmParams).some((value)=>value)) {
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setClientUTMData"])(utmParams);
+            }
+            return utmParams;
         }
-        return utmParams;
+        // If no search params string provided, use current window URL
+        if ("TURBOPACK compile-time falsy", 0) {
+            "TURBOPACK unreachable";
+        }
+        return {};
     } catch (error) {
         console.error("Error capturing UTM parameters:", error);
         return {};

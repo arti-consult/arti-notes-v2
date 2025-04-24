@@ -10,22 +10,21 @@ import { format } from "date-fns";
 import { nb } from "date-fns/locale";
 import Link from "next/link";
 
-export type Participant = {
-  name: string;
-  avatar?: string;
-};
-
-export type Meeting = {
+export interface Meeting {
   id: string;
   title: string;
   startTime: Date;
   endTime: Date;
-  meeting_type: 'live' | 'google-meets' | 'microsoft-teams';
-  participants: Participant[];
-  transcription_status: 'pending' | 'processing' | 'completed' | 'failed';
-  summary_status: 'pending' | 'processing' | 'completed' | 'failed';
-  recording_url?: string;
-};
+  meeting_type: "live" | "google-meets" | "microsoft-teams";
+  transcription_status: "pending" | "processing" | "completed" | "failed";
+  summary_status: "pending" | "processing" | "completed" | "failed";
+  participants: Array<{
+    name: string;
+    email?: string;
+    avatar?: string;
+  }>;
+  meeting_link?: string;
+}
 
 interface MeetingListProps {
   meetings: Meeting[];

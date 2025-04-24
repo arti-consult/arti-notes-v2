@@ -6,39 +6,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "407534cea092bdf2b90d5ab59c0fcffd3f1c56cbbc": {
@@ -47,39 +22,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "603ed09994efc8b1d4fbf153f83a11cc7bc3bbc10b": {
@@ -88,39 +38,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "00088a749312c45a915036e6598fd678ed3ec5a46a": {
@@ -129,39 +54,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "00b2ff056e81e3de5a14482d74deebc03e6d20ec83": {
@@ -170,39 +70,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "00a89c8077261bbdce3b6b27cac9700c2137b45daa": {
@@ -211,39 +86,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "00237d5a0948aafbfd9347a0e126db690538f4a91b": {
@@ -252,39 +102,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "408609e61d2f7c8f0cbf6636c854c7cee41b933309": {
@@ -293,39 +118,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "40f5b8ae32928f33cd724014cb056c4c129f043559": {
@@ -334,39 +134,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "40c395d268949360ffae61d2b892442c162cb9de73": {
@@ -375,39 +150,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     },
     "0047669ca0c477a8ff7d0bcb81bc72c873efcddb56": {
@@ -416,39 +166,14 @@
           "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/admin/users/page": {
-          "moduleId": "[project]/.next-internal/server/app/admin/users/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meeting/[id]/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meeting/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/meetings/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/meetings/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/dashboard/team/page": {
-          "moduleId": "[project]/.next-internal/server/app/dashboard/team/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
       "layer": {
         "app/_not-found/page": "action-browser",
-        "app/admin/page": "action-browser",
-        "app/admin/users/page": "action-browser",
-        "app/dashboard/meeting/[id]/page": "action-browser",
-        "app/dashboard/meetings/page": "action-browser",
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/team/page": "action-browser"
+        "app/dashboard/page": "action-browser"
       }
     }
   },

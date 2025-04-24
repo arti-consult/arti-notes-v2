@@ -22,31 +22,52 @@ export interface UTMParams {
 /**
  * Capture UTM parameters from URL and store in cookies
  */
-export async function captureUTMParameters(url?: string): Promise<UTMParams> {
-  // Use provided URL or current window URL
-  const currentUrl =
-    url || (typeof window !== "undefined" ? window.location.href : "");
-  if (!currentUrl) return {};
-
+export async function captureUTMParameters(searchParamsString?: string): Promise<UTMParams> {
   try {
-    const urlObj = new URL(currentUrl);
-    const searchParams = urlObj.searchParams;
+    // If we have a search params string, parse it directly
+    if (searchParamsString) {
+      const searchParams = new URLSearchParams(searchParamsString);
+      
+      // Extract UTM parameters
+      const utmParams: UTMParams = {
+        utm_source: searchParams.get("utm_source") || undefined,
+        utm_medium: searchParams.get("utm_medium") || undefined,
+        utm_campaign: searchParams.get("utm_campaign") || undefined,
+        utm_term: searchParams.get("utm_term") || undefined,
+        utm_content: searchParams.get("utm_content") || undefined,
+      };
 
-    // Extract UTM parameters
-    const utmParams: UTMParams = {
-      utm_source: searchParams.get("utm_source") || undefined,
-      utm_medium: searchParams.get("utm_medium") || undefined,
-      utm_campaign: searchParams.get("utm_campaign") || undefined,
-      utm_term: searchParams.get("utm_term") || undefined,
-      utm_content: searchParams.get("utm_content") || undefined,
-    };
+      // Only save if at least one UTM parameter is present
+      if (Object.values(utmParams).some((value) => value)) {
+        setClientUTMData(utmParams);
+      }
 
-    // Only save if at least one UTM parameter is present
-    if (Object.values(utmParams).some((value) => value)) {
-      setClientUTMData(utmParams);
+      return utmParams;
     }
 
-    return utmParams;
+    // If no search params string provided, use current window URL
+    if (typeof window !== "undefined") {
+      const currentUrl = window.location.href;
+      const urlObj = new URL(currentUrl);
+      
+      // Extract UTM parameters
+      const utmParams: UTMParams = {
+        utm_source: urlObj.searchParams.get("utm_source") || undefined,
+        utm_medium: urlObj.searchParams.get("utm_medium") || undefined,
+        utm_campaign: urlObj.searchParams.get("utm_campaign") || undefined,
+        utm_term: urlObj.searchParams.get("utm_term") || undefined,
+        utm_content: urlObj.searchParams.get("utm_content") || undefined,
+      };
+
+      // Only save if at least one UTM parameter is present
+      if (Object.values(utmParams).some((value) => value)) {
+        setClientUTMData(utmParams);
+      }
+
+      return utmParams;
+    }
+
+    return {};
   } catch (error) {
     console.error("Error capturing UTM parameters:", error);
     return {};
