@@ -1,10 +1,4 @@
-import {
-  TrendingDownIcon,
-  TrendingUpIcon,
-  Users,
-  DollarSign,
-  Activity,
-} from "lucide-react";
+import { TrendingUpIcon, Users, DollarSign, Activity } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {

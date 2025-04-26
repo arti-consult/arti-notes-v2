@@ -1,7 +1,13 @@
-import { TrendingDownIcon, TrendingUpIcon, Users, DollarSign, Activity } from "lucide-react"
+import { TrendingUpIcon, Users, DollarSign, Activity } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function SectionCards() {
   return (
@@ -12,7 +18,9 @@ export function SectionCards() {
             <DollarSign className="h-4 w-4 text-primary" />
             <CardDescription>Total Revenue</CardDescription>
           </div>
-          <CardTitle className="text-2xl font-semibold tabular-nums">$45,231.89</CardTitle>
+          <CardTitle className="text-2xl font-semibold tabular-nums">
+            $45,231.89
+          </CardTitle>
           <div className="absolute right-4 top-4">
             <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
               <TrendingUpIcon className="size-3" />
@@ -31,7 +39,9 @@ export function SectionCards() {
             <Users className="h-4 w-4 text-primary" />
             <CardDescription>New Customers</CardDescription>
           </div>
-          <CardTitle className="text-2xl font-semibold tabular-nums">2,350</CardTitle>
+          <CardTitle className="text-2xl font-semibold tabular-nums">
+            2,350
+          </CardTitle>
           <div className="absolute right-4 top-4">
             <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
               <TrendingUpIcon className="size-3" />
@@ -50,7 +60,9 @@ export function SectionCards() {
             <Users className="h-4 w-4 text-primary" />
             <CardDescription>Active Customers</CardDescription>
           </div>
-          <CardTitle className="text-2xl font-semibold tabular-nums">12,345</CardTitle>
+          <CardTitle className="text-2xl font-semibold tabular-nums">
+            12,345
+          </CardTitle>
           <div className="absolute right-4 top-4">
             <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
               <TrendingUpIcon className="size-3" />
@@ -69,7 +81,9 @@ export function SectionCards() {
             <Activity className="h-4 w-4 text-primary" />
             <CardDescription>Growth Rate</CardDescription>
           </div>
-          <CardTitle className="text-2xl font-semibold tabular-nums">4.5%</CardTitle>
+          <CardTitle className="text-2xl font-semibold tabular-nums">
+            4.5%
+          </CardTitle>
           <div className="absolute right-4 top-4">
             <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
               <TrendingUpIcon className="size-3" />
@@ -82,5 +96,5 @@ export function SectionCards() {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

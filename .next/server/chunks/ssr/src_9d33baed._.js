@@ -2445,7 +2445,7 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
             setIsSaving(true);
             const endTime = new Date().toISOString();
             // Create a meeting first
-            const meeting = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$meetings$2f$meeting$2d$service$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createMeeting"])(recordingTitle.trim() || `Meeting ${new Date().toISOString()}`, "Meeting created from recording", 'live', startTime, endTime);
+            const meeting = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$meetings$2f$meeting$2d$service$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createMeeting"])(recordingTitle.trim() || `Meeting ${new Date().toISOString()}`, "Meeting created from recording", "live", startTime, endTime);
             if (!meeting) {
                 throw new Error("Failed to create meeting");
             }
@@ -2522,14 +2522,14 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                            lineNumber: 284,
+                                            lineNumber: 277,
                                             columnNumber: 15
                                         }, this),
                                         "Live Recording"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 276,
                                     columnNumber: 13
                                 }, this),
                                 isRecording && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2540,25 +2540,25 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                             children: "●"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                            lineNumber: 289,
+                                            lineNumber: 282,
                                             columnNumber: 17
                                         }, this),
                                         formatDuration(recordingDuration)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                    lineNumber: 288,
+                                    lineNumber: 281,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                            lineNumber: 282,
+                            lineNumber: 275,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                        lineNumber: 281,
+                        lineNumber: 274,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2575,14 +2575,14 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                 className: "mr-2 h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                lineNumber: 302,
+                                                lineNumber: 295,
                                                 columnNumber: 17
                                             }, this),
                                             "Start Recording"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                        lineNumber: 298,
+                                        lineNumber: 291,
                                         columnNumber: 15
                                     }, this),
                                     isRecording && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2593,20 +2593,20 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                 className: "mr-2 h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                lineNumber: 311,
+                                                lineNumber: 304,
                                                 columnNumber: 17
                                             }, this),
                                             "Stop Recording"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                        lineNumber: 307,
+                                        lineNumber: 300,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                lineNumber: 296,
+                                lineNumber: 289,
                                 columnNumber: 11
                             }, this),
                             showAnimation && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2616,12 +2616,12 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                     children: "Starting recording..."
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                    lineNumber: 319,
+                                    lineNumber: 312,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                lineNumber: 318,
+                                lineNumber: 311,
                                 columnNumber: 13
                             }, this),
                             isRecording && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2631,7 +2631,7 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                         audioData: audioData
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                        lineNumber: 327,
+                                        lineNumber: 320,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2639,13 +2639,13 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                         children: "Recording in progress..."
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                        lineNumber: 328,
+                                        lineNumber: 321,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                lineNumber: 326,
+                                lineNumber: 319,
                                 columnNumber: 13
                             }, this),
                             audioURL && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2659,7 +2659,7 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                 children: "Recording Title"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                lineNumber: 337,
+                                                lineNumber: 330,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2669,13 +2669,13 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                 placeholder: "Enter a title for your recording"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                lineNumber: 338,
+                                                lineNumber: 331,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                        lineNumber: 336,
+                                        lineNumber: 329,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("audio", {
@@ -2685,7 +2685,7 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                         className: "w-full"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                        lineNumber: 346,
+                                        lineNumber: 339,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2699,14 +2699,14 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                         className: "mr-2 h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                        lineNumber: 355,
+                                                        lineNumber: 348,
                                                         columnNumber: 19
                                                     }, this),
                                                     "Download"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                lineNumber: 354,
+                                                lineNumber: 347,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2717,14 +2717,14 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                         className: "mr-2 h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                        lineNumber: 362,
+                                                        lineNumber: 355,
                                                         columnNumber: 19
                                                     }, this),
                                                     "Cancel"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                lineNumber: 358,
+                                                lineNumber: 351,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2749,7 +2749,7 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                                     strokeWidth: "4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                                    lineNumber: 378,
+                                                                    lineNumber: 371,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -2758,20 +2758,20 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                                     d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                                    lineNumber: 386,
+                                                                    lineNumber: 379,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                            lineNumber: 372,
+                                                            lineNumber: 365,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Saving..."
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                    lineNumber: 371,
+                                                    lineNumber: 364,
                                                     columnNumber: 21
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                                     children: [
@@ -2779,7 +2779,7 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                            lineNumber: 396,
+                                                            lineNumber: 389,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Save Recording"
@@ -2787,31 +2787,31 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                                                 }, void 0, true)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                                lineNumber: 365,
+                                                lineNumber: 358,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                        lineNumber: 353,
+                                        lineNumber: 346,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                                lineNumber: 335,
+                                lineNumber: 328,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                        lineNumber: 295,
+                        lineNumber: 288,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                lineNumber: 280,
+                lineNumber: 273,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$dashboard$2f$components$2f$delete$2d$recording$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DeleteRecordingDialog"], {
@@ -2825,7 +2825,7 @@ function LiveRecording({ onClose, onComplete, onRecordingStateChange }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/live-recording.tsx",
-                lineNumber: 407,
+                lineNumber: 400,
                 columnNumber: 7
             }, this)
         ]
@@ -3640,7 +3640,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 ;
 function LiveMeetingDialog({ isOpen, onClose }) {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    const handleRecordingComplete = (recordingId)=>{
+    const handleRecordingComplete = (_recordingId)=>{
         // Refresh the recordings list on the dashboard
         router.refresh();
         // Optionally navigate to the recording detail page
@@ -3657,17 +3657,17 @@ function LiveMeetingDialog({ isOpen, onClose }) {
                 onComplete: handleRecordingComplete
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/live-meeting-dialog.tsx",
-                lineNumber: 29,
+                lineNumber: 28,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/components/live-meeting-dialog.tsx",
-            lineNumber: 28,
+            lineNumber: 27,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/components/live-meeting-dialog.tsx",
-        lineNumber: 27,
+        lineNumber: 26,
         columnNumber: 5
     }, this);
 }
@@ -4095,29 +4095,23 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-ssr] (ecmascript) <export default as Calendar>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-2.js [app-ssr] (ecmascript) <export default as Loader2>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/supabase/client.ts [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-ssr] (ecmascript)");
 "use client";
-;
-;
 ;
 ;
 ;
 ;
 function CalendarConnect() {
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createClient"])();
     const handleGoogleConnect = async ()=>{
         try {
             setIsLoading(true);
             // Get Google OAuth URL
-            const response = await fetch('/api/auth/google');
+            const response = await fetch("/api/auth/google");
             const { url } = await response.json();
             // Redirect to Google OAuth
             window.location.href = url;
         } catch (error) {
-            console.error('Error connecting to Google Calendar:', error);
+            console.error("Error connecting to Google Calendar:", error);
         } finally{
             setIsLoading(false);
         }
@@ -4141,7 +4135,7 @@ function CalendarConnect() {
                             className: "h-5 w-5 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                            lineNumber: 46,
+                            lineNumber: 42,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                             children: [
@@ -4149,7 +4143,7 @@ function CalendarConnect() {
                                     className: "h-5 w-5 text-gray-500"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                                    lineNumber: 49,
+                                    lineNumber: 45,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
@@ -4158,21 +4152,21 @@ function CalendarConnect() {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                                    lineNumber: 50,
+                                    lineNumber: 46,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                        lineNumber: 44,
+                        lineNumber: 40,
                         columnNumber: 9
                     }, this),
                     isLoading ? "Connecting..." : "Connect Google Calendar"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                lineNumber: 38,
+                lineNumber: 34,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4187,7 +4181,7 @@ function CalendarConnect() {
                                 className: "h-5 w-5 text-gray-500"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                                lineNumber: 66,
+                                lineNumber: 62,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
@@ -4196,26 +4190,26 @@ function CalendarConnect() {
                                 className: "h-5 w-5"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                                lineNumber: 67,
+                                lineNumber: 63,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                        lineNumber: 65,
+                        lineNumber: 61,
                         columnNumber: 9
                     }, this),
                     "Connect Microsoft Calendar"
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-                lineNumber: 60,
+                lineNumber: 56,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/components/calendar-connect.tsx",
-        lineNumber: 37,
+        lineNumber: 33,
         columnNumber: 5
     }, this);
 }

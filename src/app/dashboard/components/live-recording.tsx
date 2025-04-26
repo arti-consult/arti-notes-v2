@@ -3,19 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, Square, Download, X, Check } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+
 import { AudioVisualizer } from "./audio-visualizer";
 import { DeleteRecordingDialog } from "./delete-recording-dialog";
-import { Separator } from "@/components/ui/separator";
 import { saveRecording } from "@/utils/recordings/recording-service";
 import { toast } from "@/components/ui/use-toast";
 import { createMeeting } from "@/utils/meetings/meeting-service";
@@ -195,7 +188,7 @@ export function LiveRecording({
       const meeting = await createMeeting(
         recordingTitle.trim() || `Meeting ${new Date().toISOString()}`,
         "Meeting created from recording",
-        'live',
+        "live",
         startTime,
         endTime
       );

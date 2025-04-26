@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Recording } from '@/types/recording';
-import RecordingCard from './RecordingCard';
+import { Recording } from "@/services/recordingService";
+import RecordingCard from "./RecordingCard";
 
 interface RecordingListProps {
   recordings: Recording[];
@@ -23,4 +23,4 @@ export default function RecordingList({ recordings }: RecordingListProps) {
       ))}
     </div>
   );
-} 
+}

@@ -55,6 +55,7 @@ export function RolesForm() {
   const [roleToDelete, setRoleToDelete] = useState<string | null>(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const { toast } = useToast();
+  const permissionsList = permissions;
 
   useEffect(() => {
     loadData();
@@ -133,6 +134,18 @@ export function RolesForm() {
 
         // Update the role in the database
         handleUpdate(updatedRole);
+        // Toast notification for permission change
+        const perm = permissionsList.find((p) => p.id === permissionId);
+        toast({
+          title: hasPermission ? "Permission removed" : "Permission added",
+          description: perm
+            ? `Permission '${perm.name}' was ${
+                hasPermission ? "removed from" : "added to"
+              } role '${role.name}'.`
+            : `Permission was ${
+                hasPermission ? "removed from" : "added to"
+              } role '${role.name}'.`,
+        });
         return updatedRole;
       }
       return role;
@@ -263,14 +276,15 @@ export function RolesForm() {
                       Save
                     </Button>
                     {/* Permissions section */}
-                    <div className="mt-2 space-y-2 border-t pt-4">
+                    <div className="mt-2 border-t pt-4">
                       <h4 className="font-medium text-sm mb-2">Permissions</h4>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-white rounded-md p-2 border">
                         {permissions.map((permission) => (
                           <div
                             key={permission.id}
-                            className="flex items-center space-x-2"
+                            className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition text-xs"
                           >
+                            <GripVertical className="w-3 h-3 text-gray-300 mr-1" />
                             <Checkbox
                               id={`${role.id}-${permission.id}`}
                               checked={(role.permissions || []).includes(
@@ -279,10 +293,11 @@ export function RolesForm() {
                               onCheckedChange={() =>
                                 togglePermission(role.id, permission.id)
                               }
+                              className="scale-90"
                             />
                             <Label
                               htmlFor={`${role.id}-${permission.id}`}
-                              className="text-sm"
+                              className="text-xs cursor-pointer select-none"
                             >
                               {permission.name}
                             </Label>

@@ -5,13 +5,8 @@ import { use } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Meeting } from "@/app/dashboard/components/meeting-list";
 import {
-  Clock,
   PlayCircle,
-  Undo,
-  Redo,
   Download,
-  ThumbsUp,
-  ThumbsDown,
   Share2,
   FileText,
   Video,
@@ -24,8 +19,6 @@ import {
   Bot,
   Send,
   RefreshCw,
-  Volume2,
-  VolumeX,
   SkipBack,
   SkipForward,
   CalendarIcon,
@@ -42,17 +35,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+
 import { Slider } from "@/components/ui/slider";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -116,15 +102,14 @@ interface Transcription {
 }
 
 // Add this interface near the other interfaces
-interface Recording {
-  id: string;
-  file_url: string | null;
-  meeting_id: string;
-}
 
-export default function MeetingPage({ params }: { params: Promise<{ id: string }> }) {
+export default function MeetingPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const resolvedParams = use(params);
-  
+
   // Group all useState hooks together at the top
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -132,7 +117,9 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [transcription, setTranscription] = useState<Transcription | null>(null);
+  const [transcription, setTranscription] = useState<Transcription | null>(
+    null
+  );
   const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
   const [messages, setMessages] = useState([
     {
@@ -151,7 +138,7 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
   // Add state for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  
+
   // Add useEffect for responsive detection
   useEffect(() => {
     const checkMobile = () => {
@@ -164,8 +151,8 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Group all useEffect hooks together
@@ -190,10 +177,12 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
             id: data.id,
             title: data.title,
             startTime: new Date(data.start_time || data.created_at),
-            endTime: new Date(data.end_time || new Date(data.created_at).getTime() + 3600000),
+            endTime: new Date(
+              data.end_time || new Date(data.created_at).getTime() + 3600000
+            ),
             meeting_type: data.meeting_type,
-            transcription_status: data.transcription_status || 'pending',
-            summary_status: data.summary_status || 'pending',
+            transcription_status: data.transcription_status || "pending",
+            summary_status: data.summary_status || "pending",
             participants: data.participants || [],
           });
 
@@ -210,7 +199,10 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
           }
 
           if (recordingData?.duration) {
-            console.log("Setting initial duration from recording data:", recordingData.duration);
+            console.log(
+              "Setting initial duration from recording data:",
+              recordingData.duration
+            );
             setDuration(recordingData.duration);
           }
 
@@ -218,14 +210,16 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
 
           if (recordingData?.file_path) {
             try {
-              const storagePath = recordingData.file_path.includes('recordings/') 
-                ? recordingData.file_path 
+              const storagePath = recordingData.file_path.includes(
+                "recordings/"
+              )
+                ? recordingData.file_path
                 : `recordings/${recordingData.file_path}`;
-              
-              const { data: signedUrlData, error: signedUrlError } = await supabase
-                .storage
-                .from('audio-recordings')
-                .createSignedUrl(storagePath, 3600);
+
+              const { data: signedUrlData, error: signedUrlError } =
+                await supabase.storage
+                  .from("audio-recordings")
+                  .createSignedUrl(storagePath, 3600);
 
               if (signedUrlError) throw signedUrlError;
 
@@ -241,14 +235,18 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
 
           // Then get the transcription using the recording_id
           if (recordingData?.id) {
-            const { data: transcriptionData, error: transcriptionError } = await supabase
-              .from("transcriptions")
-              .select("*")
-              .eq("recording_id", recordingData.id)
-              .single();
+            const { data: transcriptionData, error: transcriptionError } =
+              await supabase
+                .from("transcriptions")
+                .select("*")
+                .eq("recording_id", recordingData.id)
+                .single();
 
             if (transcriptionError) {
-              console.error("Error fetching transcription:", transcriptionError);
+              console.error(
+                "Error fetching transcription:",
+                transcriptionError
+              );
             } else {
               setTranscription(transcriptionData);
             }
@@ -290,14 +288,14 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
       setIsAudioReady(false);
     };
 
-    audio.addEventListener('canplay', handleCanPlay);
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('error', handleError);
+    audio.addEventListener("canplay", handleCanPlay);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("error", handleError);
 
     return () => {
-      audio.removeEventListener('canplay', handleCanPlay);
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('error', handleError);
+      audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("error", handleError);
     };
   }, [recordingUrl, recordingData]);
 
@@ -327,23 +325,23 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
     if (!input.trim()) return;
 
     const newMessage = { role: "user", content: input.trim() };
-    const aiResponse = { 
-      role: "assistant", 
-      content: "La meg analysere møtet basert på spørsmålet ditt..." 
+    const aiResponse = {
+      role: "assistant",
+      content: "La meg analysere møtet basert på spørsmålet ditt...",
     };
 
-    setMessages(prev => [...prev, newMessage, aiResponse]);
+    setMessages((prev) => [...prev, newMessage, aiResponse]);
     setInput("");
 
     // Scroll to bottom of messages after adding new ones
     requestAnimationFrame(() => {
-      const scrollArea = document.querySelector('[data-scroll-area]');
+      const scrollArea = document.querySelector("[data-scroll-area]");
       if (scrollArea) {
         const scrollableParent = scrollArea.parentElement;
         if (scrollableParent) {
           scrollableParent.scrollTo({
             top: scrollableParent.scrollHeight,
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }
       }
@@ -368,7 +366,7 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
       } else {
         console.log("Attempting to play audio from URL:", recordingUrl);
         const playPromise = audioRef.current.play();
-        
+
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
@@ -391,9 +389,9 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
     if (audioRef.current) {
       const currentTimeValue = audioRef.current.currentTime;
       const durationValue = audioRef.current.duration;
-      
+
       setCurrentTime(isNaN(currentTimeValue) ? 0 : currentTimeValue);
-      
+
       if (!isNaN(durationValue) && isFinite(durationValue)) {
         setDuration(durationValue);
       }
@@ -409,20 +407,26 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
   };
 
   const formatTime = (timeInSeconds: number | null) => {
-    if (timeInSeconds === null || isNaN(timeInSeconds) || !isFinite(timeInSeconds)) {
+    if (
+      timeInSeconds === null ||
+      isNaN(timeInSeconds) ||
+      !isFinite(timeInSeconds)
+    ) {
       return "0:00";
     }
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
     // Ensure seconds are padded with leading zero if needed
-    const paddedSeconds = seconds.toString().padStart(2, '0');
+    const paddedSeconds = seconds.toString().padStart(2, "0");
     return `${minutes}:${paddedSeconds}`;
   };
 
   const formatTimestamp = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const renderTabContent = () => {
@@ -564,7 +568,7 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
                   transcription.content.segments.map((segment, index) => (
                     <div key={index} className="group">
                       <div className="flex items-start gap-4">
-                        <button 
+                        <button
                           className="text-sm text-violet-600 hover:underline mt-1 w-16 text-right"
                           onClick={() => {
                             if (audioRef.current) {
@@ -579,14 +583,19 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <div className="w-6 h-6 rounded-full bg-violet-100 flex items-center justify-center text-xs">
-                              {transcription.speaker_count > 1 ? `S${index % 2 + 1}` : 'S1'}
+                              {transcription.speaker_count > 1
+                                ? `S${(index % 2) + 1}`
+                                : "S1"}
                             </div>
                             <span className="font-medium">
-                              {transcription.speaker_count > 1 ? `Speaker ${index % 2 + 1}` : 'Speaker 1'}
+                              {transcription.speaker_count > 1
+                                ? `Speaker ${(index % 2) + 1}`
+                                : "Speaker 1"}
                             </span>
                             {segment.confidence && (
                               <span className="text-xs text-muted-foreground">
-                                ({Math.round(segment.confidence * 100)}% confidence)
+                                ({Math.round(segment.confidence * 100)}%
+                                confidence)
                               </span>
                             )}
                           </div>
@@ -609,8 +618,8 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
           <div className="max-w-4xl mx-auto h-full flex flex-col">
             <div className="bg-white rounded-lg border flex-1 flex flex-col overflow-hidden">
               <div className="flex-1 relative h-[calc(100vh-300px)]">
-                <ScrollArea 
-                  className="absolute inset-0 h-full" 
+                <ScrollArea
+                  className="absolute inset-0 h-full"
                   data-scroll-area
                 >
                   <div className="p-4 space-y-4">
@@ -623,15 +632,19 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
                           exit={{ opacity: 0, y: -20 }}
                           transition={{ duration: 0.2 }}
                           className={cn(
-                            message.role === "user" ? "flex justify-end" : "flex justify-start"
+                            message.role === "user"
+                              ? "flex justify-end"
+                              : "flex justify-start"
                           )}
                         >
-                          <div className={cn(
-                            "flex gap-3 max-w-[80%]",
-                            message.role === "assistant" 
-                              ? "flex-row bg-gray-50 rounded-2xl p-4" 
-                              : "flex-row-reverse bg-violet-50 rounded-2xl p-4"
-                          )}>
+                          <div
+                            className={cn(
+                              "flex gap-3 max-w-[80%]",
+                              message.role === "assistant"
+                                ? "flex-row bg-gray-50 rounded-2xl p-4"
+                                : "flex-row-reverse bg-violet-50 rounded-2xl p-4"
+                            )}
+                          >
                             {message.role === "assistant" ? (
                               <Avatar className="h-8 w-8 shrink-0">
                                 <AvatarFallback className="bg-violet-100 text-violet-900">
@@ -646,18 +659,26 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
                               </Avatar>
                             )}
                             <div className="flex flex-col gap-1">
-                              <p className={cn(
-                                "text-sm font-medium",
-                                message.role === "user" ? "text-right" : "text-left"
-                              )}>
-                                {message.role === "assistant" ? "AI Assistent" : ""}
+                              <p
+                                className={cn(
+                                  "text-sm font-medium",
+                                  message.role === "user"
+                                    ? "text-right"
+                                    : "text-left"
+                                )}
+                              >
+                                {message.role === "assistant"
+                                  ? "AI Assistent"
+                                  : ""}
                               </p>
-                              <p className={cn(
-                                "text-sm",
-                                message.role === "assistant" 
-                                  ? "text-muted-foreground" 
-                                  : "text-violet-900"
-                              )}>
+                              <p
+                                className={cn(
+                                  "text-sm",
+                                  message.role === "assistant"
+                                    ? "text-muted-foreground"
+                                    : "text-violet-900"
+                                )}
+                              >
                                 {message.content}
                               </p>
                             </div>
@@ -726,7 +747,8 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
                           }}
                           className={cn(
                             "w-full p-3 flex items-center justify-center hover:bg-gray-100 transition-colors gap-2",
-                            activeTab === tab.value && "bg-violet-50 text-violet-600",
+                            activeTab === tab.value &&
+                              "bg-violet-50 text-violet-600",
                             isMobile && "justify-start px-4"
                           )}
                         >
@@ -767,18 +789,24 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
         {/* Breadcrumb */}
         <div className="border-b px-4 py-2 bg-gray-50/50">
           <div className="flex items-center gap-2 text-sm text-muted-foreground max-w-full overflow-hidden">
-            <Link href="/dashboard" className="hover:text-foreground flex items-center gap-1 shrink-0">
+            <Link
+              href="/dashboard"
+              className="hover:text-foreground flex items-center gap-1 shrink-0"
+            >
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">Dashboard</span>
             </Link>
             <ChevronRight className="h-4 w-4 shrink-0" />
-            <Link href="/dashboard/meetings" className="hover:text-foreground truncate">
+            <Link
+              href="/dashboard/meetings"
+              className="hover:text-foreground truncate"
+            >
               <span className="hidden sm:inline">Møter</span>
               <span className="sm:hidden">...</span>
             </Link>
             <ChevronRight className="h-4 w-4 shrink-0" />
             <span className="text-foreground truncate">
-              {meeting?.title || 'Møte'}
+              {meeting?.title || "Møte"}
             </span>
           </div>
         </div>
@@ -796,13 +824,21 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
               </Button>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1 sm:flex-none"
+              >
                 <Share2 className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">Share</span>
               </Button>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 sm:flex-none"
+                  >
                     <Download className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Download</span>
                   </Button>
@@ -867,8 +903,8 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
                   >
                     <Send className="h-4 w-4" />
                   </Button>
-                  <Button 
-                    size="icon" 
+                  <Button
+                    size="icon"
                     variant="outline"
                     className="transition-colors hover:bg-gray-100"
                   >
@@ -893,7 +929,10 @@ export default function MeetingPage({ params }: { params: Promise<{ id: string }
                   className="h-8 w-8 p-0"
                   onClick={() => {
                     if (audioRef.current) {
-                      audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 10);
+                      audioRef.current.currentTime = Math.max(
+                        0,
+                        audioRef.current.currentTime - 10
+                      );
                     }
                   }}
                   disabled={!isAudioReady}

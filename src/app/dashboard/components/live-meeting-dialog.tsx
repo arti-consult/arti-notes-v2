@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { LiveRecording } from "./live-recording";
 import { useRouter } from "next/navigation";
@@ -13,7 +12,7 @@ interface LiveMeetingDialogProps {
 export function LiveMeetingDialog({ isOpen, onClose }: LiveMeetingDialogProps) {
   const router = useRouter();
 
-  const handleRecordingComplete = (recordingId: string) => {
+  const handleRecordingComplete = (_recordingId: string) => {
     // Refresh the recordings list on the dashboard
     router.refresh();
 

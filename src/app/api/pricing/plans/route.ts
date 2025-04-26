@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPricingPlans } from "@/utils/stripe/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     const plans = await getPricingPlans();
 
