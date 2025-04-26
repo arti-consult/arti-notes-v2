@@ -1,8 +1,9 @@
 const CHUNK_PUBLIC_PATH = "server/app/api/auth/google/callback/route.js";
 const runtime = require("../../../../../chunks/[turbopack]_runtime.js");
-runtime.loadChunk("server/chunks/node_modules_2299da12._.js");
+runtime.loadChunk("server/chunks/node_modules_a8cc81d8._.js");
 runtime.loadChunk("server/chunks/node_modules_next_29bf7671._.js");
 runtime.loadChunk("server/chunks/node_modules_tr46_816df9d9._.js");
+runtime.loadChunk("server/chunks/node_modules_@supabase_auth-js_dist_module_fbd19a5c._.js");
 runtime.loadChunk("server/chunks/node_modules_google-auth-library_78e0d5a0._.js");
 runtime.loadChunk("server/chunks/node_modules_googleapis_build_src_apis_admin_3771666a._.js");
 runtime.loadChunk("server/chunks/node_modules_googleapis_build_src_apis_aiplatform_v1_c93299b3.js");
@@ -76,9 +77,8 @@ runtime.loadChunk("server/chunks/node_modules_googleapis_build_src_apis_walletob
 runtime.loadChunk("server/chunks/node_modules_googleapis_build_src_apis_b9bc8296._.js");
 runtime.loadChunk("server/chunks/node_modules_googleapis_build_src_index_2def2979.js");
 runtime.loadChunk("server/chunks/node_modules_googleapis_build_src_googleapis_5e2c04d1.js");
-runtime.loadChunk("server/chunks/node_modules_@supabase_auth-js_dist_module_fbd19a5c._.js");
-runtime.loadChunk("server/chunks/node_modules_a8e546b9._.js");
-runtime.loadChunk("server/chunks/[root-of-the-server]__18abe3d4._.js");
+runtime.loadChunk("server/chunks/node_modules_9503354a._.js");
+runtime.loadChunk("server/chunks/[root-of-the-server]__4aad37a8._.js");
 runtime.getOrInstantiateRuntimeModule("[project]/.next-internal/server/app/api/auth/google/callback/route/actions.js [app-rsc] (server actions loader, ecmascript)", CHUNK_PUBLIC_PATH);
 runtime.getOrInstantiateRuntimeModule("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/auth/google/callback/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)", CHUNK_PUBLIC_PATH);
 module.exports = runtime.getOrInstantiateRuntimeModule("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/auth/google/callback/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)", CHUNK_PUBLIC_PATH).exports;

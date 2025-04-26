@@ -164,22 +164,22 @@ export default function DashboardPage() {
     try {
       setIsSyncing(true);
       // Sync calendar events
-      const response = await fetch('/api/calendar/google/sync', {
-        method: 'POST',
+      const response = await fetch("/api/calendar/google/sync", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ daysAhead: 30 }), // Fetch next 30 days
       });
 
       if (!response.ok) {
-        throw new Error('Failed to sync calendar events');
+        throw new Error("Failed to sync calendar events");
       }
 
       // Refresh the events list
       fetchData();
     } catch (error) {
-      console.error('Error syncing calendar:', error);
+      console.error("Error syncing calendar:", error);
     } finally {
       setIsSyncing(false);
     }
@@ -208,24 +208,30 @@ export default function DashboardPage() {
       }
 
       // Transform meetings data
-      const transformedMeetings: Meeting[] = (meetingsData || []).map(meeting => {
-        const startTime = meeting.start_time ? new Date(meeting.start_time) : new Date(meeting.created_at);
-        const endTime = meeting.end_time ? new Date(meeting.end_time) : new Date(startTime.getTime() + 3600000);
-        
-        return {
-          id: meeting.id,
-          title: meeting.title,
-          startTime,
-          endTime,
-          meeting_type: meeting.meeting_type,
-          transcription_status: meeting.transcription_status || 'pending',
-          summary_status: meeting.summary_status || 'pending',
-          participants: [
-            { name: "Ola Nordmann", avatar: "/avatars/01.png" },
-            { name: "Kari Hansen" },
-          ],
-        };
-      });
+      const transformedMeetings: Meeting[] = (meetingsData || []).map(
+        (meeting) => {
+          const startTime = meeting.start_time
+            ? new Date(meeting.start_time)
+            : new Date(meeting.created_at);
+          const endTime = meeting.end_time
+            ? new Date(meeting.end_time)
+            : new Date(startTime.getTime() + 3600000);
+
+          return {
+            id: meeting.id,
+            title: meeting.title,
+            startTime,
+            endTime,
+            meeting_type: meeting.meeting_type,
+            transcription_status: meeting.transcription_status || "pending",
+            summary_status: meeting.summary_status || "pending",
+            participants: [
+              { name: "Ola Nordmann", avatar: "/avatars/01.png" },
+              { name: "Kari Hansen" },
+            ],
+          };
+        }
+      );
 
       setMeetings(transformedMeetings);
 
@@ -236,7 +242,10 @@ export default function DashboardPage() {
         .eq("user_id", user.id)
         .not("meeting_link", "is", null)
         .gte("start_time", new Date().toISOString())
-        .lte("start_time", new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()) // Next 30 days
+        .lte(
+          "start_time",
+          new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+        ) // Next 30 days
         .order("start_time", { ascending: true });
 
       if (calendarError) {
@@ -244,7 +253,9 @@ export default function DashboardPage() {
       }
 
       // Transform calendar events data
-      const transformedCalendarEvents: Meeting[] = (calendarEventsData || []).map(event => ({
+      const transformedCalendarEvents: Meeting[] = (
+        calendarEventsData || []
+      ).map((event) => ({
         id: event.id,
         title: event.title,
         startTime: new Date(event.start_time),
@@ -252,11 +263,14 @@ export default function DashboardPage() {
         meeting_type: "google-meets",
         transcription_status: "pending",
         summary_status: "pending",
-        participants: event.attendees?.map((attendee: { name?: string; email: string }) => ({
-          name: attendee.name || attendee.email,
-          email: attendee.email
-        })) || [],
-        meeting_link: event.meeting_link
+        participants:
+          event.attendees?.map(
+            (attendee: { name?: string; email: string }) => ({
+              name: attendee.name || attendee.email,
+              email: attendee.email,
+            })
+          ) || [],
+        meeting_link: event.meeting_link,
       }));
 
       setCalendarEvents(transformedCalendarEvents);
@@ -274,7 +288,7 @@ export default function DashboardPage() {
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/auth/login");
+    router.push("/login");
   };
 
   const handleFileUpload = (file: File) => {

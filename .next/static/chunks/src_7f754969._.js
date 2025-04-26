@@ -364,6 +364,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CalendarIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-client] (ecmascript) <export default as CalendarIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pause$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Pause$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/pause.js [app-client] (ecmascript) <export default as Pause>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FileIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file.js [app-client] (ecmascript) <export default as FileIcon>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/menu.js [app-client] (ecmascript) <export default as Menu>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)");
@@ -446,6 +447,29 @@ function MeetingPage({ params }) {
     const [recordingData, setRecordingData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     // useRef after useState
     const audioRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // Add state for sidebar
+    const [isSidebarOpen, setIsSidebarOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [isMobile, setIsMobile] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    // Add useEffect for responsive detection
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "MeetingPage.useEffect": ()=>{
+            const checkMobile = {
+                "MeetingPage.useEffect.checkMobile": ()=>{
+                    setIsMobile(window.innerWidth < 768);
+                    if (window.innerWidth < 768) {
+                        setIsSidebarOpen(false);
+                    } else {
+                        setIsSidebarOpen(true);
+                    }
+                }
+            }["MeetingPage.useEffect.checkMobile"];
+            checkMobile();
+            window.addEventListener('resize', checkMobile);
+            return ({
+                "MeetingPage.useEffect": ()=>window.removeEventListener('resize', checkMobile)
+            })["MeetingPage.useEffect"];
+        }
+    }["MeetingPage.useEffect"], []);
     // Group all useEffect hooks together
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "MeetingPage.useEffect": ()=>{
@@ -574,17 +598,17 @@ function MeetingPage({ params }) {
                     children: "Laster møte..."
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 289,
+                    lineNumber: 310,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                lineNumber: 288,
+                lineNumber: 309,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-            lineNumber: 287,
+            lineNumber: 308,
             columnNumber: 7
         }, this);
     }
@@ -598,17 +622,17 @@ function MeetingPage({ params }) {
                     children: "Møte ikke funnet"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 299,
+                    lineNumber: 320,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                lineNumber: 298,
+                lineNumber: 319,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-            lineNumber: 297,
+            lineNumber: 318,
             columnNumber: 7
         }, this);
     }
@@ -719,7 +743,7 @@ function MeetingPage({ params }) {
                                     children: "Møtesammendrag"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 414,
+                                    lineNumber: 435,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -727,13 +751,13 @@ function MeetingPage({ params }) {
                                     children: "Dette møtet fokuserte på gjennomgang av Fireflies AI Platform. Hovedtemaene inkluderte plattformfunksjoner, integrasjoner og fremtidige utviklingsplaner. Det ble diskutert spesifikke brukstilfeller og potensielle forbedringer for brukeropplevelsen."
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 415,
+                                    lineNumber: 436,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 413,
+                            lineNumber: 434,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -746,14 +770,14 @@ function MeetingPage({ params }) {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 427,
+                                            lineNumber: 448,
                                             columnNumber: 17
                                         }, this),
                                         "Møteoversikt"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 426,
+                                    lineNumber: 447,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -770,20 +794,20 @@ function MeetingPage({ params }) {
                                                             children: "00:00 - 02:15"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 433,
+                                                            lineNumber: 454,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Introduksjon og agenda"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 434,
+                                                            lineNumber: 455,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 432,
+                                                    lineNumber: 453,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -791,13 +815,13 @@ function MeetingPage({ params }) {
                                                     children: "Velkommen og gjennomgang av dagens agenda"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 436,
+                                                    lineNumber: 457,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 431,
+                                            lineNumber: 452,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -811,20 +835,20 @@ function MeetingPage({ params }) {
                                                             children: "02:15 - 04:30"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 442,
+                                                            lineNumber: 463,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Plattformoversikt"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 443,
+                                                            lineNumber: 464,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 441,
+                                                    lineNumber: 462,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -832,13 +856,13 @@ function MeetingPage({ params }) {
                                                     children: "Gjennomgang av hovedfunksjonene i plattformen"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 445,
+                                                    lineNumber: 466,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 440,
+                                            lineNumber: 461,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -852,20 +876,20 @@ function MeetingPage({ params }) {
                                                             children: "04:30 - 08:39"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 451,
+                                                            lineNumber: 472,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Demonstrasjon og spørsmål"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 452,
+                                                            lineNumber: 473,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 450,
+                                                    lineNumber: 471,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -873,25 +897,25 @@ function MeetingPage({ params }) {
                                                     children: "Live demonstrasjon av funksjonalitet og Q&A"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 454,
+                                                    lineNumber: 475,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 449,
+                                            lineNumber: 470,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 430,
+                                    lineNumber: 451,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 425,
+                            lineNumber: 446,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -904,14 +928,14 @@ function MeetingPage({ params }) {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 464,
+                                            lineNumber: 485,
                                             columnNumber: 17
                                         }, this),
                                         "Hovedpunkter"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 463,
+                                    lineNumber: 484,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -925,14 +949,14 @@ function MeetingPage({ params }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 469,
+                                                    lineNumber: 490,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Introduserte ny søkefunksjonalitet for raskere navigering i møteinnhold"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 468,
+                                            lineNumber: 489,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -943,14 +967,14 @@ function MeetingPage({ params }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 474,
+                                                    lineNumber: 495,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Demonstrerte AI-drevet transkripsjon med 95% nøyaktighet"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 473,
+                                            lineNumber: 494,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -961,14 +985,14 @@ function MeetingPage({ params }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 478,
+                                                    lineNumber: 499,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Diskuterte kommende integrasjoner med populære samarbeidsverktøy"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 477,
+                                            lineNumber: 498,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -979,32 +1003,32 @@ function MeetingPage({ params }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 483,
+                                                    lineNumber: 504,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Planla lanseringen av nye analysefunksjoner i Q3"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 482,
+                                            lineNumber: 503,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 467,
+                                    lineNumber: 488,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 462,
+                            lineNumber: 483,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 411,
+                    lineNumber: 432,
                     columnNumber: 11
                 }, this);
             case "video":
@@ -1018,22 +1042,22 @@ function MeetingPage({ params }) {
                                 className: "h-12 w-12 text-gray-400"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                lineNumber: 495,
+                                lineNumber: 516,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 494,
+                            lineNumber: 515,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 493,
+                        lineNumber: 514,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 492,
+                    lineNumber: 513,
                     columnNumber: 11
                 }, this);
             case "transcript":
@@ -1049,7 +1073,7 @@ function MeetingPage({ params }) {
                                         className: "flex-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                        lineNumber: 505,
+                                        lineNumber: 526,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$popover$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Popover"], {
@@ -1064,19 +1088,19 @@ function MeetingPage({ params }) {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 509,
+                                                            lineNumber: 530,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Last ned transkripsjon"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 508,
+                                                    lineNumber: 529,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                lineNumber: 507,
+                                                lineNumber: 528,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$popover$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PopoverContent"], {
@@ -1097,14 +1121,14 @@ function MeetingPage({ params }) {
                                                                     className: "h-4 w-4 mr-2"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                    lineNumber: 523,
+                                                                    lineNumber: 544,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 "Word dokument"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 515,
+                                                            lineNumber: 536,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1119,37 +1143,37 @@ function MeetingPage({ params }) {
                                                                     className: "h-4 w-4 mr-2"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                    lineNumber: 534,
+                                                                    lineNumber: 555,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 "PDF"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 526,
+                                                            lineNumber: 547,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 514,
+                                                    lineNumber: 535,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                lineNumber: 513,
+                                                lineNumber: 534,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                        lineNumber: 506,
+                                        lineNumber: 527,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                lineNumber: 504,
+                                lineNumber: 525,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1171,7 +1195,7 @@ function MeetingPage({ params }) {
                                                     children: formatTimestamp(segment.start)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 546,
+                                                    lineNumber: 567,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1185,7 +1209,7 @@ function MeetingPage({ params }) {
                                                                     children: transcription.speaker_count > 1 ? `S${index % 2 + 1}` : 'S1'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                    lineNumber: 560,
+                                                                    lineNumber: 581,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1193,7 +1217,7 @@ function MeetingPage({ params }) {
                                                                     children: transcription.speaker_count > 1 ? `Speaker ${index % 2 + 1}` : 'Speaker 1'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                    lineNumber: 563,
+                                                                    lineNumber: 584,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 segment.confidence && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1205,13 +1229,13 @@ function MeetingPage({ params }) {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                    lineNumber: 567,
+                                                                    lineNumber: 588,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 559,
+                                                            lineNumber: 580,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1219,47 +1243,47 @@ function MeetingPage({ params }) {
                                                             children: segment.text
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 572,
+                                                            lineNumber: 593,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 558,
+                                                    lineNumber: 579,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 545,
+                                            lineNumber: 566,
                                             columnNumber: 23
                                         }, this)
                                     }, index, false, {
                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                        lineNumber: 544,
+                                        lineNumber: 565,
                                         columnNumber: 21
                                     }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "text-center text-muted-foreground py-8",
                                     children: "Ingen transkripsjon tilgjengelig"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 578,
+                                    lineNumber: 599,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                lineNumber: 541,
+                                lineNumber: 562,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 503,
+                        lineNumber: 524,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 502,
+                    lineNumber: 523,
                     columnNumber: 11
                 }, this);
             case "chat":
@@ -1303,12 +1327,12 @@ function MeetingPage({ params }) {
                                                                 children: "AI"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                lineNumber: 616,
+                                                                lineNumber: 637,
                                                                 columnNumber: 33
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 615,
+                                                            lineNumber: 636,
                                                             columnNumber: 31
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
                                                             className: "h-8 w-8 shrink-0",
@@ -1317,12 +1341,12 @@ function MeetingPage({ params }) {
                                                                 children: "U"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                lineNumber: 622,
+                                                                lineNumber: 643,
                                                                 columnNumber: 33
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 621,
+                                                            lineNumber: 642,
                                                             columnNumber: 31
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1333,7 +1357,7 @@ function MeetingPage({ params }) {
                                                                     children: message.role === "assistant" ? "AI Assistent" : ""
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                    lineNumber: 628,
+                                                                    lineNumber: 649,
                                                                     columnNumber: 31
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1341,54 +1365,54 @@ function MeetingPage({ params }) {
                                                                     children: message.content
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                    lineNumber: 634,
+                                                                    lineNumber: 655,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                            lineNumber: 627,
+                                                            lineNumber: 648,
                                                             columnNumber: 29
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 608,
+                                                    lineNumber: 629,
                                                     columnNumber: 27
                                                 }, this)
                                             }, index, false, {
                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                lineNumber: 598,
+                                                lineNumber: 619,
                                                 columnNumber: 25
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                        lineNumber: 596,
+                                        lineNumber: 617,
                                         columnNumber: 21
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 595,
+                                    lineNumber: 616,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                lineNumber: 591,
+                                lineNumber: 612,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 590,
+                            lineNumber: 611,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 589,
+                        lineNumber: 610,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 588,
+                    lineNumber: 609,
                     columnNumber: 11
                 }, this);
             case "settings":
@@ -1401,17 +1425,17 @@ function MeetingPage({ params }) {
                             children: "Innstillinger kommer snart..."
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 657,
+                            lineNumber: 678,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 656,
+                        lineNumber: 677,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 655,
+                    lineNumber: 676,
                     columnNumber: 11
                 }, this);
             default:
@@ -1421,155 +1445,258 @@ function MeetingPage({ params }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex h-screen",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "w-[50px] border-r flex flex-col items-center py-4 bg-gray-50/50",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipProvider"], {
-                    children: tabs.map((tab)=>{
-                        const Icon = tab.icon;
-                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
-                            delayDuration: 0,
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
-                                    asChild: true,
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        onClick: ()=>setActiveTab(tab.value),
-                                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("w-full p-3 flex items-center justify-center hover:bg-gray-100 transition-colors", activeTab === tab.value && "bg-violet-50 text-violet-600"),
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                            className: "h-5 w-5"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 685,
-                                            columnNumber: 21
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                        lineNumber: 678,
-                                        columnNumber: 19
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 677,
-                                    columnNumber: 17
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
-                                    side: "right",
-                                    sideOffset: 10,
-                                    children: tab.tooltip
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 688,
-                                    columnNumber: 17
-                                }, this)
-                            ]
-                        }, tab.value, true, {
-                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 676,
-                            columnNumber: 15
-                        }, this);
-                    })
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg border shadow-sm", isSidebarOpen && "left-[210px]"),
+                onClick: ()=>setIsSidebarOpen(!isSidebarOpen),
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
+                    className: "h-5 w-5"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                    lineNumber: 672,
+                    lineNumber: 699,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                lineNumber: 671,
+                lineNumber: 692,
                 columnNumber: 7
             }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
+                mode: "wait",
+                children: isSidebarOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    initial: {
+                        x: -200
+                    },
+                    animate: {
+                        x: 0
+                    },
+                    exit: {
+                        x: -200
+                    },
+                    transition: {
+                        type: "spring",
+                        bounce: 0,
+                        duration: 0.3
+                    },
+                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("fixed md:relative z-40 h-full bg-gray-50/50 border-r", isMobile ? "w-[200px]" : "w-[50px]"),
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex flex-col items-center py-4",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipProvider"], {
+                            children: tabs.map((tab)=>{
+                                const Icon = tab.icon;
+                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
+                                    delayDuration: 0,
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
+                                            asChild: true,
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>{
+                                                    setActiveTab(tab.value);
+                                                    if (isMobile) setIsSidebarOpen(false);
+                                                },
+                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("w-full p-3 flex items-center justify-center hover:bg-gray-100 transition-colors gap-2", activeTab === tab.value && "bg-violet-50 text-violet-600", isMobile && "justify-start px-4"),
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
+                                                        className: "h-5 w-5 shrink-0"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                                        lineNumber: 733,
+                                                        columnNumber: 27
+                                                    }, this),
+                                                    isMobile && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm",
+                                                        children: tab.tooltip
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                                        lineNumber: 735,
+                                                        columnNumber: 29
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                                lineNumber: 722,
+                                                columnNumber: 25
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                            lineNumber: 721,
+                                            columnNumber: 23
+                                        }, this),
+                                        !isMobile && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
+                                            side: "right",
+                                            sideOffset: 10,
+                                            children: tab.tooltip
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                            lineNumber: 740,
+                                            columnNumber: 25
+                                        }, this)
+                                    ]
+                                }, tab.value, true, {
+                                    fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                    lineNumber: 720,
+                                    columnNumber: 21
+                                }, this);
+                            })
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                            lineNumber: 716,
+                            columnNumber: 15
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                        lineNumber: 715,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                    lineNumber: 705,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                lineNumber: 703,
+                columnNumber: 7
+            }, this),
+            isMobile && isSidebarOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                initial: {
+                    opacity: 0
+                },
+                animate: {
+                    opacity: 0.3
+                },
+                exit: {
+                    opacity: 0
+                },
+                transition: {
+                    type: "spring",
+                    bounce: 0,
+                    duration: 0.3
+                },
+                className: "fixed inset-0 bg-black z-30",
+                onClick: ()=>setIsSidebarOpen(false)
+            }, void 0, false, {
+                fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                lineNumber: 755,
+                columnNumber: 9
+            }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex-1 flex flex-col",
+                className: "flex-1 flex flex-col w-full",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "border-b px-4 py-2 bg-gray-50/50",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-2 text-sm text-muted-foreground",
+                            className: "flex items-center gap-2 text-sm text-muted-foreground max-w-full overflow-hidden",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     href: "/dashboard",
-                                    className: "hover:text-foreground flex items-center gap-1",
+                                    className: "hover:text-foreground flex items-center gap-1 shrink-0",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$home$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Home$3e$__["Home"], {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 703,
+                                            lineNumber: 771,
                                             columnNumber: 15
                                         }, this),
-                                        "Dashboard"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "hidden sm:inline",
+                                            children: "Dashboard"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                            lineNumber: 772,
+                                            columnNumber: 15
+                                        }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 702,
+                                    lineNumber: 770,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
-                                    className: "h-4 w-4"
+                                    className: "h-4 w-4 shrink-0"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 706,
+                                    lineNumber: 774,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     href: "/dashboard/meetings",
-                                    className: "hover:text-foreground",
-                                    children: "Møter"
-                                }, void 0, false, {
+                                    className: "hover:text-foreground truncate",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "hidden sm:inline",
+                                            children: "Møter"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                            lineNumber: 776,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "sm:hidden",
+                                            children: "..."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                            lineNumber: 777,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 707,
+                                    lineNumber: 775,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
-                                    className: "h-4 w-4"
+                                    className: "h-4 w-4 shrink-0"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 710,
+                                    lineNumber: 779,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "text-foreground truncate max-w-[300px]",
+                                    className: "text-foreground truncate",
                                     children: meeting?.title || 'Møte'
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 711,
+                                    lineNumber: 780,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 701,
+                            lineNumber: 769,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 700,
+                        lineNumber: 768,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "border-b",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center justify-between p-4",
+                            className: "flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 gap-4",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex items-center gap-4",
+                                    className: "flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                            className: "text-xl font-semibold",
+                                            className: "text-xl font-semibold truncate max-w-[200px] sm:max-w-none",
                                             children: meeting.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 721,
+                                            lineNumber: 790,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                             variant: "outline",
                                             size: "sm",
+                                            className: "w-full sm:w-auto",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CalendarIcon$3e$__["CalendarIcon"], {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 725,
+                                                    lineNumber: 794,
                                                     columnNumber: 17
                                                 }, this),
                                                 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(meeting.startTime, "d. MMMM yyyy", {
@@ -1578,34 +1705,42 @@ function MeetingPage({ params }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 724,
+                                            lineNumber: 793,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 720,
+                                    lineNumber: 789,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex items-center gap-2",
+                                    className: "flex items-center gap-2 w-full sm:w-auto",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                             variant: "outline",
                                             size: "sm",
+                                            className: "flex-1 sm:flex-none",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$share$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Share2$3e$__["Share2"], {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 731,
+                                                    lineNumber: 800,
                                                     columnNumber: 17
                                                 }, this),
-                                                "Share"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "hidden sm:inline",
+                                                    children: "Share"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                                    lineNumber: 801,
+                                                    columnNumber: 17
+                                                }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 730,
+                                            lineNumber: 799,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$popover$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Popover"], {
@@ -1615,24 +1750,32 @@ function MeetingPage({ params }) {
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                         variant: "outline",
                                                         size: "sm",
+                                                        className: "flex-1 sm:flex-none",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$download$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Download$3e$__["Download"], {
                                                                 className: "h-4 w-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                lineNumber: 737,
+                                                                lineNumber: 806,
                                                                 columnNumber: 21
                                                             }, this),
-                                                            "Download"
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "hidden sm:inline",
+                                                                children: "Download"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
+                                                                lineNumber: 807,
+                                                                columnNumber: 21
+                                                            }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 736,
+                                                        lineNumber: 805,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 735,
+                                                    lineNumber: 804,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$popover$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PopoverContent"], {
@@ -1653,14 +1796,14 @@ function MeetingPage({ params }) {
                                                                         className: "h-4 w-4 mr-2"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                        lineNumber: 751,
+                                                                        lineNumber: 820,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     "Word dokument"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                lineNumber: 743,
+                                                                lineNumber: 812,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1675,48 +1818,48 @@ function MeetingPage({ params }) {
                                                                         className: "h-4 w-4 mr-2"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                        lineNumber: 762,
+                                                                        lineNumber: 831,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     "PDF"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                                lineNumber: 754,
+                                                                lineNumber: 823,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 742,
+                                                        lineNumber: 811,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 741,
+                                                    lineNumber: 810,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 734,
+                                            lineNumber: 803,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 729,
+                                    lineNumber: 798,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 719,
+                            lineNumber: 788,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 718,
+                        lineNumber: 787,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1724,7 +1867,7 @@ function MeetingPage({ params }) {
                         children: renderTabContent()
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 773,
+                        lineNumber: 842,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1748,7 +1891,7 @@ function MeetingPage({ params }) {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 781,
+                                            lineNumber: 850,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1762,12 +1905,12 @@ function MeetingPage({ params }) {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 799,
+                                                        lineNumber: 868,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 794,
+                                                    lineNumber: 863,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1778,24 +1921,24 @@ function MeetingPage({ params }) {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 806,
+                                                        lineNumber: 875,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 801,
+                                                    lineNumber: 870,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 793,
+                                            lineNumber: 862,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 780,
+                                    lineNumber: 849,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1810,7 +1953,7 @@ function MeetingPage({ params }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 815,
+                                            lineNumber: 884,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1830,12 +1973,12 @@ function MeetingPage({ params }) {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 832,
+                                                        lineNumber: 901,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 821,
+                                                    lineNumber: 890,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1848,18 +1991,18 @@ function MeetingPage({ params }) {
                                                         className: "h-8 w-8"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 842,
+                                                        lineNumber: 911,
                                                         columnNumber: 21
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PlayCircle$3e$__["PlayCircle"], {
                                                         className: "h-8 w-8"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 844,
+                                                        lineNumber: 913,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 834,
+                                                    lineNumber: 903,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1876,18 +2019,18 @@ function MeetingPage({ params }) {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                        lineNumber: 861,
+                                                        lineNumber: 930,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                    lineNumber: 847,
+                                                    lineNumber: 916,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 820,
+                                            lineNumber: 889,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1903,35 +2046,35 @@ function MeetingPage({ params }) {
                                                 disabled: !isAudioReady
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                                lineNumber: 867,
+                                                lineNumber: 936,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                            lineNumber: 866,
+                                            lineNumber: 935,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                                    lineNumber: 813,
+                                    lineNumber: 882,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                            lineNumber: 777,
+                            lineNumber: 846,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                        lineNumber: 776,
+                        lineNumber: 845,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                lineNumber: 698,
+                lineNumber: 766,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("audio", {
@@ -1943,17 +2086,17 @@ function MeetingPage({ params }) {
                 crossOrigin: "anonymous"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-                lineNumber: 882,
+                lineNumber: 951,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/meeting/[id]/page.tsx",
-        lineNumber: 669,
+        lineNumber: 690,
         columnNumber: 5
     }, this);
 }
-_s(MeetingPage, "tiXiVO4OmniBu3RPEswug8uEOVI=");
+_s(MeetingPage, "+z2zZAPHbZ8I+O3mfSK1wkBFGdU=");
 _c = MeetingPage;
 var _c;
 __turbopack_context__.k.register(_c, "MeetingPage");

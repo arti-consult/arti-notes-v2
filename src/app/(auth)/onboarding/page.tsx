@@ -1,11 +1,11 @@
-"use client";
-
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { OnboardingSteps } from "./components/OnboardingSteps";
 import { useAuth } from "@/contexts/AuthContext";
-import { Suspense, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 import { Loader } from "lucide-react";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import { hasCompletedOnboarding } from "@/utils/onboarding/server";
 
 function LoadingFallback() {
   return (
@@ -18,22 +18,19 @@ function LoadingFallback() {
   );
 }
 
-function OnboardingContent() {
-  const { user, isLoading } = useAuth();
-  const router = useRouter();
+async function OnboardingContent() {
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/login");
-    }
-  }, [user, isLoading, router]);
-
-  if (isLoading) {
-    return <LoadingFallback />;
+  if (!session) {
+    redirect("/login");
   }
 
-  if (!user) {
-    return null; // Will redirect to login via the useEffect
+  const hasCompleted = await hasCompletedOnboarding(session.user.id);
+  if (hasCompleted) {
+    redirect("/dashboard");
   }
 
   return (
@@ -51,10 +48,7 @@ function OnboardingContent() {
         <OnboardingSteps />
 
         <div className="text-center text-sm text-gray-500">
-          <p>
-            Step {user ? "1 of 6" : ""} - This will help us customize your
-            experience
-          </p>
+          <p>Step 1 of 6 - This will help us customize your experience</p>
         </div>
       </div>
     </div>

@@ -734,7 +734,7 @@ function getMeetingTypeIcon(type) {
                 className: "h-5 w-5 text-[#464EB8]"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 38,
+                lineNumber: 37,
                 columnNumber: 14
             }, this);
         case 'google-meets':
@@ -742,7 +742,7 @@ function getMeetingTypeIcon(type) {
                 className: "h-5 w-5 text-[#00AC47]"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 40,
+                lineNumber: 39,
                 columnNumber: 14
             }, this);
         case 'live':
@@ -750,7 +750,7 @@ function getMeetingTypeIcon(type) {
                 className: "h-5 w-5 text-violet-600"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 42,
+                lineNumber: 41,
                 columnNumber: 14
             }, this);
     }
@@ -806,7 +806,7 @@ function getStatusBadge(status) {
                 children: "Fullført"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 96,
+                lineNumber: 95,
                 columnNumber: 14
             }, this);
         case 'processing':
@@ -816,7 +816,7 @@ function getStatusBadge(status) {
                 children: "Behandler"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 98,
+                lineNumber: 97,
                 columnNumber: 14
             }, this);
         case 'failed':
@@ -826,7 +826,7 @@ function getStatusBadge(status) {
                 children: "Feilet"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 100,
+                lineNumber: 99,
                 columnNumber: 14
             }, this);
         case 'pending':
@@ -836,7 +836,7 @@ function getStatusBadge(status) {
                 children: "Venter"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 102,
+                lineNumber: 101,
                 columnNumber: 14
             }, this);
     }
@@ -863,17 +863,17 @@ function MeetingList({ meetings, showEmpty = true }) {
                     children: "Ingen møter funnet"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                    lineNumber: 124,
+                    lineNumber: 123,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 123,
+                lineNumber: 122,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-            lineNumber: 122,
+            lineNumber: 121,
             columnNumber: 7
         }, this);
     }
@@ -900,7 +900,7 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: meeting.title
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 143,
+                                                    lineNumber: 142,
                                                     columnNumber: 21
                                                 }, this),
                                                 getMeetingTypeIcon(meeting.meeting_type),
@@ -909,14 +909,14 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: getMeetingTypeLabel(meeting.meeting_type)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 145,
+                                                    lineNumber: 144,
                                                     columnNumber: 21
                                                 }, this),
                                                 getStatusBadge(getOverallStatus(meeting))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 142,
+                                            lineNumber: 141,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -929,20 +929,20 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 152,
+                                                            lineNumber: 151,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: formatDate(meeting.startTime)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 153,
+                                                            lineNumber: 152,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 151,
+                                                    lineNumber: 150,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -950,7 +950,7 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 157,
+                                                    lineNumber: 156,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -961,7 +961,7 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 158,
+                                                    lineNumber: 157,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -969,20 +969,20 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 159,
+                                                    lineNumber: 158,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: calculateDuration(meeting.startTime, meeting.endTime)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 160,
+                                                    lineNumber: 159,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 150,
+                                            lineNumber: 149,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -997,14 +997,14 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                             className: "h-4 w-4 rounded-full"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 170,
+                                                            lineNumber: 169,
                                                             columnNumber: 27
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "h-4 w-4 rounded-full bg-gray-200 flex items-center justify-center text-xs",
                                                             children: participant.name.charAt(0)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 176,
+                                                            lineNumber: 175,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1012,24 +1012,24 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                             children: participant.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 180,
+                                                            lineNumber: 179,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, index, true, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 164,
+                                                    lineNumber: 163,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 162,
+                                            lineNumber: 161,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                    lineNumber: 141,
+                                    lineNumber: 140,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1044,12 +1044,12 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                lineNumber: 192,
+                                                lineNumber: 191,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 186,
+                                            lineNumber: 185,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1061,44 +1061,44 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                lineNumber: 200,
+                                                lineNumber: 199,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 194,
+                                            lineNumber: 193,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                    lineNumber: 185,
+                                    lineNumber: 184,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                            lineNumber: 140,
+                            lineNumber: 139,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                        lineNumber: 139,
+                        lineNumber: 138,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                    lineNumber: 138,
+                    lineNumber: 137,
                     columnNumber: 11
                 }, this)
             }, meeting.id, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 133,
+                lineNumber: 132,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-        lineNumber: 131,
+        lineNumber: 130,
         columnNumber: 5
     }, this);
 }

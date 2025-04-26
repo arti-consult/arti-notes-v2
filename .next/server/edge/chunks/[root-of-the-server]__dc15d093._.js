@@ -84,6 +84,10 @@ async function middleware(request) {
     });
     const { data: { session } } = await supabase.auth.getSession();
     const pathname = request.nextUrl.pathname;
+    // Redirect authenticated users away from auth pages
+    if (session && (pathname === "/login" || pathname === "/sign-up")) {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
+    }
     // Check if the path is protected
     const protectedRoute = protectedRoutes.find((route)=>pathname.startsWith(route.path));
     // If route is protected and user is not authenticated, redirect to login
@@ -136,10 +140,6 @@ async function middleware(request) {
         if (!onboardingData && !onboardingError?.code?.includes("not_found")) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/onboarding", request.url));
         }
-    }
-    // Special handling for auth pages when user is already logged in
-    if (session && (pathname === "/login" || pathname === "/register")) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
     }
     return response;
 }

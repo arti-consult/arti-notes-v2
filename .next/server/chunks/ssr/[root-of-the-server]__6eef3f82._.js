@@ -361,7 +361,7 @@ async function signInWithGoogle() {
     const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+            redirectTo: `${("TURBOPACK compile-time value", "http://localhost:3000")}/auth/callback`
         }
     });
     if (error) {
@@ -375,7 +375,7 @@ async function signInWithMicrosoft() {
     const { error } = await supabase.auth.signInWithOAuth({
         provider: "azure",
         options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+            redirectTo: `${("TURBOPACK compile-time value", "http://localhost:3000")}/auth/callback`
         }
     });
     if (error) {
@@ -417,7 +417,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$lo
 ;
 ;
 ;
-;
 }}),
 "[project]/.next-internal/server/app/(auth)/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <module evaluation>": ((__turbopack_context__) => {
 "use strict";
@@ -438,7 +437,6 @@ __turbopack_context__.s({
     "00088a749312c45a915036e6598fd678ed3ec5a46a": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getServerUTMData"]),
     "00237d5a0948aafbfd9347a0e126db690538f4a91b": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getServerTrackingData"]),
     "0047669ca0c477a8ff7d0bcb81bc72c873efcddb56": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["clearServerTrackingCookies"]),
-    "006c925220bfcb73e4e92e31b392878e538705ffef": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["signInWithGoogle"]),
     "00a89c8077261bbdce3b6b27cac9700c2137b45daa": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getServerAnonymousId"]),
     "00b2ff056e81e3de5a14482d74deebc03e6d20ec83": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getServerVisitData"]),
     "00cfb8458b14ff7703963045a472762dcddedc9f78": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["signInWithMicrosoft"]),
@@ -463,7 +461,6 @@ __turbopack_context__.s({
     "00088a749312c45a915036e6598fd678ed3ec5a46a": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$login$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29222c$__ACTIONS_MODULE1__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["00088a749312c45a915036e6598fd678ed3ec5a46a"]),
     "00237d5a0948aafbfd9347a0e126db690538f4a91b": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$login$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29222c$__ACTIONS_MODULE1__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["00237d5a0948aafbfd9347a0e126db690538f4a91b"]),
     "0047669ca0c477a8ff7d0bcb81bc72c873efcddb56": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$login$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29222c$__ACTIONS_MODULE1__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["0047669ca0c477a8ff7d0bcb81bc72c873efcddb56"]),
-    "006c925220bfcb73e4e92e31b392878e538705ffef": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$login$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29222c$__ACTIONS_MODULE1__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["006c925220bfcb73e4e92e31b392878e538705ffef"]),
     "00a89c8077261bbdce3b6b27cac9700c2137b45daa": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$login$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29222c$__ACTIONS_MODULE1__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["00a89c8077261bbdce3b6b27cac9700c2137b45daa"]),
     "00b2ff056e81e3de5a14482d74deebc03e6d20ec83": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$login$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29222c$__ACTIONS_MODULE1__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["00b2ff056e81e3de5a14482d74deebc03e6d20ec83"]),
     "00cfb8458b14ff7703963045a472762dcddedc9f78": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$login$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$utils$2f$tracking$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29222c$__ACTIONS_MODULE1__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$login$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["00cfb8458b14ff7703963045a472762dcddedc9f78"]),

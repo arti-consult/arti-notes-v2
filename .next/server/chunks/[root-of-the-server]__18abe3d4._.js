@@ -323,8 +323,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$
 ;
 // Google OAuth scopes needed
 const SCOPES = [
-    'https://www.googleapis.com/auth/calendar.readonly',
-    'https://www.googleapis.com/auth/calendar.events.readonly'
+    "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/calendar.events.readonly"
 ];
 // Google Calendar API credentials
 const credentials = {
@@ -333,13 +333,13 @@ const credentials = {
     redirect_uri: `${("TURBOPACK compile-time value", "http://localhost:3000")}/api/auth/google/callback`
 };
 // Debug log the credentials and environment
-console.log('Environment check:', {
+console.log("Environment check:", {
     NODE_ENV: ("TURBOPACK compile-time value", "development"),
     APP_URL: ("TURBOPACK compile-time value", "http://localhost:3000"),
     hasClientId: !!("TURBOPACK compile-time value", "438777486938-3qirleero26ui3t8e0svrojd89jrhpvs.apps.googleusercontent.com"),
     hasClientSecret: !!process.env.GOOGLE_CLIENT_SECRET
 });
-console.log('Google OAuth Configuration:', {
+console.log("Google OAuth Configuration:", {
     redirectUri: credentials.redirect_uri,
     hasClientId: !!credentials.client_id,
     hasClientSecret: !!credentials.client_secret,
@@ -347,19 +347,19 @@ console.log('Google OAuth Configuration:', {
 });
 function createOAuth2Client() {
     const client = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$googleapis$2f$build$2f$src$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["google"].auth.OAuth2(credentials.client_id, credentials.client_secret, credentials.redirect_uri);
-    console.log('Created OAuth2 client with redirect URI:', credentials.redirect_uri);
+    console.log("Created OAuth2 client with redirect URI:", credentials.redirect_uri);
     return client;
 }
 function getGoogleAuthUrl() {
-    console.log('Generating Google OAuth URL...');
+    console.log("Generating Google OAuth URL...");
     const oauth2Client = createOAuth2Client();
     const url = oauth2Client.generateAuthUrl({
-        access_type: 'offline',
+        access_type: "offline",
         scope: SCOPES,
-        prompt: 'consent',
+        prompt: "consent",
         include_granted_scopes: true
     });
-    console.log('Generated OAuth URL:', url);
+    console.log("Generated OAuth URL:", url);
     return url;
 }
 async function handleGoogleCallback(code) {
@@ -371,30 +371,30 @@ async function handleGoogleCallback(code) {
         // Get current user
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         if (userError || !user) {
-            console.error('User not authenticated');
+            console.error("User not authenticated");
             return false;
         }
-        console.log('Saving Google Calendar connection...');
+        console.log("Saving Google Calendar connection...");
         // Store tokens in Supabase calendar_connections table
-        const { error } = await supabase.from('calendar_connections').upsert({
+        const { error } = await supabase.from("calendar_connections").upsert({
             user_id: user.id,
-            provider: 'google',
+            provider: "google",
             access_token: tokens.access_token,
             refresh_token: tokens.refresh_token,
             token_expiry: tokens.expiry_date ? new Date(tokens.expiry_date).toISOString() : null,
-            scope: SCOPES.join(' '),
+            scope: SCOPES.join(" "),
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
         }, {
-            onConflict: 'user_id,provider'
+            onConflict: "user_id,provider"
         });
         if (error) {
-            console.error('Error storing tokens:', error);
+            console.error("Error storing tokens:", error);
             return false;
         }
         return true;
     } catch (error) {
-        console.error('Error handling Google callback:', error);
+        console.error("Error handling Google callback:", error);
         return false;
     }
 }
@@ -402,16 +402,16 @@ async function refreshTokenIfNeeded(userId) {
     try {
         const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // Get stored tokens from calendar_connections
-        const { data, error } = await supabase.from('calendar_connections').select('*').eq('user_id', userId).eq('provider', 'google').single();
+        const { data, error } = await supabase.from("calendar_connections").select("*").eq("user_id", userId).eq("provider", "google").single();
         if (error || !data) {
-            console.error('No Google Calendar connection found');
+            console.error("No Google Calendar connection found");
             return false;
         }
         // Check if token is expired
         const tokenExpiry = new Date(data.token_expiry);
         const now = new Date();
         if (tokenExpiry <= now && data.refresh_token) {
-            console.log('Refreshing expired token...');
+            console.log("Refreshing expired token...");
             // Token is expired, refresh it
             const oauth2Client = createOAuth2Client();
             oauth2Client.setCredentials({
@@ -421,41 +421,48 @@ async function refreshTokenIfNeeded(userId) {
             const token = response.token;
             const expiryDate = oauth2Client.credentials.expiry_date;
             // Update tokens in database
-            const { error: updateError } = await supabase.from('calendar_connections').update({
+            const { error: updateError } = await supabase.from("calendar_connections").update({
                 access_token: token,
                 token_expiry: expiryDate ? new Date(expiryDate).toISOString() : null,
                 updated_at: new Date().toISOString()
-            }).eq('user_id', userId).eq('provider', 'google');
+            }).eq("user_id", userId).eq("provider", "google");
             if (updateError) {
-                console.error('Error updating tokens:', updateError);
+                console.error("Error updating tokens:", updateError);
                 return false;
             }
         }
         return true;
     } catch (error) {
-        console.error('Error refreshing token:', error);
+        console.error("Error refreshing token:", error);
         return false;
     }
 }
 async function fetchUpcomingGoogleEvents(userId, daysAhead = 30) {
     try {
+        console.log(`Fetching Google Calendar events for user ${userId}...`);
         const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // Get stored tokens
-        const { data: connectionData, error: connectionError } = await supabase.from('calendar_connections').select('*').eq('user_id', userId).eq('provider', 'google').single();
+        const { data: connectionData, error: connectionError } = await supabase.from("calendar_connections").select("*").eq("user_id", userId).eq("provider", "google").single();
         if (connectionError || !connectionData) {
-            console.error('No Google Calendar connection found');
+            console.error("No Google Calendar connection found:", connectionError);
             return [];
         }
+        console.log("Found Google Calendar connection:", {
+            connectionId: connectionData.id,
+            tokenExpiry: connectionData.token_expiry
+        });
         // Refresh token if needed
+        console.log("Checking if token needs refresh...");
         await refreshTokenIfNeeded(userId);
         // Setup OAuth client with token
+        console.log("Setting up OAuth client...");
         const oauth2Client = createOAuth2Client();
         oauth2Client.setCredentials({
             access_token: connectionData.access_token,
             refresh_token: connectionData.refresh_token
         });
         const calendar = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$googleapis$2f$build$2f$src$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["google"].calendar({
-            version: 'v3',
+            version: "v3",
             auth: oauth2Client
         });
         // Calculate time range
@@ -464,55 +471,56 @@ async function fetchUpcomingGoogleEvents(userId, daysAhead = 30) {
         const future = new Date();
         future.setDate(future.getDate() + daysAhead);
         const timeMax = future.toISOString();
+        console.log(`Fetching events from ${timeMin} to ${timeMax}`);
         // Fetch calendar list first
+        console.log("Fetching calendar list...");
         const { data: { items: calendarList } } = await calendar.calendarList.list();
         if (!calendarList || calendarList.length === 0) {
+            console.log("No calendars found");
             return [];
         }
+        console.log(`Found ${calendarList.length} calendars`);
         // Fetch events from each calendar
         const allEvents = [];
         for (const cal of calendarList){
             if (!cal.id) continue;
-            const { data } = await calendar.events.list({
+            console.log(`Fetching events for calendar: ${cal.summary}`);
+            const response = await calendar.events.list({
                 calendarId: cal.id,
                 timeMin,
                 timeMax,
                 singleEvents: true,
-                orderBy: 'startTime',
-                maxResults: 100
+                orderBy: "startTime"
             });
-            if (!data.items || data.items.length === 0) continue;
-            // Transform events to our format
-            for (const event of data.items){
+            const events = response.data.items || [];
+            if (events.length === 0) {
+                console.log(`No events found for calendar ${cal.summary}`);
+                continue;
+            }
+            console.log(`Found ${events.length} events for calendar ${cal.summary}`);
+            for (const event of events){
                 if (!event.id || !event.summary) continue;
-                // Skip events without start/end times
-                if (!event.start || !event.end) continue;
-                // Get meeting links from conference data or description
+                // Get meeting link
                 let meetingLink = null;
-                if (event.conferenceData?.conferenceId) {
-                    meetingLink = `https://meet.google.com/${event.conferenceData.conferenceId}`;
-                } else if (event.hangoutLink) {
+                if (event.hangoutLink) {
                     meetingLink = event.hangoutLink;
-                } else if (event.description) {
-                    // Try to extract meeting links from description
-                    const meetPattern = /(https:\/\/meet\.google\.com\/[a-z-]+)/i;
-                    const teamsPattern = /(https:\/\/teams\.microsoft\.com\/[^\s]+)/i;
-                    const zoomPattern = /(https:\/\/[a-z0-9.-]+\.zoom\.us\/[^\s]+)/i;
-                    const meetMatch = meetPattern.exec(event.description);
-                    const teamsMatch = teamsPattern.exec(event.description);
-                    const zoomMatch = zoomPattern.exec(event.description);
-                    meetingLink = meetMatch?.[1] || teamsMatch?.[1] || zoomMatch?.[1] || null;
+                } else if (event.conferenceData?.entryPoints) {
+                    const videoEntry = event.conferenceData.entryPoints.find((entry)=>entry.entryPointType === "video");
+                    if (videoEntry?.uri) {
+                        meetingLink = videoEntry.uri;
+                    }
                 }
-                // Format attendees
-                const attendees = (event.attendees || []).map((attendee)=>({
-                        email: attendee.email || '',
+                // Get attendees
+                const attendees = event.attendees?.map((attendee)=>({
+                        email: attendee.email || "",
                         name: attendee.displayName || undefined
-                    }));
-                // Determine if user is organizer
-                const isOrganizer = event.organizer?.self === true || event.creator?.self === true;
+                    })) || [];
+                // Check if user is organizer
+                const isOrganizer = event.organizer?.email === connectionData.email;
                 // Format dates correctly
-                const startTime = event.start.dateTime || `${event.start.date}T00:00:00`;
-                const endTime = event.end.dateTime || `${event.end.date}T23:59:59`;
+                const startTime = event.start?.dateTime || (event.start?.date ? `${event.start.date}T00:00:00` : null);
+                const endTime = event.end?.dateTime || (event.end?.date ? `${event.end.date}T23:59:59` : null);
+                if (!startTime || !endTime) continue;
                 allEvents.push({
                     id: event.id,
                     calendar_id: cal.id,
@@ -524,27 +532,32 @@ async function fetchUpcomingGoogleEvents(userId, daysAhead = 30) {
                     meeting_link: meetingLink,
                     attendees,
                     is_organizer: isOrganizer,
-                    status: event.status || 'confirmed',
-                    html_link: event.htmlLink || '',
+                    status: event.status || "confirmed",
+                    html_link: event.htmlLink || "",
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 });
             }
         }
+        console.log(`Total events found: ${allEvents.length}`);
         return allEvents.sort((a, b)=>new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
     } catch (error) {
-        console.error('Error fetching Google Calendar events:', error);
+        console.error("Error fetching Google Calendar events:", error);
         return [];
     }
 }
 async function storeCalendarEvents(userId, events) {
     try {
-        if (events.length === 0) return true;
+        console.log(`Storing ${events.length} calendar events in Supabase...`);
+        if (events.length === 0) {
+            console.log("No events to store");
+            return true;
+        }
         const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // Format events for insertion
         const formattedEvents = events.map((event)=>({
                 user_id: userId,
-                provider: 'google',
+                provider: "google",
                 external_event_id: event.id,
                 calendar_id: event.calendar_id,
                 title: event.title,
@@ -560,24 +573,27 @@ async function storeCalendarEvents(userId, events) {
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             }));
+        console.log("Upserting events to Supabase...");
         // Upsert events to handle both new and updated events
-        const { error } = await supabase.from('calendar_events').upsert(formattedEvents, {
-            onConflict: 'user_id,provider,external_event_id'
+        const { error } = await supabase.from("calendar_events").upsert(formattedEvents, {
+            onConflict: "user_id,provider,external_event_id"
         });
         if (error) {
-            console.error('Error storing calendar events:', error);
+            console.error("Error storing calendar events:", error);
             return false;
         }
+        console.log("Events stored successfully");
         // Update last sync timestamp
-        const { error: profileError } = await supabase.from('profiles').update({
+        console.log("Updating last sync timestamp...");
+        const { error: profileError } = await supabase.from("profiles").update({
             last_calendar_sync: new Date().toISOString()
-        }).eq('id', userId);
+        }).eq("id", userId);
         if (profileError) {
-            console.error('Error updating last sync timestamp:', profileError);
+            console.error("Error updating last sync timestamp:", profileError);
         }
         return true;
     } catch (error) {
-        console.error('Error storing calendar events:', error);
+        console.error("Error storing calendar events:", error);
         return false;
     }
 }
@@ -587,30 +603,30 @@ async function syncGoogleCalendarEvents(userId, daysAhead = 30) {
         // Refresh token if needed
         const tokenRefreshed = await refreshTokenIfNeeded(userId);
         if (!tokenRefreshed) {
-            console.error('Failed to refresh token');
+            console.error("Failed to refresh token");
             return false;
         }
         // Fetch events from Google Calendar
         const events = await fetchUpcomingGoogleEvents(userId, daysAhead);
         if (events.length === 0) {
-            console.log('No events to sync');
+            console.log("No events to sync");
             return true;
         }
         console.log(`Found ${events.length} events to sync`);
         // Store events in Supabase
         return await storeCalendarEvents(userId, events);
     } catch (error) {
-        console.error('Error syncing Google Calendar events:', error);
+        console.error("Error syncing Google Calendar events:", error);
         return false;
     }
 }
 async function isGoogleCalendarConnected(userId) {
     try {
         const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
-        const { data, error } = await supabase.from('calendar_connections').select('id').eq('user_id', userId).eq('provider', 'google').single();
+        const { data, error } = await supabase.from("calendar_connections").select("id").eq("user_id", userId).eq("provider", "google").single();
         return !error && !!data;
     } catch (error) {
-        console.error('Error checking Google Calendar connection:', error);
+        console.error("Error checking Google Calendar connection:", error);
         return false;
     }
 }
@@ -618,14 +634,14 @@ async function disconnectGoogleCalendar(userId) {
     try {
         const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // Delete connection record
-        const { error } = await supabase.from('calendar_connections').delete().eq('user_id', userId).eq('provider', 'google');
+        const { error } = await supabase.from("calendar_connections").delete().eq("user_id", userId).eq("provider", "google");
         if (error) {
-            console.error('Error disconnecting Google Calendar:', error);
+            console.error("Error disconnecting Google Calendar:", error);
             return false;
         }
         return true;
     } catch (error) {
-        console.error('Error disconnecting Google Calendar:', error);
+        console.error("Error disconnecting Google Calendar:", error);
         return false;
     }
 }
@@ -826,46 +842,60 @@ async function syncUserCalendar(userId) {
         console.log(`Starting calendar sync for user ${userId}...`);
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // 1. Verify calendar connection
-        const { data: connection, error: connectionError } = await supabase.from('calendar_connections').select('*').eq('user_id', userId).eq('provider', 'google').single();
+        const { data: connection, error: connectionError } = await supabase.from("calendar_connections").select("*").eq("user_id", userId).eq("provider", "google").single();
         if (connectionError || !connection) {
-            console.error('No valid calendar connection found:', connectionError);
+            console.error("No valid calendar connection found:", connectionError);
             return false;
         }
-        console.log('Found valid calendar connection, syncing Google Calendar events...');
+        console.log("Found valid calendar connection:", {
+            connectionId: connection.id,
+            provider: connection.provider,
+            lastSync: connection.last_sync
+        });
         // 2. Sync Google Calendar events
+        console.log("Starting Google Calendar sync...");
         const calendarSyncSuccess = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$calendar$2f$google$2d$calendar$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["syncGoogleCalendarEvents"])(userId);
         if (!calendarSyncSuccess) {
-            console.error('Failed to sync Google Calendar events');
+            console.error("Failed to sync Google Calendar events");
             return false;
         }
-        console.log('Google Calendar events synced, creating meetings...');
+        console.log("Google Calendar events synced successfully");
         // 3. Create meetings from calendar events with meeting links
+        console.log("Creating meetings from calendar events...");
         const createdMeetings = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$calendarEventService$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createMeetingsFromCalendarEvents"])();
         console.log(`Created ${createdMeetings} meetings from calendar events`);
         // 4. Update existing meetings if calendar events have changed
+        console.log("Updating existing meetings...");
         const updatedMeetings = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$calendarEventService$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["updateMeetingsFromCalendarEvents"])();
         console.log(`Updated ${updatedMeetings} existing meetings`);
         // 5. Update last sync timestamp
-        const { error: updateError } = await supabase.from('profiles').update({
+        console.log("Updating last sync timestamp...");
+        const { error: updateError } = await supabase.from("profiles").update({
             last_calendar_sync: new Date().toISOString()
-        }).eq('id', userId);
+        }).eq("id", userId);
         if (updateError) {
-            console.error('Failed to update last sync timestamp:', updateError);
+            console.error("Failed to update last sync timestamp:", updateError);
         }
         // 6. Get final event count
-        const { count } = await supabase.from('calendar_events').select('*', {
-            count: 'exact',
-            head: true
-        }).eq('user_id', userId);
-        console.log('Calendar sync completed successfully', {
+        console.log("Getting final event count...");
+        const { data: events, count, error: countError } = await supabase.from("calendar_events").select("*", {
+            count: "exact"
+        }).eq("user_id", userId);
+        console.log("Calendar sync completed successfully", {
             userId,
             totalEvents: count,
             createdMeetings,
-            updatedMeetings
+            updatedMeetings,
+            events: events?.map((e)=>({
+                    id: e.id,
+                    title: e.title,
+                    start_time: e.start_time
+                })),
+            error: countError
         });
         return true;
     } catch (error) {
-        console.error('Error in complete user calendar sync:', error);
+        console.error("Error in complete user calendar sync:", error);
         return false;
     }
 }
@@ -873,13 +903,13 @@ async function syncAllUserCalendars() {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // Get all users with their sync frequency
-        const { data: profiles, error } = await supabase.from('profiles').select(`
+        const { data: profiles, error } = await supabase.from("profiles").select(`
         id,
         calendar_sync_frequency,
         last_calendar_sync
-      `).not('calendar_sync_frequency', 'eq', 'manual');
+      `).not("calendar_sync_frequency", "eq", "manual");
         if (error) {
-            console.error('Error fetching user profiles:', error);
+            console.error("Error fetching user profiles:", error);
             return {
                 success: false,
                 syncedUsers: 0
@@ -901,16 +931,16 @@ async function syncAllUserCalendars() {
             let shouldSync = false;
             // Determine if we should sync based on frequency
             switch(profile.calendar_sync_frequency){
-                case 'realtime':
+                case "realtime":
                     shouldSync = true;
                     break;
-                case 'hourly':
+                case "hourly":
                     shouldSync = !lastSync || now.getTime() - lastSync.getTime() >= 60 * 60 * 1000;
                     break;
-                case 'daily':
+                case "daily":
                     shouldSync = !lastSync || now.getTime() - lastSync.getTime() >= 24 * 60 * 60 * 1000;
                     break;
-                case 'weekly':
+                case "weekly":
                     shouldSync = !lastSync || now.getTime() - lastSync.getTime() >= 7 * 24 * 60 * 60 * 1000;
                     break;
                 default:
@@ -929,7 +959,7 @@ async function syncAllUserCalendars() {
             syncedUsers
         };
     } catch (error) {
-        console.error('Error syncing user calendars:', error);
+        console.error("Error syncing user calendars:", error);
         return {
             success: false,
             syncedUsers: 0

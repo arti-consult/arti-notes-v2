@@ -44,7 +44,10 @@ export function OnboardingSteps() {
   };
 
   const handleSubmit = async () => {
-    if (!user) return;
+    if (!user) {
+      setError("You must be logged in to complete onboarding");
+      return;
+    }
 
     try {
       setIsSubmitting(true);
@@ -53,7 +56,13 @@ export function OnboardingSteps() {
       router.push("/dashboard");
     } catch (error) {
       console.error("Error submitting onboarding:", error);
-      setError("Failed to complete onboarding. Please try again.");
+      if (error instanceof Error) {
+        setError(
+          error.message || "Failed to complete onboarding. Please try again."
+        );
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }

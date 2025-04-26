@@ -124,9 +124,13 @@ async function handleSubmit(formData: FormData) {
   await createAdminUser(data);
 }
 
-export default function CreateAdminForm() {
+export default function CreateAdminForm({
+  onSubmit,
+}: {
+  onSubmit: (formData: FormData) => Promise<void>;
+}) {
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form action={onSubmit} className="space-y-4">
       <div>
         <label
           htmlFor="email"

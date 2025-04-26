@@ -1,11 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { hasRole } from "@/utils/rbac/server";
-import {
-  createAdminUser,
-  type AdminFormData,
-} from "../../components/CreateAdminForm";
 import CreateAdminForm from "../../components/CreateAdminForm";
+import { revalidatePath } from "next/cache";
 
 export default async function CreateAdminPage() {
   const supabase = await createClient();
@@ -27,13 +24,73 @@ export default async function CreateAdminPage() {
 
   async function handleSubmit(formData: FormData) {
     "use server";
-    const data: AdminFormData = {
+    const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
       fullName: formData.get("fullName") as string,
       username: formData.get("username") as string,
     };
-    await createAdminUser(data);
+
+    try {
+      // Create the new user
+      const { data: newUser, error: createError } =
+        await supabase.auth.admin.createUser({
+          email: data.email,
+          password: data.password,
+          email_confirm: true,
+          user_metadata: {
+            full_name: data.fullName,
+          },
+        });
+
+      if (createError || !newUser?.user) {
+        console.error("Error creating user:", createError);
+        return;
+      }
+
+      // Update the profile with additional info
+      const { error: profileError } = await supabase.from("profiles").upsert({
+        id: newUser.user.id,
+        full_name: data.fullName,
+        username: data.username,
+        updated_at: new Date().toISOString(),
+      });
+
+      if (profileError) {
+        console.error("Error updating profile:", profileError);
+        return;
+      }
+
+      // Get the admin role ID
+      const { data: adminRole, error: roleError } = await supabase
+        .from("roles")
+        .select("id")
+        .eq("name", "admin")
+        .single();
+
+      if (roleError || !adminRole) {
+        console.error("Error fetching admin role:", roleError);
+        return;
+      }
+
+      // Assign admin role to the new user
+      const { error: assignRoleError } = await supabase
+        .from("user_roles")
+        .insert({
+          user_id: newUser.user.id,
+          role_id: adminRole.id,
+        });
+
+      if (assignRoleError) {
+        console.error("Error assigning role:", assignRoleError);
+        return;
+      }
+
+      // Revalidate admin pages to reflect the new user
+      revalidatePath("/admin");
+    } catch (error) {
+      console.error("Error creating admin user:", error);
+    }
   }
 
   return (
@@ -45,7 +102,7 @@ export default async function CreateAdminPage() {
         </p>
       </div>
 
-      <CreateAdminForm />
+      <CreateAdminForm onSubmit={handleSubmit} />
     </div>
   );
 }

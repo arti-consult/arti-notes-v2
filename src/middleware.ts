@@ -69,6 +69,11 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
+  // Redirect authenticated users away from auth pages
+  if (session && (pathname === "/login" || pathname === "/sign-up")) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
   // Check if the path is protected
   const protectedRoute = protectedRoutes.find((route) =>
     pathname.startsWith(route.path)
@@ -145,11 +150,6 @@ export async function middleware(request: NextRequest) {
     if (!onboardingData && !onboardingError?.code?.includes("not_found")) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
-  }
-
-  // Special handling for auth pages when user is already logged in
-  if (session && (pathname === "/login" || pathname === "/register")) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return response;
