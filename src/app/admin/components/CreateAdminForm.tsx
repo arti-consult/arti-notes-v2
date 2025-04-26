@@ -1,7 +1,5 @@
 "use client";
 
-import { createAdminUser } from "../actions/create-admin";
-
 interface CreateAdminFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
 }

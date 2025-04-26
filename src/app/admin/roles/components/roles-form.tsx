@@ -189,62 +189,68 @@ export function RolesForm() {
           {/* List of existing roles */}
           {roles.map((role) => (
             <div key={role.id} className="space-y-2 p-4 border rounded-lg">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2 flex-1">
-                  <div className="cursor-move text-gray-400 hover:text-gray-600">
-                    <GripVertical className="w-4 h-4" />
+              <div className="flex gap-4">
+                <div className="flex items-center text-gray-400 hover:text-gray-600">
+                  <GripVertical className="w-4 h-4 cursor-move" />
+                </div>
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <Input
+                      value={role.name}
+                      onChange={(e) => {
+                        const updatedRoles = roles.map((r) =>
+                          r.id === role.id ? { ...r, name: e.target.value } : r
+                        );
+                        setRoles(updatedRoles);
+                      }}
+                      className="font-medium"
+                    />
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => handleUpdate(role)}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        onClick={() => openDeleteDialog(role.id)}
+                        size="sm"
+                        variant="destructive"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          setExpandedRole(
+                            expandedRole === role.id ? null : role.id
+                          )
+                        }
+                        size="sm"
+                        variant="outline"
+                      >
+                        {expandedRole === role.id ? (
+                          <ChevronUp className="w-4 h-4" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
                   <Input
-                    value={role.name}
+                    value={role.description}
                     onChange={(e) => {
                       const updatedRoles = roles.map((r) =>
-                        r.id === role.id ? { ...r, name: e.target.value } : r
+                        r.id === role.id
+                          ? { ...r, description: e.target.value }
+                          : r
                       );
                       setRoles(updatedRoles);
                     }}
-                    className="font-medium"
+                    className="text-sm text-muted-foreground"
                   />
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => handleUpdate(role)}
-                    size="sm"
-                    variant="outline"
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    onClick={() => openDeleteDialog(role.id)}
-                    size="sm"
-                    variant="destructive"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    onClick={() =>
-                      setExpandedRole(expandedRole === role.id ? null : role.id)
-                    }
-                    size="sm"
-                    variant="outline"
-                  >
-                    {expandedRole === role.id ? (
-                      <ChevronUp className="w-4 h-4" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4" />
-                    )}
-                  </Button>
-                </div>
               </div>
-              <Input
-                value={role.description}
-                onChange={(e) => {
-                  const updatedRoles = roles.map((r) =>
-                    r.id === role.id ? { ...r, description: e.target.value } : r
-                  );
-                  setRoles(updatedRoles);
-                }}
-                className="text-sm text-muted-foreground"
-              />
 
               {/* Permissions section */}
               {expandedRole === role.id && (
