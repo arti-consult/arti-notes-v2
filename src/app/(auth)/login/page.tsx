@@ -1,6 +1,6 @@
 "use client";
 
-import { login, signInWithGoogle, signInWithMicrosoft } from "./actions";
+import { login, signInWithMicrosoft } from "./actions";
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";

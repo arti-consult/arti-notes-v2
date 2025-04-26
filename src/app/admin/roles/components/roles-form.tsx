@@ -11,10 +11,19 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Trash2, Plus } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Trash2, Plus, ChevronDown, ChevronUp } from "lucide-react";
 import { getRoles, updateRole, createRole, deleteRole } from "../actions/roles";
+import { getPermissions } from "../../permissions/actions/permissions";
 
 interface Role {
+  id: string;
+  name: string;
+  description: string;
+  permissions?: string[];
+}
+
+interface Permission {
   id: string;
   name: string;
   description: string;
@@ -22,20 +31,26 @@ interface Role {
 
 export function RolesForm() {
   const [roles, setRoles] = useState<Role[]>([]);
+  const [permissions, setPermissions] = useState<Permission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newRole, setNewRole] = useState({ name: "", description: "" });
+  const [expandedRole, setExpandedRole] = useState<string | null>(null);
 
   useEffect(() => {
-    loadRoles();
+    loadData();
   }, []);
 
-  async function loadRoles() {
+  async function loadData() {
     try {
-      const data = await getRoles();
-      setRoles(data);
+      const [rolesData, permissionsData] = await Promise.all([
+        getRoles(),
+        getPermissions(),
+      ]);
+      setRoles(rolesData);
+      setPermissions(permissionsData);
     } catch (err) {
-      setError("Failed to load roles");
+      setError("Failed to load data");
       console.error(err);
     } finally {
       setLoading(false);
@@ -47,6 +62,7 @@ export function RolesForm() {
       await updateRole(role.id, {
         name: role.name,
         description: role.description,
+        permissions: role.permissions,
       });
     } catch (err) {
       console.error("Failed to update role:", err);
@@ -56,7 +72,7 @@ export function RolesForm() {
   const handleDelete = async (id: string) => {
     try {
       await deleteRole(id);
-      await loadRoles();
+      await loadData();
     } catch (err) {
       console.error("Failed to delete role:", err);
     }
@@ -69,10 +85,33 @@ export function RolesForm() {
       }
       await createRole(newRole);
       setNewRole({ name: "", description: "" });
-      await loadRoles();
+      await loadData();
     } catch (err) {
       console.error("Failed to create role:", err);
     }
+  };
+
+  const togglePermission = (roleId: string, permissionId: string) => {
+    const updatedRoles = roles.map((role) => {
+      if (role.id === roleId) {
+        const permissions = role.permissions || [];
+        const hasPermission = permissions.includes(permissionId);
+        const updatedPermissions = hasPermission
+          ? permissions.filter((id) => id !== permissionId)
+          : [...permissions, permissionId];
+
+        const updatedRole = {
+          ...role,
+          permissions: updatedPermissions,
+        };
+
+        // Update the role in the database
+        handleUpdate(updatedRole);
+        return updatedRole;
+      }
+      return role;
+    });
+    setRoles(updatedRoles);
   };
 
   if (loading) {
@@ -151,6 +190,19 @@ export function RolesForm() {
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
+                  <Button
+                    onClick={() =>
+                      setExpandedRole(expandedRole === role.id ? null : role.id)
+                    }
+                    size="sm"
+                    variant="outline"
+                  >
+                    {expandedRole === role.id ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
+                  </Button>
                 </div>
               </div>
               <Input
@@ -163,6 +215,37 @@ export function RolesForm() {
                 }}
                 className="text-sm text-muted-foreground"
               />
+
+              {/* Permissions section */}
+              {expandedRole === role.id && (
+                <div className="mt-4 space-y-2 border-t pt-4">
+                  <h4 className="font-medium text-sm mb-2">Permissions</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    {permissions.map((permission) => (
+                      <div
+                        key={permission.id}
+                        className="flex items-center space-x-2"
+                      >
+                        <Checkbox
+                          id={`${role.id}-${permission.id}`}
+                          checked={(role.permissions || []).includes(
+                            permission.id
+                          )}
+                          onCheckedChange={() =>
+                            togglePermission(role.id, permission.id)
+                          }
+                        />
+                        <Label
+                          htmlFor={`${role.id}-${permission.id}`}
+                          className="text-sm"
+                        >
+                          {permission.name}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

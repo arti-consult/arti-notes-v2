@@ -9,6 +9,11 @@ import {
   BarChart,
   Shield,
   Heart,
+  Brain,
+  Activity,
+  KeyRound,
+  UserCog,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,24 +29,51 @@ const navigation = [
     icon: Users,
   },
   {
-    name: "Analytics",
-    href: "/admin/analytics",
-    icon: BarChart,
-  },
-  {
     name: "Customers",
     href: "/admin/customers",
     icon: Heart,
   },
   {
+    name: "Analytics",
+    href: "/admin/analytics",
+    icon: BarChart,
+  },
+  {
+    name: "AI Costs",
+    href: "/admin/ai-costs",
+    icon: Brain,
+  },
+  {
     name: "System Health",
     href: "/admin/system-health",
-    icon: Shield,
+    icon: Activity,
   },
+  // Access Management Section
   {
     name: "Settings",
     href: "/admin/settings",
     icon: Settings,
+  },
+  {
+    name: "Roles",
+    href: "/admin/roles",
+    icon: UserCog,
+  },
+  {
+    name: "Permissions",
+    href: "/admin/permissions",
+    icon: KeyRound,
+  },
+  {
+    name: "Access Control",
+    href: "/admin/access",
+    icon: Shield,
+  },
+  {
+    name: "Stripe Dashboard",
+    href: "https://dashboard.stripe.com/test/dashboard",
+    icon: CreditCard,
+    external: true,
   },
 ];
 
@@ -60,6 +92,8 @@ export function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noopener noreferrer" : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                 isActive
@@ -75,4 +109,4 @@ export function Sidebar() {
       </nav>
     </div>
   );
-} 
+}

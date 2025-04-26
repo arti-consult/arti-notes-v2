@@ -3,6 +3,7 @@
   "/(auth)/onboarding/page": "app/(auth)/onboarding/page.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/admin/page": "app/admin/page.js",
+  "/admin/roles/page": "app/admin/roles/page.js",
   "/admin/settings/page": "app/admin/settings/page.js",
   "/admin/system-health/page": "app/admin/system-health/page.js",
   "/admin/users/page": "app/admin/users/page.js",
