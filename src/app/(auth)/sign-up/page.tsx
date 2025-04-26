@@ -7,18 +7,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-interface Role {
-  id: string;
-  name: string;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-interface RoleWithPermissions extends Role {
-  permissions: Permission[];
-}
-
 export default function SignUpPage() {
   const router = useRouter();
   const supabase = createClient();

@@ -12,7 +12,13 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Trash2, Plus, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Trash2,
+  Plus,
+  ChevronDown,
+  ChevronUp,
+  GripVertical,
+} from "lucide-react";
 import { getRoles, updateRole, createRole, deleteRole } from "../actions/roles";
 import { getPermissions } from "../../permissions/actions/permissions";
 import {
@@ -184,16 +190,21 @@ export function RolesForm() {
           {roles.map((role) => (
             <div key={role.id} className="space-y-2 p-4 border rounded-lg">
               <div className="flex items-center justify-between gap-2">
-                <Input
-                  value={role.name}
-                  onChange={(e) => {
-                    const updatedRoles = roles.map((r) =>
-                      r.id === role.id ? { ...r, name: e.target.value } : r
-                    );
-                    setRoles(updatedRoles);
-                  }}
-                  className="font-medium"
-                />
+                <div className="flex items-center gap-2 flex-1">
+                  <div className="cursor-move text-gray-400 hover:text-gray-600">
+                    <GripVertical className="w-4 h-4" />
+                  </div>
+                  <Input
+                    value={role.name}
+                    onChange={(e) => {
+                      const updatedRoles = roles.map((r) =>
+                        r.id === role.id ? { ...r, name: e.target.value } : r
+                      );
+                      setRoles(updatedRoles);
+                    }}
+                    className="font-medium"
+                  />
+                </div>
                 <div className="flex gap-2">
                   <Button
                     onClick={() => handleUpdate(role)}
