@@ -69,7 +69,6 @@ export async function getAudioDuration(
     return new Promise((resolve) => {
       const mediaSource = new MediaSource();
       const url = URL.createObjectURL(mediaSource);
-      const audio = new Audio(url);
 
       const timeoutId = setTimeout(() => {
         URL.revokeObjectURL(url);
