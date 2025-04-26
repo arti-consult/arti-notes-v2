@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { PricingTier } from "@/types/subscription";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,7 +31,7 @@ export default async function SubscriptionPage() {
     .order("price");
 
   // Get team members count
-  const { data: teamMembers, error: teamError } = await supabase
+  const { data: teamMembers } = await supabase
     .from("team_members")
     .select("id", { count: "exact" });
 
