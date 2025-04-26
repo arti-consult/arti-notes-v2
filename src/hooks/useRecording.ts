@@ -389,7 +389,7 @@ export function useRecording() {
       cleanup();
     };
   }, [cleanup]);
-
+  /*
   const checkAudioLevel = async (stream: MediaStream) => {
     try {
       // Validate stream
@@ -468,7 +468,7 @@ export function useRecording() {
       return false;
     }
   };
-
+*/
   const handleUpload = async (
     title: string,
     folderId: string | null = null,
