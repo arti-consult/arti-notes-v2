@@ -32,7 +32,7 @@ export function useRecording() {
 
   const recordingStartTime = useRef<number | null>(null);
   const durationRef = useRef<number>(0);
-  const isMounted = useRef<boolean>(true);
+  //const isMounted = useRef<boolean>(true);
 
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<BlobPart[]>([]);
