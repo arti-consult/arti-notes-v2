@@ -251,7 +251,7 @@ export default function RecordingModal({
       }
 
       // Get track settings to check if it's actually muted
-      const settings = track.getSettings();
+
       if (!track.enabled) {
         return true;
       }
