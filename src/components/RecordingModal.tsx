@@ -96,8 +96,6 @@ export default function RecordingModal({
     isProcessing,
     startRecording,
     stopRecording,
-    resetRecording,
-    handleUpload: handleRecordingUpload,
   } = useRecording();
 
   const supabase = createClient(
