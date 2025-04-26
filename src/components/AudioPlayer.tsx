@@ -245,21 +245,6 @@ export default function AudioPlayer({
     }
   };
 
-  const handleSeek = (time: number) => {
-    if (!audioRef.current || !isReady) return;
-    try {
-      audioRef.current.currentTime = time;
-      setCurrentTime(time);
-      onTimeUpdate?.(time);
-      onSeek?.(time);
-      if (!isPlaying) {
-        audioRef.current.play().catch(console.error);
-        setIsPlaying(true);
-      }
-    } catch (err) {
-      console.error("Error seeking:", err);
-    }
-  };
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     if (Number.isFinite(newVolume) && audioRef.current) {
