@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from "react";
 
 interface AudioRecorderState {
   isRecording: boolean;
@@ -12,12 +12,12 @@ export function useAudioRecorder() {
     isRecording: false,
     audioBlob: null,
     duration: 0,
-    error: null
+    error: null,
   });
-  
+
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
-  const durationInterval = useRef<number>();
+  const durationInterval = useRef<number | undefined>(undefined);
 
   const startRecording = useCallback(async () => {
     try {
@@ -32,20 +32,20 @@ export function useAudioRecorder() {
       };
 
       mediaRecorder.current.onstop = () => {
-        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-        setState(prev => ({ ...prev, audioBlob }));
+        const audioBlob = new Blob(audioChunks.current, { type: "audio/webm" });
+        setState((prev) => ({ ...prev, audioBlob }));
       };
 
       mediaRecorder.current.start(1000);
-      setState(prev => ({ ...prev, isRecording: true, error: null }));
+      setState((prev) => ({ ...prev, isRecording: true, error: null }));
 
       durationInterval.current = window.setInterval(() => {
-        setState(prev => ({ ...prev, duration: prev.duration + 1 }));
+        setState((prev) => ({ ...prev, duration: prev.duration + 1 }));
       }, 1000);
     } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        error: 'Kunne ikke få tilgang til mikrofonen. Sjekk tillatelser.'
+      setState((prev) => ({
+        ...prev,
+        error: "Kunne ikke få tilgang til mikrofonen. Sjekk tillatelser.",
       }));
     }
   }, []);
@@ -53,15 +53,15 @@ export function useAudioRecorder() {
   const stopRecording = useCallback(() => {
     if (mediaRecorder.current && state.isRecording) {
       mediaRecorder.current.stop();
-      mediaRecorder.current.stream.getTracks().forEach(track => track.stop());
+      mediaRecorder.current.stream.getTracks().forEach((track) => track.stop());
       clearInterval(durationInterval.current);
-      setState(prev => ({ ...prev, isRecording: false }));
+      setState((prev) => ({ ...prev, isRecording: false }));
     }
   }, [state.isRecording]);
 
   return {
     ...state,
     startRecording,
-    stopRecording
+    stopRecording,
   };
 }

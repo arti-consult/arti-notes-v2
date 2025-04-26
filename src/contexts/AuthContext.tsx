@@ -5,14 +5,14 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
-import { Subscription, PricingPlan } from "@/types/subscription";
+import { UserSubscription, PricingTier } from "@/types/subscription";
 import { Profile } from "@/types/auth";
 
 interface AuthContextType {
   user: User | null;
   profile: Profile | null;
   session: Session | null;
-  subscription: Subscription | null;
+  subscription: UserSubscription | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
 }
@@ -36,7 +36,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [subscription, setSubscription] = useState<UserSubscription | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
@@ -92,7 +94,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             // Format the subscription data
             setSubscription({
               ...subscriptionData,
-              plan: subscriptionData.plan as PricingPlan,
+              plan: subscriptionData.plan as PricingTier,
             });
           } else {
             setSubscription(null);

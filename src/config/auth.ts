@@ -1,7 +1,3 @@
-import { validateEnv } from "@/lib/env";
-
-const env = validateEnv();
-
 const getRedirectUri = () => {
   return "https://bolt.new/auth/callback/microsoft";
 };

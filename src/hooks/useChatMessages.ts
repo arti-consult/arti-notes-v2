@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-
+import { supabase } from "@/lib/supabase";
+import { useState, useEffect } from "react";
 
 const MESSAGES_PER_PAGE = 20;
 
-export type MessageStatus = 'sending' | 'sent' | 'error';
+export type MessageStatus = "sending" | "sent" | "error";
 
 export interface ChatMessage {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   created_at: string;
   status?: MessageStatus;
@@ -30,12 +30,12 @@ export function useChatMessages(recordingId: string) {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const { data, error: fetchError } = await supabase
-        .from('chat_messages')
-        .select('*')
-        .eq('recording_id', recordingId)
-        .order('created_at', { ascending: false })
+        .from("chat_messages")
+        .select("*")
+        .eq("recording_id", recordingId)
+        .order("created_at", { ascending: false })
         .limit(MESSAGES_PER_PAGE);
 
       if (fetchError) throw fetchError;
@@ -44,8 +44,8 @@ export function useChatMessages(recordingId: string) {
       setHasMore(data?.length === MESSAGES_PER_PAGE);
       setPage(1);
     } catch (err) {
-      console.error('Error fetching messages:', err);
-      setError(err instanceof Error ? err.message : 'Could not fetch messages');
+      console.error("Error fetching messages:", err);
+      setError(err instanceof Error ? err.message : "Could not fetch messages");
     } finally {
       setIsLoading(false);
     }
@@ -59,35 +59,37 @@ export function useChatMessages(recordingId: string) {
       setError(null);
 
       const { data, error: fetchError } = await supabase
-        .from('chat_messages')
-        .select('*')
-        .eq('recording_id', recordingId)
-        .order('created_at', { ascending: false })
+        .from("chat_messages")
+        .select("*")
+        .eq("recording_id", recordingId)
+        .order("created_at", { ascending: false })
         .range(page * MESSAGES_PER_PAGE, (page + 1) * MESSAGES_PER_PAGE - 1);
 
       if (fetchError) throw fetchError;
 
       if (data) {
-        setMessages(prev => [...data.reverse(), ...prev]);
+        setMessages((prev) => [...data.reverse(), ...prev]);
         setHasMore(data.length === MESSAGES_PER_PAGE);
-        setPage(prev => prev + 1);
+        setPage((prev) => prev + 1);
       }
     } catch (err) {
-      console.error('Error loading more messages:', err);
-      setError(err instanceof Error ? err.message : 'Could not load more messages');
+      console.error("Error loading more messages:", err);
+      setError(
+        err instanceof Error ? err.message : "Could not load more messages"
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const addMessage = (message: ChatMessage, status?: MessageStatus) => {
-    setMessages(prev => [...prev, { ...message, status }]);
+    setMessages((prev) => [...prev, { ...message, status }]);
   };
 
   const updateMessageStatus = (messageId: string, status: MessageStatus) => {
-    setMessages(prev => prev.map(msg => 
-      msg.id === messageId ? { ...msg, status } : msg
-    ));
+    setMessages((prev) =>
+      prev.map((msg) => (msg.id === messageId ? { ...msg, status } : msg))
+    );
   };
 
   return {
@@ -97,6 +99,6 @@ export function useChatMessages(recordingId: string) {
     hasMore,
     loadMoreMessages,
     addMessage,
-    updateMessageStatus
+    updateMessageStatus,
   };
 }
