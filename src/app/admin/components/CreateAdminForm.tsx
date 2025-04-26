@@ -1,8 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import { createClient } from "@/utils/supabase/server";
-import { hasRole } from "@/utils/rbac/server";
+import { createClient } from "../../../utils/supabase/server";
+import { hasRole } from "../../../utils/rbac/server";
 import { revalidatePath } from "next/cache";
 
 // Define validation schema
@@ -124,11 +124,11 @@ async function handleSubmit(formData: FormData) {
   await createAdminUser(data);
 }
 
-export default function CreateAdminForm({
-  onSubmit,
-}: {
+interface CreateAdminFormProps {
   onSubmit: (formData: FormData) => Promise<void>;
-}) {
+}
+
+export default function CreateAdminForm({ onSubmit }: CreateAdminFormProps) {
   return (
     <form action={onSubmit} className="space-y-4">
       <div>
