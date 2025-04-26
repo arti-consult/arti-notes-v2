@@ -44,7 +44,7 @@ export default function Breadcrumbs() {
   }
 
   const breadcrumbs = pathSegments
-    .map((segment, index) => {
+    .map((_, index) => {
       const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
       const config =
         breadcrumbConfigs[pathSegments.slice(0, index + 1).join("/")];
