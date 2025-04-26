@@ -16,7 +16,6 @@ import {
   Users,
   User,
   Target,
-  X,
   ArrowRight,
 } from "lucide-react";
 

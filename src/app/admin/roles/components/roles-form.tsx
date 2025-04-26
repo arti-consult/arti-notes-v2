@@ -278,31 +278,51 @@ export function RolesForm() {
                     {/* Permissions section */}
                     <div className="mt-2 border-t pt-4">
                       <h4 className="font-medium text-sm mb-2">Permissions</h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-white rounded-md p-2 border">
-                        {permissions.map((permission) => (
-                          <div
-                            key={permission.id}
-                            className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition text-xs"
-                          >
-                            <GripVertical className="w-3 h-3 text-gray-300 mr-1" />
-                            <Checkbox
-                              id={`${role.id}-${permission.id}`}
-                              checked={(role.permissions || []).includes(
-                                permission.id
-                              )}
-                              onCheckedChange={() =>
-                                togglePermission(role.id, permission.id)
-                              }
-                              className="scale-90"
-                            />
-                            <Label
-                              htmlFor={`${role.id}-${permission.id}`}
-                              className="text-xs cursor-pointer select-none"
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-white rounded-md p-2 border max-w-xs mx-auto">
+                        {permissions.map((permission) => {
+                          // Find all roles that have this permission
+                          const rolesWithPermission = roles.filter((r) =>
+                            (r.permissions || []).includes(permission.id)
+                          );
+                          return (
+                            <div
+                              key={permission.id}
+                              className="flex flex-col items-start gap-1 px-2 py-1 rounded hover:bg-gray-100 transition text-xs"
                             >
-                              {permission.name}
-                            </Label>
-                          </div>
-                        ))}
+                              <div className="flex items-center gap-2 w-full">
+                                <GripVertical className="w-3 h-3 text-gray-300 mr-1" />
+                                <Checkbox
+                                  id={`${role.id}-${permission.id}`}
+                                  checked={(role.permissions || []).includes(
+                                    permission.id
+                                  )}
+                                  onCheckedChange={() =>
+                                    togglePermission(role.id, permission.id)
+                                  }
+                                  className="scale-90"
+                                />
+                                <Label
+                                  htmlFor={`${role.id}-${permission.id}`}
+                                  className="text-xs cursor-pointer select-none"
+                                >
+                                  {permission.name}
+                                </Label>
+                              </div>
+                              {rolesWithPermission.length > 0 && (
+                                <div className="text-[10px] text-muted-foreground mt-1 flex flex-wrap gap-1">
+                                  {rolesWithPermission.map((r) => (
+                                    <span
+                                      key={r.id}
+                                      className="bg-gray-100 rounded px-1"
+                                    >
+                                      {r.name}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
