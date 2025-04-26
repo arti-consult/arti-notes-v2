@@ -158,7 +158,7 @@ export function RolesForm() {
       <CardContent>
         <div className="space-y-6">
           {/* Create new role form */}
-          <div className="space-y-2 p-4 border rounded-lg border-dashed">
+          <div className="space-y-2 p-4 border rounded-lg border-dashed max-w-md mx-auto">
             <h3 className="font-medium">Add New Role</h3>
             <div className="space-y-2">
               <Input
@@ -187,14 +187,14 @@ export function RolesForm() {
           </div>
 
           {/* List of existing roles */}
-          {roles.map((role) => (
-            <div key={role.id} className="space-y-2 p-4 border rounded-lg">
-              <div className="flex gap-4">
-                <div className="flex items-center text-gray-400 hover:text-gray-600">
-                  <GripVertical className="w-4 h-4 cursor-move" />
-                </div>
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col items-center gap-4">
+            {roles.map((role) => (
+              <div key={role.id} className="w-full max-w-md mx-auto">
+                <div className="flex gap-4 items-center border rounded-lg px-2 py-2 bg-white shadow-sm">
+                  <div className="flex items-center text-gray-400 hover:text-gray-600">
+                    <GripVertical className="w-4 h-4 cursor-move" />
+                  </div>
+                  <div className="flex-1">
                     <Input
                       value={role.name}
                       onChange={(e) => {
@@ -203,87 +203,92 @@ export function RolesForm() {
                         );
                         setRoles(updatedRoles);
                       }}
-                      className="font-medium"
+                      className="font-medium text-base px-2 py-1"
+                      style={{ minWidth: 0 }}
+                      disabled={expandedRole === role.id}
                     />
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={() => handleUpdate(role)}
-                        size="sm"
-                        variant="outline"
-                      >
-                        Save
-                      </Button>
-                      <Button
-                        onClick={() => openDeleteDialog(role.id)}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          setExpandedRole(
-                            expandedRole === role.id ? null : role.id
-                          )
-                        }
-                        size="sm"
-                        variant="outline"
-                      >
-                        {expandedRole === role.id ? (
-                          <ChevronUp className="w-4 h-4" />
-                        ) : (
-                          <ChevronDown className="w-4 h-4" />
-                        )}
-                      </Button>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <Button
+                      onClick={() => openDeleteDialog(role.id)}
+                      size="icon"
+                      variant="ghost"
+                      className="text-red-500 hover:bg-red-100"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        setExpandedRole(
+                          expandedRole === role.id ? null : role.id
+                        )
+                      }
+                      size="icon"
+                      variant="ghost"
+                    >
+                      {expandedRole === role.id ? (
+                        <ChevronUp className="w-4 h-4" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+                {expandedRole === role.id && (
+                  <div className="border rounded-lg mt-2 p-4 bg-gray-50 space-y-4">
+                    <Input
+                      value={role.description}
+                      onChange={(e) => {
+                        const updatedRoles = roles.map((r) =>
+                          r.id === role.id
+                            ? { ...r, description: e.target.value }
+                            : r
+                        );
+                        setRoles(updatedRoles);
+                      }}
+                      className="text-sm text-muted-foreground"
+                      placeholder="Role description"
+                    />
+                    <Button
+                      onClick={() => handleUpdate(role)}
+                      size="sm"
+                      variant="outline"
+                    >
+                      Save
+                    </Button>
+                    {/* Permissions section */}
+                    <div className="mt-2 space-y-2 border-t pt-4">
+                      <h4 className="font-medium text-sm mb-2">Permissions</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        {permissions.map((permission) => (
+                          <div
+                            key={permission.id}
+                            className="flex items-center space-x-2"
+                          >
+                            <Checkbox
+                              id={`${role.id}-${permission.id}`}
+                              checked={(role.permissions || []).includes(
+                                permission.id
+                              )}
+                              onCheckedChange={() =>
+                                togglePermission(role.id, permission.id)
+                              }
+                            />
+                            <Label
+                              htmlFor={`${role.id}-${permission.id}`}
+                              className="text-sm"
+                            >
+                              {permission.name}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <Input
-                    value={role.description}
-                    onChange={(e) => {
-                      const updatedRoles = roles.map((r) =>
-                        r.id === role.id
-                          ? { ...r, description: e.target.value }
-                          : r
-                      );
-                      setRoles(updatedRoles);
-                    }}
-                    className="text-sm text-muted-foreground"
-                  />
-                </div>
+                )}
               </div>
-
-              {/* Permissions section */}
-              {expandedRole === role.id && (
-                <div className="mt-4 space-y-2 border-t pt-4">
-                  <h4 className="font-medium text-sm mb-2">Permissions</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    {permissions.map((permission) => (
-                      <div
-                        key={permission.id}
-                        className="flex items-center space-x-2"
-                      >
-                        <Checkbox
-                          id={`${role.id}-${permission.id}`}
-                          checked={(role.permissions || []).includes(
-                            permission.id
-                          )}
-                          onCheckedChange={() =>
-                            togglePermission(role.id, permission.id)
-                          }
-                        />
-                        <Label
-                          htmlFor={`${role.id}-${permission.id}`}
-                          className="text-sm"
-                        >
-                          {permission.name}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </CardContent>
 
