@@ -11,8 +11,7 @@ import {
 import { useRecording } from "@/hooks/useRecording";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { useFolders } from "@/contexts/FolderContext";
-import FolderSelect from "@/components/FolderSelect";
+
 import { uploadRecording } from "@/services/recordingService";
 import { cn } from "@/lib/utils";
 import AudioVisualizer from "./AudioVisualizer";
@@ -66,7 +65,6 @@ export default function RecordingModal({
   onComplete,
 }: RecordingModalProps) {
   const { user } = useAuth();
-  const { folders } = useFolders();
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -658,17 +656,6 @@ export default function RecordingModal({
                     <p className="mt-2 text-sm text-red-600">{titleError}</p>
                   )}
                 </div>
-
-                {/* Folder selector */}
-                {folders.length > 0 && (
-                  <div>
-                    <FolderSelect
-                      currentFolderId={selectedFolder}
-                      onFolderChange={setSelectedFolder}
-                      disabled={isRecording || isSaving}
-                    />
-                  </div>
-                )}
 
                 {/* Participants section */}
                 <div>
