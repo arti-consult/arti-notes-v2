@@ -39,10 +39,8 @@ import { MeetingList, Meeting } from "./components/meeting-list";
 import { UpcomingMeetings } from "./components/upcoming-meetings";
 
 export default function DashboardPage() {
-  const [isUploading, setIsUploading] = useState(false);
   const [showLiveMeeting, setShowLiveMeeting] = useState(false);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [calendarEvents, setCalendarEvents] = useState<Meeting[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -95,46 +93,6 @@ export default function DashboardPage() {
       );
 
       setMeetings(transformedMeetings);
-
-      // Fetch calendar events with meeting links
-      const { data: calendarEventsData, error: calendarError } = await supabase
-        .from("calendar_events")
-        .select("*")
-        .eq("user_id", user.id)
-        .not("meeting_link", "is", null)
-        .gte("start_time", new Date().toISOString())
-        .lte(
-          "start_time",
-          new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-        ) // Next 30 days
-        .order("start_time", { ascending: true });
-
-      if (calendarError) {
-        throw calendarError;
-      }
-
-      // Transform calendar events data
-      const transformedCalendarEvents: Meeting[] = (
-        calendarEventsData || []
-      ).map((event) => ({
-        id: event.id,
-        title: event.title,
-        startTime: new Date(event.start_time),
-        endTime: new Date(event.end_time),
-        meeting_type: "google-meets",
-        transcription_status: "pending",
-        summary_status: "pending",
-        participants:
-          event.attendees?.map(
-            (attendee: { name?: string; email: string }) => ({
-              name: attendee.name || attendee.email,
-              email: attendee.email,
-            })
-          ) || [],
-        meeting_link: event.meeting_link,
-      }));
-
-      setCalendarEvents(transformedCalendarEvents);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -153,13 +111,8 @@ export default function DashboardPage() {
   };
 
   const handleFileUpload = (file: File) => {
-    setIsUploading(true);
     // TODO: Implement file upload logic
     console.log("Uploading file:", file.name);
-    // Simulate upload completion
-    setTimeout(() => {
-      setIsUploading(false);
-    }, 2000);
   };
 
   return (
