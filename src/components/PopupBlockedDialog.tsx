@@ -1,5 +1,4 @@
-import { X, AlertCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { X, AlertCircle } from "lucide-react";
 
 interface PopupBlockedDialogProps {
   isOpen: boolean;
@@ -10,7 +9,7 @@ interface PopupBlockedDialogProps {
 export default function PopupBlockedDialog({
   isOpen,
   onClose,
-  onRetry
+  onRetry,
 }: PopupBlockedDialogProps) {
   if (!isOpen) return null;
 
@@ -23,7 +22,7 @@ export default function PopupBlockedDialog({
               <AlertCircle className="h-5 w-5" />
               <h3 className="font-semibold">Popup ble blokkert</h3>
             </div>
-            <button 
+            <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full"
             >
@@ -35,12 +34,15 @@ export default function PopupBlockedDialog({
         <div className="p-6">
           <div className="space-y-4">
             <p className="text-gray-600">
-              For å koble til Microsoft 365 må du tillate popups for denne nettsiden. Følg disse stegene:
+              For å koble til Microsoft 365 må du tillate popups for denne
+              nettsiden. Følg disse stegene:
             </p>
-            
+
             <ol className="list-decimal list-inside space-y-2 text-gray-600">
               <li>Se etter popup-blokkering ikonet i adressefeltet</li>
-              <li>Klikk på ikonet og velg "Tillat popups fra denne nettsiden"</li>
+              <li>
+                Klikk på ikonet og velg "Tillat popups fra denne nettsiden"
+              </li>
               <li>Klikk på "Prøv igjen" knappen nedenfor</li>
             </ol>
 

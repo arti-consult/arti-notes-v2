@@ -2,26 +2,28 @@ import { useState, useRef, useEffect } from "react";
 import {
   Mic,
   X,
-  Activity,
   Clock,
   AlertCircle,
   UserPlus,
-  ChevronDown,
   Trash2,
-  RefreshCcw,
-  Volume2,
   VolumeX,
 } from "lucide-react";
 import { useRecording } from "@/hooks/useRecording";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useFolders } from "@/contexts/FolderContext";
-import { validateAudioFile } from "@/lib/fileValidation";
 import FolderSelect from "@/components/FolderSelect";
 import { uploadRecording } from "@/services/recordingService";
 import { cn } from "@/lib/utils";
 import AudioVisualizer from "./AudioVisualizer";
-import { toast } from "@/components/ui/toast";
+import {
+  Toast,
+  ToastProvider,
+  ToastViewport,
+  ToastTitle,
+  ToastDescription,
+} from "@/components/ui/toast";
+import { createClient } from "@supabase/supabase-js";
 
 interface RecordingModalProps {
   isOpen: boolean;
@@ -51,6 +53,7 @@ const STATUS_MESSAGES = {
 } as const;
 
 const STATUS_DESCRIPTIONS = {
+  idle: "Klar til opptak",
   uploading: "Opptaket lastes opp til sikker lagring",
   processing: "Opptaket blir analysert og transkribert",
   completed: "Transkriberingen er klar til bruk",
@@ -82,7 +85,7 @@ export default function RecordingModal({
   const [modalStatus, setModalStatus] = useState<TranscriptionStatus>("idle");
 
   const audioContextRef = useRef<AudioContext | null>(null);
-  const audioLevelCheckInterval = useRef<number>();
+  const audioLevelCheckInterval = useRef<number | undefined>(undefined);
   const isMounted = useRef(true);
 
   const {
@@ -96,6 +99,11 @@ export default function RecordingModal({
     resetRecording,
     handleUpload: handleRecordingUpload,
   } = useRecording();
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   // Add polling for transcription status
   useEffect(() => {
@@ -136,7 +144,11 @@ export default function RecordingModal({
         } else if (data.status === "failed") {
           setModalStatus("error");
           setSaveError(data.error || "Transkribering feilet");
-          toast.error(data.error || "Transkribering feilet");
+          showToast(
+            "Feil",
+            data.error || "Transkribering feilet",
+            "destructive"
+          );
         } else {
           // Continue polling
           timeoutId = window.setTimeout(checkStatus, 5000);
@@ -152,7 +164,11 @@ export default function RecordingModal({
             ? error.message
             : "Kunne ikke sjekke transkriberingsstatus"
         );
-        toast.error("Kunne ikke sjekke transkriberingsstatus");
+        showToast(
+          "Kunne ikke sjekke transkriberingsstatus",
+          "Kunne ikke sjekke transkriberingsstatus",
+          "destructive"
+        );
       }
     };
 
@@ -185,7 +201,7 @@ export default function RecordingModal({
 
   const cleanup = () => {
     if (isRecording) {
-      stopRecording().catch(console.error);
+      stopRecording();
     }
 
     setIsLoading(false);
@@ -238,7 +254,7 @@ export default function RecordingModal({
 
       // Get track settings to check if it's actually muted
       const settings = track.getSettings();
-      if (settings.volume === 0) {
+      if (!track.enabled) {
         return true;
       }
 
@@ -396,7 +412,6 @@ export default function RecordingModal({
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
-          latency: 0,
         },
       });
 
@@ -409,8 +424,10 @@ export default function RecordingModal({
       setIsMicrophoneMuted(isMuted);
 
       if (isMuted && isMounted.current) {
-        toast.info(
-          "Mikrofonen ser ut til å være dempet. Sjekk mikrofoninnstillingene."
+        showToast(
+          "Mikrofonen ser ut til å være dempet",
+          "Sjekk mikrofoninnstillingene.",
+          "default"
         );
       }
 
@@ -437,7 +454,7 @@ export default function RecordingModal({
           : "Kunne ikke starte opptak. Sjekk mikrofontilgang.";
 
       if (isMounted.current) {
-        toast.error(errorMessage);
+        showToast("Feil", errorMessage, "destructive");
         setSaveError(errorMessage);
       }
     } finally {
@@ -456,10 +473,14 @@ export default function RecordingModal({
     setIsLoading(true);
     try {
       stopRecording();
-      toast.success("Opptak fullført");
+      showToast("Opptak fullført", "Opptaket er fullført", "default");
     } catch (error) {
       console.error("Error stopping recording:", error);
-      toast.error("Kunne ikke stoppe opptaket");
+      showToast(
+        "Kunne ikke stoppe opptaket",
+        "Kunne ikke stoppe opptaket",
+        "destructive"
+      );
       setSaveError("Kunne ikke stoppe opptaket");
     } finally {
       setIsLoading(false);
@@ -469,7 +490,11 @@ export default function RecordingModal({
   const handleUpload = async () => {
     if (!audioBlob || !user) {
       setSaveError("Mangler lydopptak eller bruker ikke logget inn");
-      toast.error("Mangler lydopptak eller bruker ikke logget inn");
+      showToast(
+        "Mangler lydopptak eller bruker ikke logget inn",
+        "Mangler lydopptak eller bruker ikke logget inn",
+        "destructive"
+      );
       return;
     }
 
@@ -498,7 +523,11 @@ export default function RecordingModal({
       if (isMounted.current) {
         setCurrentRecordingId(recording.id);
         setModalStatus("processing");
-        toast.success("Opptak lastet opp og transkribering startet");
+        showToast(
+          "Opptak lastet opp og transkribering startet",
+          "Opptaket er lastet opp og transkribering startet",
+          "default"
+        );
       }
     } catch (error) {
       console.error("Error saving recording:", error);
@@ -506,7 +535,7 @@ export default function RecordingModal({
         setModalStatus("error");
         const errorMessage =
           error instanceof Error ? error.message : "Kunne ikke lagre opptaket";
-        toast.error(errorMessage);
+        showToast("Feil", errorMessage, "destructive");
         setSaveError(errorMessage);
       }
     } finally {
@@ -516,315 +545,335 @@ export default function RecordingModal({
     }
   };
 
+  const showToast = (
+    title: string,
+    description: string,
+    variant: "default" | "destructive" = "default"
+  ) => {
+    return (
+      <Toast variant={variant}>
+        <ToastTitle>{title}</ToastTitle>
+        <ToastDescription>{description}</ToastDescription>
+      </Toast>
+    );
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-hidden">
-      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
-        {/* Header */}
-        <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div
-                className={cn(
-                  "p-2 rounded-full",
-                  isRecording ? "bg-red-100" : "bg-gray-100",
-                  modalStatus === "processing" && "bg-yellow-100",
-                  modalStatus === "completed" && "bg-green-100",
-                  modalStatus === "error" && "bg-red-100"
-                )}
-              >
-                <Mic
+    <ToastProvider>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-hidden">
+        <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+          {/* Header */}
+          <div className="p-4 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div
                   className={cn(
-                    "h-5 w-5",
-                    isRecording ? "text-red-600" : "text-gray-600",
-                    modalStatus === "processing" && "text-yellow-600",
-                    modalStatus === "completed" && "text-green-600",
-                    modalStatus === "error" && "text-red-600"
+                    "p-2 rounded-full",
+                    isRecording ? "bg-red-100" : "bg-gray-100",
+                    modalStatus === "processing" && "bg-yellow-100",
+                    modalStatus === "completed" && "bg-green-100",
+                    modalStatus === "error" && "bg-red-100"
                   )}
-                />
-              </div>
-              <div>
-                <h3 className="font-semibold">
-                  {isRecording ? "Opptak pågår" : STATUS_MESSAGES[modalStatus]}
-                </h3>
-                <div className="flex items-center text-sm text-gray-600">
-                  <Clock className="h-4 w-4 mr-1" />
-                  <span>{formatDuration(duration)}</span>
-                  {isMicrophoneMuted && (
-                    <div className="flex items-center ml-2 text-amber-600">
-                      <VolumeX className="h-4 w-4 mr-1" />
-                      <span>Mikrofon dempet</span>
-                    </div>
-                  )}
+                >
+                  <Mic
+                    className={cn(
+                      "h-5 w-5",
+                      isRecording ? "text-red-600" : "text-gray-600",
+                      modalStatus === "processing" && "text-yellow-600",
+                      modalStatus === "completed" && "text-green-600",
+                      modalStatus === "error" && "text-red-600"
+                    )}
+                  />
+                </div>
+                <div>
+                  <h3 className="font-semibold">
+                    {isRecording
+                      ? "Opptak pågår"
+                      : STATUS_MESSAGES[modalStatus]}
+                  </h3>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Clock className="h-4 w-4 mr-1" />
+                    <span>{formatDuration(duration)}</span>
+                    {isMicrophoneMuted && (
+                      <div className="flex items-center ml-2 text-amber-600">
+                        <VolumeX className="h-4 w-4 mr-1" />
+                        <span>Mikrofon dempet</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-gray-100 rounded-full"
+                disabled={isRecording || isSaving}
+              >
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full"
-              disabled={isRecording || isSaving}
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
+
+            {(recordingError || saveError) && (
+              <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm flex items-center">
+                <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span>{recordingError || saveError}</span>
+              </div>
+            )}
           </div>
 
-          {(recordingError || saveError) && (
-            <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm flex items-center">
-              <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span>{recordingError || saveError}</span>
-            </div>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="p-8 overflow-y-auto flex-1">
-          {!isRecording && !audioBlob && (
-            <div className="space-y-6">
-              {/* Title input */}
-              <div>
-                <label
-                  htmlFor="recordingTitle"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Navn på opptak
-                </label>
-                <div className="relative">
-                  <input
-                    id="recordingTitle"
-                    type="text"
-                    value={recordingTitle}
-                    onChange={(e) => {
-                      setRecordingTitle(e.target.value);
-                      setTitleError(null);
-                    }}
-                    placeholder="F.eks. Ukentlig møte"
-                    className={cn(
-                      "w-full rounded-lg border px-4 py-2 focus:border-violet-500 focus:ring-violet-500",
-                      titleError ? "border-red-300" : "border-gray-300"
+          {/* Content */}
+          <div className="p-8 overflow-y-auto flex-1">
+            {!isRecording && !audioBlob && (
+              <div className="space-y-6">
+                {/* Title input */}
+                <div>
+                  <label
+                    htmlFor="recordingTitle"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Navn på opptak
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="recordingTitle"
+                      type="text"
+                      value={recordingTitle}
+                      onChange={(e) => {
+                        setRecordingTitle(e.target.value);
+                        setTitleError(null);
+                      }}
+                      placeholder="F.eks. Ukentlig møte"
+                      className={cn(
+                        "w-full rounded-lg border px-4 py-2 focus:border-violet-500 focus:ring-violet-500",
+                        titleError ? "border-red-300" : "border-gray-300"
+                      )}
+                      disabled={isRecording}
+                    />
+                    {titleError && (
+                      <div className="absolute right-0 top-0 h-full flex items-center pr-3">
+                        <AlertCircle className="h-5 w-5 text-red-500" />
+                      </div>
                     )}
-                    disabled={isRecording}
-                  />
+                  </div>
                   {titleError && (
-                    <div className="absolute right-0 top-0 h-full flex items-center pr-3">
-                      <AlertCircle className="h-5 w-5 text-red-500" />
-                    </div>
+                    <p className="mt-2 text-sm text-red-600">{titleError}</p>
                   )}
                 </div>
-                {titleError && (
-                  <p className="mt-2 text-sm text-red-600">{titleError}</p>
+
+                {/* Folder selector */}
+                {folders.length > 0 && (
+                  <div>
+                    <FolderSelect
+                      currentFolderId={selectedFolder}
+                      onFolderChange={setSelectedFolder}
+                      disabled={isRecording || isSaving}
+                    />
+                  </div>
                 )}
-              </div>
 
-              {/* Folder selector */}
-              {folders.length > 0 && (
+                {/* Participants section */}
                 <div>
-                  <FolderSelect
-                    currentFolderId={selectedFolder}
-                    onFolderChange={setSelectedFolder}
-                    disabled={isRecording || isSaving}
-                  />
-                </div>
-              )}
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Legg til deltakere (valgfritt)
+                  </label>
 
-              {/* Participants section */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Legg til deltakere (valgfritt)
-                </label>
-
-                <div className="space-y-3 mb-4">
-                  {participants.map((participant) => (
-                    <div
-                      key={participant.id}
-                      className="flex items-center justify-between p-3 rounded-lg border border-gray-200 bg-gray-50"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 rounded-full bg-violet-100">
-                          <UserPlus className="h-4 w-4 text-violet-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium text-sm">
-                            {participant.name}
-                          </p>
-                          {participant.email && (
-                            <p className="text-sm text-gray-600">
-                              {participant.email}
+                  <div className="space-y-3 mb-4">
+                    {participants.map((participant) => (
+                      <div
+                        key={participant.id}
+                        className="flex items-center justify-between p-3 rounded-lg border border-gray-200 bg-gray-50"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 rounded-full bg-violet-100">
+                            <UserPlus className="h-4 w-4 text-violet-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">
+                              {participant.name}
                             </p>
-                          )}
+                            {participant.email && (
+                              <p className="text-sm text-gray-600">
+                                {participant.email}
+                              </p>
+                            )}
+                          </div>
                         </div>
+                        <button
+                          onClick={() =>
+                            handleRemoveParticipant(participant.id)
+                          }
+                          className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex space-x-2">
+                      <div className="flex-1">
+                        <input
+                          type="text"
+                          value={newParticipant.name}
+                          onChange={(e) =>
+                            setNewParticipant((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                          placeholder="Navn"
+                          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-violet-500 focus:ring-violet-500"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <input
+                          type="email"
+                          value={newParticipant.email}
+                          onChange={(e) =>
+                            setNewParticipant((prev) => ({
+                              ...prev,
+                              email: e.target.value,
+                            }))
+                          }
+                          placeholder="E-post (valgfritt)"
+                          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-violet-500 focus:ring-violet-500"
+                        />
                       </div>
                       <button
-                        onClick={() => handleRemoveParticipant(participant.id)}
-                        className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50"
+                        onClick={handleAddParticipant}
+                        className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <UserPlus className="h-5 w-5" />
                       </button>
                     </div>
-                  ))}
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex space-x-2">
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        value={newParticipant.name}
-                        onChange={(e) =>
-                          setNewParticipant((prev) => ({
-                            ...prev,
-                            name: e.target.value,
-                          }))
-                        }
-                        placeholder="Navn"
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-violet-500 focus:ring-violet-500"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <input
-                        type="email"
-                        value={newParticipant.email}
-                        onChange={(e) =>
-                          setNewParticipant((prev) => ({
-                            ...prev,
-                            email: e.target.value,
-                          }))
-                        }
-                        placeholder="E-post (valgfritt)"
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-violet-500 focus:ring-violet-500"
-                      />
-                    </div>
-                    <button
-                      onClick={handleAddParticipant}
-                      className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
-                    >
-                      <UserPlus className="h-5 w-5" />
-                    </button>
-                  </div>
-                  {participantError && (
-                    <p className="text-sm text-red-600">{participantError}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Recording/Processing UI */}
-          <div className="flex flex-col items-center justify-center mt-6">
-            {isRecording ? (
-              <div className="flex flex-col items-center">
-                {audioStream && <AudioVisualizer stream={audioStream} />}
-                <p className="text-sm text-gray-500 mt-2">{recordingTitle}</p>
-              </div>
-            ) : isProcessing || isSaving || modalStatus !== "idle" ? (
-              <div className="flex flex-col items-center">
-                <div className="relative">
-                  <div className="w-24 h-24">
-                    <svg className="w-full h-full" viewBox="0 0 100 100">
-                      <circle
-                        className="text-gray-200"
-                        strokeWidth="8"
-                        stroke="currentColor"
-                        fill="transparent"
-                        r="42"
-                        cx="50"
-                        cy="50"
-                      />
-                      <circle
-                        className={cn(
-                          "transition-all duration-300",
-                          modalStatus === "error"
-                            ? "text-red-600"
-                            : "text-violet-600"
-                        )}
-                        strokeWidth="8"
-                        strokeLinecap="round"
-                        stroke="currentColor"
-                        fill="transparent"
-                        r="42"
-                        cx="50"
-                        cy="50"
-                        style={{
-                          strokeDasharray: 264,
-                          strokeDashoffset:
-                            264 -
-                            ((modalStatus === "uploading"
-                              ? uploadProgress
-                              : uploadProgress) /
-                              100) *
-                              264,
-                        }}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-lg font-medium">
-                      {modalStatus === "uploading"
-                        ? uploadProgress
-                        : uploadProgress}
-                      %
-                    </span>
+                    {participantError && (
+                      <p className="text-sm text-red-600">{participantError}</p>
+                    )}
                   </div>
                 </div>
-                <p className="text-gray-600 mt-4">
-                  {STATUS_DESCRIPTIONS[modalStatus]}
-                </p>
               </div>
-            ) : audioBlob ? (
-              <div className="flex flex-col items-center">
-                <p className="text-gray-600 mb-4">Opptak fullført</p>
+            )}
+
+            {/* Recording/Processing UI */}
+            <div className="flex flex-col items-center justify-center mt-6">
+              {isRecording ? (
+                <div className="flex flex-col items-center">
+                  {audioStream && <AudioVisualizer stream={audioStream} />}
+                  <p className="text-sm text-gray-500 mt-2">{recordingTitle}</p>
+                </div>
+              ) : isProcessing || isSaving || modalStatus !== "idle" ? (
+                <div className="flex flex-col items-center">
+                  <div className="relative">
+                    <div className="w-24 h-24">
+                      <svg className="w-full h-full" viewBox="0 0 100 100">
+                        <circle
+                          className="text-gray-200"
+                          strokeWidth="8"
+                          stroke="currentColor"
+                          fill="transparent"
+                          r="42"
+                          cx="50"
+                          cy="50"
+                        />
+                        <circle
+                          className={cn(
+                            "transition-all duration-300",
+                            modalStatus === "error"
+                              ? "text-red-600"
+                              : "text-violet-600"
+                          )}
+                          strokeWidth="8"
+                          strokeLinecap="round"
+                          stroke="currentColor"
+                          fill="transparent"
+                          r="42"
+                          cx="50"
+                          cy="50"
+                          style={{
+                            strokeDasharray: 264,
+                            strokeDashoffset:
+                              264 -
+                              ((modalStatus === "uploading"
+                                ? uploadProgress
+                                : uploadProgress) /
+                                100) *
+                                264,
+                          }}
+                        />
+                      </svg>
+                      <span className="absolute inset-0 flex items-center justify-center text-lg font-medium">
+                        {modalStatus === "uploading"
+                          ? uploadProgress
+                          : uploadProgress}
+                        %
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 mt-4">
+                    {STATUS_DESCRIPTIONS[modalStatus]}
+                  </p>
+                </div>
+              ) : audioBlob ? (
+                <div className="flex flex-col items-center">
+                  <p className="text-gray-600 mb-4">Opptak fullført</p>
+                  <button
+                    onClick={handleUpload}
+                    disabled={isLoading || isSaving}
+                    className="button-primary px-8 py-4 text-lg flex items-center"
+                  >
+                    {isLoading || isSaving ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2" />
+                        Lagrer...
+                      </>
+                    ) : (
+                      "Lagre opptak"
+                    )}
+                  </button>
+                </div>
+              ) : (
                 <button
-                  onClick={handleUpload}
-                  disabled={isLoading || isSaving}
-                  className="button-primary px-8 py-4 text-lg flex items-center"
+                  onClick={handleStartRecording}
+                  disabled={isLoading || !recordingTitle.trim()}
+                  className={cn(
+                    "button-primary px-8 py-4 text-lg flex items-center",
+                    !recordingTitle.trim() && "opacity-50 cursor-not-allowed"
+                  )}
                 >
-                  {isLoading || isSaving ? (
+                  {isLoading ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2" />
-                      Lagrer...
+                      Starter...
                     </>
                   ) : (
-                    "Lagre opptak"
+                    <>
+                      <Mic className="h-6 w-6 mr-2" />
+                      Start opptak
+                    </>
                   )}
                 </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleStartRecording}
-                disabled={isLoading || !recordingTitle.trim()}
-                className={cn(
-                  "button-primary px-8 py-4 text-lg flex items-center",
-                  !recordingTitle.trim() && "opacity-50 cursor-not-allowed"
-                )}
-              >
-                {isLoading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2" />
-                    Starter...
-                  </>
-                ) : (
-                  <>
-                    <Mic className="h-6 w-6 mr-2" />
-                    Start opptak
-                  </>
-                )}
-              </button>
-            )}
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="p-4 border-t border-gray-200 flex-shrink-0">
-          <div className="flex items-center justify-between">
-            {isRecording && (
-              <button
-                onClick={handleStopRecording}
-                className="button-primary bg-red-600 hover:bg-red-700"
-              >
-                Stopp opptak
-              </button>
-            )}
+          {/* Footer */}
+          <div className="p-4 border-t border-gray-200 flex-shrink-0">
+            <div className="flex items-center justify-between">
+              {isRecording && (
+                <button
+                  onClick={handleStopRecording}
+                  className="button-primary bg-red-600 hover:bg-red-700"
+                >
+                  Stopp opptak
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <ToastViewport />
+    </ToastProvider>
   );
 }

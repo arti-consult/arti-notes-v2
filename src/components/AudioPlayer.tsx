@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState, useRef, useEffect } from "react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { cn } from "@/lib/utils";
 interface Point {
   x: number;
   y: number;
@@ -13,7 +13,14 @@ interface AudioPlayerProps {
   initialDuration?: number;
   className?: string;
 }
-export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, initialDuration, className }: AudioPlayerProps) {
+export default function AudioPlayer({
+  src,
+  onTimeUpdate,
+  onSeek,
+  onAudioRef,
+  initialDuration,
+  className,
+}: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(initialDuration || 0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -25,28 +32,32 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const progressFillRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number>(0);
   const lastUpdateTimeRef = useRef<number>(0);
 
   // Update time more frequently for smoother progress
   const updateTime = () => {
     if (!audioRef.current || !isPlaying) return;
-    
+
     const now = performance.now();
     // Update every 8ms for smoother animation
     if (now - lastUpdateTimeRef.current >= 8) {
       setCurrentTime(audioRef.current.currentTime);
       onTimeUpdate?.(audioRef.current.currentTime);
-      
+
       // Directly update progress bar fill for smoother animation
-      if (progressFillRef.current && Number.isFinite(duration) && duration > 0) {
-        const percentage = (audioRef.current.currentTime / duration * 100);
+      if (
+        progressFillRef.current &&
+        Number.isFinite(duration) &&
+        duration > 0
+      ) {
+        const percentage = (audioRef.current.currentTime / duration) * 100;
         progressFillRef.current.style.width = `${percentage}%`;
       }
-      
+
       lastUpdateTimeRef.current = now;
     }
-    
+
     animationFrameRef.current = requestAnimationFrame(updateTime);
   };
 
@@ -56,7 +67,7 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
     setError(null);
     setCurrentTime(0);
     setIsPlaying(false);
-    
+
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
     }
@@ -64,10 +75,10 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
     const audio = audioRef.current;
     if (!audio) return;
     audio.crossOrigin = "anonymous";
-    
+
     // Pass audio ref to parent
     onAudioRef?.(audio);
-    
+
     const handleLoadedMetadata = () => {
       if (Number.isFinite(audio.duration) && !isNaN(audio.duration)) {
         // Only update duration if not provided from database
@@ -96,20 +107,20 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
       }
     };
     const handleError = () => {
-      console.error('Audio loading error:', audio.error);
-      let errorMessage = 'Kunne ikke laste lydfilen';
+      console.error("Audio loading error:", audio.error);
+      let errorMessage = "Kunne ikke laste lydfilen";
       if (audio.error?.code === 4) {
-        errorMessage = 'Lydformatet støttes ikke av nettleseren';
+        errorMessage = "Lydformatet støttes ikke av nettleseren";
       }
       setError(errorMessage);
       setIsLoading(false);
       setIsReady(false);
     };
-    audio.addEventListener('loadstart', handleLoadStart);
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('canplay', handleCanPlay);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('error', handleError);
+    audio.addEventListener("loadstart", handleLoadStart);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("canplay", handleCanPlay);
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("error", handleError);
     // Check if audio is already loaded
     if (audio.readyState >= 2) {
       setIsLoading(false);
@@ -123,11 +134,11 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
-      audio.removeEventListener('loadstart', handleLoadStart);
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('canplay', handleCanPlay);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('error', handleError);
+      audio.removeEventListener("loadstart", handleLoadStart);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("error", handleError);
       audio.pause();
     };
   }, [src]);
@@ -159,8 +170,8 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
         setIsPlaying(true);
       }
     } catch (err) {
-      console.error('Playback error:', err);
-      setError('Kunne ikke spille av lydfilen');
+      console.error("Playback error:", err);
+      setError("Kunne ikke spille av lydfilen");
       setIsPlaying(false);
     }
   };
@@ -178,26 +189,27 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
       setCurrentTime(newTime);
       onTimeUpdate?.(newTime);
     }
-    document.addEventListener('mousemove', handleProgressMouseMove);
-    document.addEventListener('mouseup', handleProgressMouseUp);
+    document.addEventListener("mousemove", handleProgressMouseMove);
+    document.addEventListener("mouseup", handleProgressMouseUp);
   };
   const handleProgressMouseMove = (event: MouseEvent) => {
-    if (!audioRef.current || !progressRef.current || !isDragging || !isReady) return;
+    if (!audioRef.current || !progressRef.current || !isDragging || !isReady)
+      return;
     event.preventDefault();
-    
+
     const rect = progressRef.current.getBoundingClientRect();
     const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
     const percentage = x / rect.width;
     const newTime = Math.max(0, Math.min(percentage * duration, duration));
-    
+
     if (Number.isFinite(newTime)) {
       setCurrentTime(newTime);
-      
+
       // Update progress fill directly during drag
       if (progressFillRef.current) {
-        progressFillRef.current.style.width = `${(newTime / duration * 100)}%`;
+        progressFillRef.current.style.width = `${(newTime / duration) * 100}%`;
       }
-      
+
       if (audioRef.current) {
         audioRef.current.currentTime = newTime;
         onTimeUpdate?.(newTime);
@@ -212,21 +224,22 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
     if (wasPlaying && audioRef.current) {
       audioRef.current.play().catch(console.error);
     }
-    document.removeEventListener('mousemove', handleProgressMouseMove);
-    document.removeEventListener('mouseup', handleProgressMouseUp);
+    document.removeEventListener("mousemove", handleProgressMouseMove);
+    document.removeEventListener("mouseup", handleProgressMouseUp);
   };
   const handleProgressClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (isDragging || !isReady) return;
     event.preventDefault();
     const progressBar = progressRef.current;
     const audio = audioRef.current;
-    if (!progressBar || !audio || !Number.isFinite(duration) || duration <= 0) return;
-    
+    if (!progressBar || !audio || !Number.isFinite(duration) || duration <= 0)
+      return;
+
     const rect = progressBar.getBoundingClientRect();
     const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
     const percentage = x / rect.width;
     const newTime = Math.max(0, Math.min(percentage * duration, duration));
-    
+
     if (Number.isFinite(newTime)) {
       audio.currentTime = newTime;
       setCurrentTime(newTime);
@@ -247,7 +260,7 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
         setIsPlaying(true);
       }
     } catch (err) {
-      console.error('Error seeking:', err);
+      console.error("Error seeking:", err);
     }
   };
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -258,19 +271,16 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
     }
   };
   const formatTime = (seconds: number) => {
-    if (!Number.isFinite(seconds)) return '0:00';
+    if (!Number.isFinite(seconds)) return "0:00";
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
   return (
-    <div className={cn('bg-white rounded-xl p-4 shadow-sm relative', className)}>
-      <audio
-        ref={audioRef}
-        src={src}
-        preload="auto"
-        crossOrigin="anonymous"
-      />
+    <div
+      className={cn("bg-white rounded-xl p-4 shadow-sm relative", className)}
+    >
+      <audio ref={audioRef} src={src} preload="auto" crossOrigin="anonymous" />
       {error ? (
         <div className="text-red-600 text-sm text-center py-2">{error}</div>
       ) : (
@@ -284,7 +294,7 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
                 "p-3 rounded-full text-white transition-colors",
                 isReady ? "bg-violet-600 hover:bg-violet-700" : "bg-gray-400"
               )}
-              aria-label={isPlaying ? 'Pause' : 'Spill av'}
+              aria-label={isPlaying ? "Pause" : "Spill av"}
             >
               {isPlaying ? (
                 <Pause className="h-5 w-5" />
@@ -331,15 +341,17 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
               <div
                 ref={progressFillRef}
                 className="absolute h-full bg-violet-600 rounded-full transition-all group-hover:bg-violet-700"
-                style={{ width: `${(currentTime / duration * 100) || 0}%` }}
+                style={{ width: `${(currentTime / duration) * 100 || 0}%` }}
               />
               {/* Player Head */}
               <div
                 className={cn(
                   "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white border-2 border-violet-600 transition-opacity",
-                  isDragging ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                  isDragging
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
                 )}
-                style={{ left: `${(currentTime / duration * 100) || 0}%` }}
+                style={{ left: `${(currentTime / duration) * 100 || 0}%` }}
               />
             </div>
             {/* Time Display */}
@@ -351,7 +363,9 @@ export default function AudioPlayer({ src, onTimeUpdate, onSeek, onAudioRef, ini
           {isLoading && !isPlaying && (
             <div className="absolute inset-0 flex items-center justify-center bg-white/75 rounded-xl">
               <div className="animate-spin rounded-full h-6 w-6 border-2 border-violet-600 border-t-transparent" />
-              <span className="ml-2 text-sm text-gray-600">Laster inn lydfil...</span>
+              <span className="ml-2 text-sm text-gray-600">
+                Laster inn lydfil...
+              </span>
             </div>
           )}
         </>
