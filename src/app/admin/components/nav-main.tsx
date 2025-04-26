@@ -7,6 +7,9 @@ import {
   Brain,
   Activity,
   Shield,
+  Settings,
+  KeyRound,
+  UserCog,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -46,6 +49,21 @@ const navigationItems = [
     title: "System Health",
     url: "/admin/system-health",
     icon: Activity,
+  },
+  {
+    title: "Settings",
+    url: "/admin/settings",
+    icon: Settings,
+  },
+  {
+    title: "Roles",
+    url: "/admin/roles",
+    icon: UserCog,
+  },
+  {
+    title: "Permissions",
+    url: "/admin/permissions",
+    icon: KeyRound,
   },
   {
     title: "Access",
