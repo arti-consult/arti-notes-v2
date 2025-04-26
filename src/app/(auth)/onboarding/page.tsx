@@ -1,6 +1,6 @@
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { OnboardingSteps } from "./components/OnboardingSteps";
-import { useAuth } from "@/contexts/AuthContext";
+
 import { Suspense } from "react";
 import { Loader } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";

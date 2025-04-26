@@ -15,6 +15,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Plus, ChevronDown, ChevronUp } from "lucide-react";
 import { getRoles, updateRole, createRole, deleteRole } from "../actions/roles";
 import { getPermissions } from "../../permissions/actions/permissions";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Role {
   id: string;
@@ -36,6 +44,9 @@ export function RolesForm() {
   const [error, setError] = useState<string | null>(null);
   const [newRole, setNewRole] = useState({ name: "", description: "" });
   const [expandedRole, setExpandedRole] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [roleToDelete, setRoleToDelete] = useState<string | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
 
   useEffect(() => {
     loadData();
@@ -73,6 +84,9 @@ export function RolesForm() {
     try {
       await deleteRole(id);
       await loadData();
+      setDeleteDialogOpen(false);
+      setRoleToDelete(null);
+      setDeleteConfirmation("");
     } catch (err) {
       console.error("Failed to delete role:", err);
     }
@@ -112,6 +126,11 @@ export function RolesForm() {
       return role;
     });
     setRoles(updatedRoles);
+  };
+
+  const openDeleteDialog = (id: string) => {
+    setRoleToDelete(id);
+    setDeleteDialogOpen(true);
   };
 
   if (loading) {
@@ -184,7 +203,7 @@ export function RolesForm() {
                     Save
                   </Button>
                   <Button
-                    onClick={() => handleDelete(role.id)}
+                    onClick={() => openDeleteDialog(role.id)}
                     size="sm"
                     variant="destructive"
                   >
@@ -250,6 +269,47 @@ export function RolesForm() {
           ))}
         </div>
       </CardContent>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Role</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. Please type "delete" to confirm.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <Input
+              placeholder="Type 'delete' to confirm"
+              value={deleteConfirmation}
+              onChange={(e) => setDeleteConfirmation(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteDialogOpen(false);
+                setRoleToDelete(null);
+                setDeleteConfirmation("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                if (deleteConfirmation === "delete" && roleToDelete) {
+                  handleDelete(roleToDelete);
+                }
+              }}
+              disabled={deleteConfirmation !== "delete"}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
