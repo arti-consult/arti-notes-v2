@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import {
   Search,
-  Calendar as CalendarIcon,
   Users,
   Filter,
   ChevronDown,
@@ -25,7 +24,6 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { MeetingList, Meeting } from "@/app/dashboard/components/meeting-list";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
 
 export default function MeetingsPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,7 +32,6 @@ export default function MeetingsPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -59,18 +56,22 @@ export default function MeetingsPage() {
         }
 
         // Transform the data to match the Meeting type
-        const transformedMeetings: Meeting[] = (data || []).map(meeting => {
-          const startTime = meeting.start_time ? new Date(meeting.start_time) : new Date(meeting.created_at);
-          const endTime = meeting.end_time ? new Date(meeting.end_time) : new Date(startTime.getTime() + 3600000);
-          
+        const transformedMeetings: Meeting[] = (data || []).map((meeting) => {
+          const startTime = meeting.start_time
+            ? new Date(meeting.start_time)
+            : new Date(meeting.created_at);
+          const endTime = meeting.end_time
+            ? new Date(meeting.end_time)
+            : new Date(startTime.getTime() + 3600000);
+
           return {
             id: meeting.id,
             title: meeting.title,
             startTime,
             endTime,
             meeting_type: meeting.meeting_type,
-            transcription_status: meeting.transcription_status || 'pending',
-            summary_status: meeting.summary_status || 'pending',
+            transcription_status: meeting.transcription_status || "pending",
+            summary_status: meeting.summary_status || "pending",
             participants: [
               { name: "Ola Nordmann", avatar: "/avatars/01.png" },
               { name: "Kari Hansen" },
@@ -178,7 +179,9 @@ export default function MeetingsPage() {
                   <SelectContent>
                     <SelectItem value="all">Alle typer</SelectItem>
                     <SelectItem value="live">Live opptak</SelectItem>
-                    <SelectItem value="microsoft-teams">Microsoft Teams</SelectItem>
+                    <SelectItem value="microsoft-teams">
+                      Microsoft Teams
+                    </SelectItem>
                     <SelectItem value="google-meets">Google Meet</SelectItem>
                   </SelectContent>
                 </Select>
