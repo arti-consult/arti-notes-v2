@@ -3,29 +3,17 @@
 import { useState, useEffect } from "react";
 import {
   User,
-  Sparkles,
-  Users,
   Settings,
-  Plus,
-  Calendar,
   Mic,
   Settings2,
-  Clock,
-  MoreVertical,
-  FileText,
-  Download,
-  Bot,
   List,
   CreditCard,
   LogOut,
-  Loader2,
-  RefreshCw,
 } from "lucide-react";
 import { SearchDialog } from "./components/search-dialog";
 import { PurchaseCreditsDialog } from "./components/purchase-credits-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -51,10 +39,10 @@ import { MeetingList, Meeting } from "./components/meeting-list";
 import { UpcomingMeetings } from "./components/upcoming-meetings";
 
 export default function DashboardPage() {
-  const [setIsUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [showLiveMeeting, setShowLiveMeeting] = useState(false);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [setCalendarEvents] = useState<Meeting[]>([]);
+  const [calendarEvents, setCalendarEvents] = useState<Meeting[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -172,11 +160,6 @@ export default function DashboardPage() {
     setTimeout(() => {
       setIsUploading(false);
     }, 2000);
-  };
-
-  const handleNewMeeting = () => {
-    // TODO: Implement new meeting logic
-    console.log("Starting new meeting");
   };
 
   return (
