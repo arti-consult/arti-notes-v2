@@ -9,11 +9,7 @@ import {
   getClientAnonymousId,
   setClientAnonymousId,
   setClientUTMData,
-  setClientVisitData,
 } from "@/utils/tracking/client";
-
-const ANONYMOUS_ID_COOKIE = "arti_anonymous_id";
-const COOKIE_EXPIRY = 365; // 1 year
 
 export default function TrackingProvider({
   children,
