@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { Role, Permission, RoleWithPermissions } from "@/types/auth";
+import { RoleWithPermissions } from "@/types/auth";
 
 interface DatabaseRole {
   id: string;
@@ -108,6 +108,7 @@ export async function hasPermission(
   // Use the database function we created
   const { data, error } = await supabase.rpc("has_permission", {
     permission_name: permissionName,
+    user_id: userId,
   });
 
   if (error) {

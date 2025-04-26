@@ -1,11 +1,7 @@
 // src/utils/stripe/server.ts
 import { Stripe } from "stripe";
 import { createClient } from "@/utils/supabase/server";
-import {
-  PricingTier,
-  CreditPackage,
-  UserSubscription,
-} from "@/types/subscription";
+import { PricingTier, UserSubscription } from "@/types/subscription";
 
 export type StripeSubscription = Stripe.Response<Stripe.Subscription> & {
   current_period_start: number;

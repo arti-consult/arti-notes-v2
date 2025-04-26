@@ -2,7 +2,6 @@
 import { google } from "googleapis";
 import { createClient as createClientClient } from "@/utils/supabase/client";
 import { createClient as createClientServer } from "@/utils/supabase/server";
-import { OAuth2Client } from "google-auth-library";
 import { CalendarEvent } from "@/types/calendar";
 import { getGoogleAccessToken } from "./auth";
 

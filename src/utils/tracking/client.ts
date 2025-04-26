@@ -3,7 +3,6 @@ import {
   UTM_COOKIE_NAME,
   VISIT_COOKIE_NAME,
   ANONYMOUS_ID_COOKIE,
-  COOKIE_OPTIONS,
 } from "./constants";
 
 /**

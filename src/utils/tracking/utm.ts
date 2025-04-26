@@ -6,7 +6,6 @@ import {
   setClientVisitData,
   clearClientTrackingCookies,
 } from "./client";
-import { UTM_COOKIE_NAME, VISIT_COOKIE_NAME } from "./constants";
 
 export interface UTMParams {
   utm_source?: string;
@@ -22,12 +21,14 @@ export interface UTMParams {
 /**
  * Capture UTM parameters from URL and store in cookies
  */
-export async function captureUTMParameters(searchParamsString?: string): Promise<UTMParams> {
+export async function captureUTMParameters(
+  searchParamsString?: string
+): Promise<UTMParams> {
   try {
     // If we have a search params string, parse it directly
     if (searchParamsString) {
       const searchParams = new URLSearchParams(searchParamsString);
-      
+
       // Extract UTM parameters
       const utmParams: UTMParams = {
         utm_source: searchParams.get("utm_source") || undefined,
@@ -49,7 +50,7 @@ export async function captureUTMParameters(searchParamsString?: string): Promise
     if (typeof window !== "undefined") {
       const currentUrl = window.location.href;
       const urlObj = new URL(currentUrl);
-      
+
       // Extract UTM parameters
       const utmParams: UTMParams = {
         utm_source: urlObj.searchParams.get("utm_source") || undefined,
