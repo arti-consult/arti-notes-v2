@@ -29,6 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Role {
   id: string;
@@ -53,6 +54,7 @@ export function RolesForm() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [roleToDelete, setRoleToDelete] = useState<string | null>(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const { toast } = useToast();
 
   useEffect(() => {
     loadData();
@@ -80,6 +82,10 @@ export function RolesForm() {
         name: role.name,
         description: role.description,
         permissions: role.permissions,
+      });
+      toast({
+        title: "Role updated",
+        description: `The role '${role.name}' was updated successfully.`,
       });
     } catch (err) {
       console.error("Failed to update role:", err);
