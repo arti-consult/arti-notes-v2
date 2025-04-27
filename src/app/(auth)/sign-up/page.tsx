@@ -20,8 +20,10 @@ function SignUpContent() {
   const supabase = createClient();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const checkSession = async () => {
       const {
         data: { session },
@@ -34,6 +36,10 @@ function SignUpContent() {
 
     checkSession();
   }, [router]);
+
+  if (!isClient) {
+    return null;
+  }
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
