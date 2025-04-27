@@ -7,15 +7,13 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-function SignUpForm() {
+function SignUpFormContent() {
   const router = useRouter();
   const supabase = createClient();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
     const checkSession = async () => {
       const {
         data: { session },
@@ -28,10 +26,6 @@ function SignUpForm() {
 
     checkSession();
   }, [router]);
-
-  if (!isClient) {
-    return null;
-  }
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
@@ -224,16 +218,25 @@ function SignUpForm() {
   );
 }
 
+function SignUpFormFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900">
+            Create your account
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">Loading...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function SignUpPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
-      <SignUpForm />
+    <Suspense fallback={<SignUpFormFallback />}>
+      <SignUpFormContent />
     </Suspense>
   );
 }
