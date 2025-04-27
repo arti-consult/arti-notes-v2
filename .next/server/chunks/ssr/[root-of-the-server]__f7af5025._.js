@@ -209,7 +209,7 @@ const AuthProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/src/contexts/AuthContext.tsx",
-        lineNumber: 144,
+        lineNumber: 146,
         columnNumber: 10
     }, this);
 };
@@ -422,8 +422,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$tracking$2f$
 ;
 ;
 ;
-const ANONYMOUS_ID_COOKIE = "arti_anonymous_id";
-const COOKIE_EXPIRY = 365; // 1 year
 function TrackingProvider({ children }) {
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["usePathname"])();
     const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSearchParams"])();

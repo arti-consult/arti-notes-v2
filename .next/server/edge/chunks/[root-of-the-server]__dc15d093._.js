@@ -72,7 +72,7 @@ async function middleware(request) {
                 return request.cookies.getAll();
             },
             setAll (cookiesToSet) {
-                cookiesToSet.forEach(({ name, value, options })=>request.cookies.set(name, value));
+                cookiesToSet.forEach(({ name, value })=>request.cookies.set(name, value));
                 response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next({
                     request: {
                         headers: request.headers
