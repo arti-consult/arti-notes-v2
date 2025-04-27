@@ -3,7 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { Stripe } from "stripe";
 import { createClient } from "@/utils/supabase/server";
 import { StripeSubscription } from "@/utils/stripe/server";
-import { getStripeSecretKey } from "@/lib/config/stripe";
+import {
+  getStripeSecretKey,
+  getStripeWebhookSecret,
+} from "@/lib/config/stripe";
 
 if (!process.env.STRIPE_WEBHOOK_SECRET) {
   throw new Error("Missing STRIPE_WEBHOOK_SECRET environment variable");
@@ -21,7 +24,7 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      getStripeWebhookSecret()
     );
   } catch (error: any) {
     console.error(`Webhook error: ${error.message}`);
