@@ -3,16 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { Stripe } from "stripe";
 import { createClient } from "@/utils/supabase/server";
 import { StripeSubscription } from "@/utils/stripe/server";
-
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("Missing STRIPE_SECRET_KEY environment variable");
-}
+import { getStripeSecretKey } from "@/lib/config/stripe";
 
 if (!process.env.STRIPE_WEBHOOK_SECRET) {
   throw new Error("Missing STRIPE_WEBHOOK_SECRET environment variable");
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(getStripeSecretKey());
 
 export async function POST(req: NextRequest) {
   const body = await req.text();

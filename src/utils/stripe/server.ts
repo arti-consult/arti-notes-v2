@@ -2,6 +2,7 @@
 import { Stripe } from "stripe";
 import { createClient } from "@/utils/supabase/server";
 import { PricingTier, UserSubscription } from "@/types/subscription";
+import { getStripeSecretKey } from "@/lib/config/stripe";
 
 export type StripeSubscription = Stripe.Response<Stripe.Subscription> & {
   current_period_start: number;
@@ -29,11 +30,7 @@ export const getSubscriptionWithTimestamps = (
   return subscription as unknown as StripeSubscriptionWithTimestamps;
 };
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("Missing STRIPE_SECRET_KEY environment variable");
-}
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(getStripeSecretKey());
 
 /**
  * Get or create a Stripe customer for a user
