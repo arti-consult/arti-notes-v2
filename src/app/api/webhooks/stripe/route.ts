@@ -8,334 +8,346 @@ import {
   getStripeWebhookSecret,
 } from "@/lib/config/stripe";
 
-if (!process.env.STRIPE_WEBHOOK_SECRET) {
-  throw new Error("Missing STRIPE_WEBHOOK_SECRET environment variable");
-}
-
+// Initialize Stripe with the appropriate secret key
 const stripe = new Stripe(getStripeSecretKey());
 
 export async function POST(req: NextRequest) {
-  const body = await req.text();
-  const signature = req.headers.get("stripe-signature") as string;
-
-  let event: Stripe.Event;
-
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      getStripeWebhookSecret()
-    );
-  } catch (error: any) {
-    console.error(`Webhook error: ${error.message}`);
-    return NextResponse.json(
-      { error: `Webhook Error: ${error.message}` },
-      { status: 400 }
-    );
-  }
+    const body = await req.text();
+    const signature = req.headers.get("stripe-signature");
 
-  const supabase = await createClient();
+    if (!signature) {
+      return NextResponse.json(
+        { error: "Missing stripe-signature header" },
+        { status: 400 }
+      );
+    }
 
-  try {
-    // Handle the event
-    switch (event.type) {
-      // Subscription events
-      case "checkout.session.completed": {
-        const session = event.data.object as Stripe.Checkout.Session;
+    let event: Stripe.Event;
 
-        // Handle subscription creation
-        if (session.mode === "subscription" && session.subscription) {
-          const subscription = (await stripe.subscriptions.retrieve(
-            session.subscription as string
-          )) as StripeSubscription;
-          const priceId = subscription.items.data[0].price.id;
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        getStripeWebhookSecret()
+      );
+    } catch (error: any) {
+      console.error(`Webhook signature verification failed: ${error.message}`);
+      return NextResponse.json(
+        { error: `Webhook signature verification failed: ${error.message}` },
+        { status: 400 }
+      );
+    }
 
-          // Find the plan in our database that corresponds to this price
-          const { data: plan } = await supabase
-            .from("pricing_plans")
-            .select("id, name, minutes")
-            .eq("stripe_price_id", priceId)
-            .single();
+    const supabase = await createClient();
 
-          if (!plan) {
-            throw new Error("No matching plan found for price ID");
-          }
+    try {
+      // Handle the event
+      switch (event.type) {
+        // Subscription events
+        case "checkout.session.completed": {
+          const session = event.data.object as Stripe.Checkout.Session;
 
-          // Get the customer's user ID from metadata
-          const customer = (await stripe.customers.retrieve(
-            session.customer as string
-          )) as Stripe.Customer;
-          const userId = customer.metadata?.userId;
+          // Handle subscription creation
+          if (session.mode === "subscription" && session.subscription) {
+            const subscription = (await stripe.subscriptions.retrieve(
+              session.subscription as string
+            )) as StripeSubscription;
+            const priceId = subscription.items.data[0].price.id;
 
-          if (!userId) {
-            throw new Error("No user ID found in customer metadata");
-          }
+            // Find the plan in our database that corresponds to this price
+            const { data: plan } = await supabase
+              .from("pricing_plans")
+              .select("id, name, minutes")
+              .eq("stripe_price_id", priceId)
+              .single();
 
-          // Create the subscription record
-          await supabase.from("subscriptions").insert({
-            user_id: userId,
-            plan_id: plan.id,
-            stripe_subscription_id: subscription.id,
-            status: subscription.status,
-            current_period_start: new Date(
-              subscription.current_period_start * 1000
-            ).toISOString(),
-            current_period_end: new Date(
-              subscription.current_period_end * 1000
-            ).toISOString(),
-            cancel_at_period_end: subscription.cancel_at_period_end,
-            minutes_used: 0,
-            minutes_remaining: plan.minutes,
-            minutes_reset_at: new Date(
-              subscription.current_period_start * 1000
-            ).toISOString(),
-          });
-
-          // Get the role ID for this plan
-          const { data: role } = await supabase
-            .from("roles")
-            .select("id")
-            .eq("name", plan.name.toLowerCase())
-            .single();
-
-          if (role) {
-            // Remove existing non-admin roles
-            const { data: currentRoles } = await supabase
-              .from("user_roles")
-              .select("role_id, roles(name)")
-              .eq("user_id", userId);
-
-            const rolesToDelete =
-              currentRoles
-                ?.filter((r) => (r.roles as any).name !== "admin")
-                .map((r) => r.role_id) || [];
-
-            if (rolesToDelete.length > 0) {
-              await supabase
-                .from("user_roles")
-                .delete()
-                .eq("user_id", userId)
-                .in("role_id", rolesToDelete);
+            if (!plan) {
+              throw new Error("No matching plan found for price ID");
             }
 
-            // Assign the new role
-            await supabase.from("user_roles").insert({
-              user_id: userId,
-              role_id: role.id,
-            });
-          }
-        }
+            // Get the customer's user ID from metadata
+            const customer = (await stripe.customers.retrieve(
+              session.customer as string
+            )) as Stripe.Customer;
+            const userId = customer.metadata?.userId;
 
-        // Handle one-time payment for credit package
-        if (
-          session.mode === "payment" &&
-          session.payment_intent &&
-          session.metadata?.creditPackageId
-        ) {
-          // Get the credit package details
-          const { data: creditPackage } = await supabase
-            .from("credit_packages")
-            .select("minutes")
-            .eq("id", session.metadata.creditPackageId)
-            .single();
+            if (!userId) {
+              throw new Error("No user ID found in customer metadata");
+            }
 
-          if (!creditPackage) {
-            throw new Error("No matching credit package found");
-          }
-
-          // Get the customer's user ID from metadata
-          const customer = (await stripe.customers.retrieve(
-            session.customer as string
-          )) as Stripe.Customer;
-          const userId = customer.metadata?.userId;
-
-          if (!userId) {
-            throw new Error("No user ID found in customer metadata");
-          }
-
-          // Get the user's current subscription
-          const { data: subscription } = await supabase
-            .from("subscriptions")
-            .select("*")
-            .eq("user_id", userId)
-            .single();
-
-          if (subscription) {
-            // Update the subscription with additional minutes
-            await supabase
-              .from("subscriptions")
-              .update({
-                minutes_remaining:
-                  subscription.minutes_remaining + creditPackage.minutes,
-                updated_at: new Date().toISOString(),
-              })
-              .eq("id", subscription.id);
-          } else {
-            // Create a new subscription record if none exists
+            // Create the subscription record
             await supabase.from("subscriptions").insert({
               user_id: userId,
-              status: "active",
+              plan_id: plan.id,
+              stripe_subscription_id: subscription.id,
+              status: subscription.status,
+              current_period_start: new Date(
+                subscription.current_period_start * 1000
+              ).toISOString(),
+              current_period_end: new Date(
+                subscription.current_period_end * 1000
+              ).toISOString(),
+              cancel_at_period_end: subscription.cancel_at_period_end,
               minutes_used: 0,
-              minutes_remaining: creditPackage.minutes,
-              minutes_reset_at: new Date().toISOString(),
+              minutes_remaining: plan.minutes,
+              minutes_reset_at: new Date(
+                subscription.current_period_start * 1000
+              ).toISOString(),
             });
-          }
-        }
 
-        break;
-      }
+            // Get the role ID for this plan
+            const { data: role } = await supabase
+              .from("roles")
+              .select("id")
+              .eq("name", plan.name.toLowerCase())
+              .single();
 
-      case "customer.subscription.updated": {
-        const subscription = event.data.object as StripeSubscription;
-
-        // Update the subscription in our database
-        await supabase
-          .from("subscriptions")
-          .update({
-            status: subscription.status,
-            current_period_start: new Date(
-              subscription.current_period_start * 1000
-            ).toISOString(),
-            current_period_end: new Date(
-              subscription.current_period_end * 1000
-            ).toISOString(),
-            cancel_at_period_end: subscription.cancel_at_period_end,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("stripe_subscription_id", subscription.id);
-
-        break;
-      }
-
-      case "customer.subscription.deleted": {
-        const subscription = event.data.object as StripeSubscription;
-
-        // Get user ID from metadata
-        const userId = subscription.metadata?.userId;
-
-        // Update subscription to canceled
-        await supabase
-          .from("subscriptions")
-          .update({
-            status: "canceled",
-            updated_at: new Date().toISOString(),
-          })
-          .eq("stripe_subscription_id", subscription.id);
-
-        // When subscription is deleted, assign free role
-        if (userId) {
-          const { data: freeRole } = await supabase
-            .from("roles")
-            .select("id")
-            .eq("name", "free")
-            .single();
-
-          if (freeRole) {
-            // Remove existing non-admin roles
-            const { data: currentRoles } = await supabase
-              .from("user_roles")
-              .select("role_id, roles(name)")
-              .eq("user_id", userId);
-
-            const rolesToDelete =
-              currentRoles
-                ?.filter((r) => (r.roles as any).name !== "admin")
-                .map((r) => r.role_id) || [];
-
-            if (rolesToDelete.length > 0) {
-              await supabase
+            if (role) {
+              // Remove existing non-admin roles
+              const { data: currentRoles } = await supabase
                 .from("user_roles")
-                .delete()
-                .eq("user_id", userId)
-                .in("role_id", rolesToDelete);
+                .select("role_id, roles(name)")
+                .eq("user_id", userId);
+
+              const rolesToDelete =
+                currentRoles
+                  ?.filter((r) => (r.roles as any).name !== "admin")
+                  .map((r) => r.role_id) || [];
+
+              if (rolesToDelete.length > 0) {
+                await supabase
+                  .from("user_roles")
+                  .delete()
+                  .eq("user_id", userId)
+                  .in("role_id", rolesToDelete);
+              }
+
+              // Assign the new role
+              await supabase.from("user_roles").insert({
+                user_id: userId,
+                role_id: role.id,
+              });
+            }
+          }
+
+          // Handle one-time payment for credit package
+          if (
+            session.mode === "payment" &&
+            session.payment_intent &&
+            session.metadata?.creditPackageId
+          ) {
+            // Get the credit package details
+            const { data: creditPackage } = await supabase
+              .from("credit_packages")
+              .select("minutes")
+              .eq("id", session.metadata.creditPackageId)
+              .single();
+
+            if (!creditPackage) {
+              throw new Error("No matching credit package found");
             }
 
-            // Assign the free role
-            await supabase.from("user_roles").insert({
-              user_id: userId,
-              role_id: freeRole.id,
-            });
-          }
-        }
+            // Get the customer's user ID from metadata
+            const customer = (await stripe.customers.retrieve(
+              session.customer as string
+            )) as Stripe.Customer;
+            const userId = customer.metadata?.userId;
 
-        break;
-      }
+            if (!userId) {
+              throw new Error("No user ID found in customer metadata");
+            }
 
-      case "invoice.payment_succeeded": {
-        const invoice = event.data.object as Stripe.Invoice & {
-          subscription: string;
-        };
-        const subscriptionId = invoice.subscription;
-
-        if (subscriptionId) {
-          const subscription = (await stripe.subscriptions.retrieve(
-            subscriptionId
-          )) as StripeSubscription;
-
-          // If this is a renewal, reset the minutes quota
-          const currentPeriodStart = new Date(
-            subscription.current_period_start * 1000
-          ).toISOString();
-
-          // Get subscription from database
-          const { data: subscriptionData } = await supabase
-            .from("subscriptions")
-            .select("*, pricing_plans(*)")
-            .eq("stripe_subscription_id", subscriptionId)
-            .single();
-
-          if (subscriptionData) {
-            const pricingPlan = subscriptionData.pricing_plans;
-
-            // Reset minutes for the new billing period
-            await supabase
+            // Get the user's current subscription
+            const { data: subscription } = await supabase
               .from("subscriptions")
-              .update({
+              .select("*")
+              .eq("user_id", userId)
+              .single();
+
+            if (subscription) {
+              // Update the subscription with additional minutes
+              await supabase
+                .from("subscriptions")
+                .update({
+                  minutes_remaining:
+                    subscription.minutes_remaining + creditPackage.minutes,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("id", subscription.id);
+            } else {
+              // Create a new subscription record if none exists
+              await supabase.from("subscriptions").insert({
+                user_id: userId,
+                status: "active",
                 minutes_used: 0,
-                minutes_remaining: pricingPlan.minutes,
-                minutes_reset_at: currentPeriodStart,
-                status: subscription.status,
-                current_period_start: new Date(
-                  subscription.current_period_start * 1000
-                ).toISOString(),
-                current_period_end: new Date(
-                  subscription.current_period_end * 1000
-                ).toISOString(),
-                updated_at: new Date().toISOString(),
-              })
-              .eq("id", subscriptionData.id);
+                minutes_remaining: creditPackage.minutes,
+                minutes_reset_at: new Date().toISOString(),
+              });
+            }
           }
+
+          break;
         }
 
-        break;
-      }
+        case "customer.subscription.updated": {
+          const subscription = event.data.object as StripeSubscription;
 
-      case "invoice.payment_failed": {
-        const invoice = event.data.object as Stripe.Invoice & {
-          subscription: string;
-        };
-        const subscriptionId = invoice.subscription;
-
-        if (subscriptionId) {
-          // Update subscription status to reflect payment failure
+          // Update the subscription in our database
           await supabase
             .from("subscriptions")
             .update({
-              status: "past_due",
+              status: subscription.status,
+              current_period_start: new Date(
+                subscription.current_period_start * 1000
+              ).toISOString(),
+              current_period_end: new Date(
+                subscription.current_period_end * 1000
+              ).toISOString(),
+              cancel_at_period_end: subscription.cancel_at_period_end,
               updated_at: new Date().toISOString(),
             })
-            .eq("stripe_subscription_id", subscriptionId);
+            .eq("stripe_subscription_id", subscription.id);
+
+          break;
         }
 
-        break;
-      }
-    }
+        case "customer.subscription.deleted": {
+          const subscription = event.data.object as StripeSubscription;
 
-    return NextResponse.json({ received: true });
+          // Get user ID from metadata
+          const userId = subscription.metadata?.userId;
+
+          // Update subscription to canceled
+          await supabase
+            .from("subscriptions")
+            .update({
+              status: "canceled",
+              updated_at: new Date().toISOString(),
+            })
+            .eq("stripe_subscription_id", subscription.id);
+
+          // When subscription is deleted, assign free role
+          if (userId) {
+            const { data: freeRole } = await supabase
+              .from("roles")
+              .select("id")
+              .eq("name", "free")
+              .single();
+
+            if (freeRole) {
+              // Remove existing non-admin roles
+              const { data: currentRoles } = await supabase
+                .from("user_roles")
+                .select("role_id, roles(name)")
+                .eq("user_id", userId);
+
+              const rolesToDelete =
+                currentRoles
+                  ?.filter((r) => (r.roles as any).name !== "admin")
+                  .map((r) => r.role_id) || [];
+
+              if (rolesToDelete.length > 0) {
+                await supabase
+                  .from("user_roles")
+                  .delete()
+                  .eq("user_id", userId)
+                  .in("role_id", rolesToDelete);
+              }
+
+              // Assign the free role
+              await supabase.from("user_roles").insert({
+                user_id: userId,
+                role_id: freeRole.id,
+              });
+            }
+          }
+
+          break;
+        }
+
+        case "invoice.payment_succeeded": {
+          const invoice = event.data.object as Stripe.Invoice & {
+            subscription: string;
+          };
+          const subscriptionId = invoice.subscription;
+
+          if (subscriptionId) {
+            const subscription = (await stripe.subscriptions.retrieve(
+              subscriptionId
+            )) as StripeSubscription;
+
+            // If this is a renewal, reset the minutes quota
+            const currentPeriodStart = new Date(
+              subscription.current_period_start * 1000
+            ).toISOString();
+
+            // Get subscription from database
+            const { data: subscriptionData } = await supabase
+              .from("subscriptions")
+              .select("*, pricing_plans(*)")
+              .eq("stripe_subscription_id", subscriptionId)
+              .single();
+
+            if (subscriptionData) {
+              const pricingPlan = subscriptionData.pricing_plans;
+
+              // Reset minutes for the new billing period
+              await supabase
+                .from("subscriptions")
+                .update({
+                  minutes_used: 0,
+                  minutes_remaining: pricingPlan.minutes,
+                  minutes_reset_at: currentPeriodStart,
+                  status: subscription.status,
+                  current_period_start: new Date(
+                    subscription.current_period_start * 1000
+                  ).toISOString(),
+                  current_period_end: new Date(
+                    subscription.current_period_end * 1000
+                  ).toISOString(),
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("id", subscriptionData.id);
+            }
+          }
+
+          break;
+        }
+
+        case "invoice.payment_failed": {
+          const invoice = event.data.object as Stripe.Invoice & {
+            subscription: string;
+          };
+          const subscriptionId = invoice.subscription;
+
+          if (subscriptionId) {
+            // Update subscription status to reflect payment failure
+            await supabase
+              .from("subscriptions")
+              .update({
+                status: "past_due",
+                updated_at: new Date().toISOString(),
+              })
+              .eq("stripe_subscription_id", subscriptionId);
+          }
+
+          break;
+        }
+      }
+
+      return NextResponse.json({ received: true });
+    } catch (error) {
+      console.error("Error processing webhook:", error);
+      return NextResponse.json(
+        { error: "Webhook processing failed" },
+        { status: 500 }
+      );
+    }
   } catch (error) {
-    console.error("Error processing webhook:", error);
+    console.error("Unexpected error in webhook handler:", error);
     return NextResponse.json(
-      { error: "Webhook processing failed" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
