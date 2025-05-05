@@ -82,22 +82,53 @@ async function middleware(request) {
             }
         }
     });
-    const { data: { session } } = await supabase.auth.getSession();
+    // Use getUser for secure authentication
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
     const pathname = request.nextUrl.pathname;
-    // Redirect authenticated users away from auth pages
-    if (session && (pathname === "/login" || pathname === "/sign-up")) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
+    // If not logged in, redirect to login
+    if (!user) {
+        if (pathname !== "/login") {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/login", request.url));
+        }
+        return response;
+    }
+    // 1. Check for active or trialing subscription
+    const { data: subscription } = await supabase.from("subscriptions").select("status").eq("user_id", user.id).in("status", [
+        "active",
+        "trialing"
+    ]).single();
+    console.log("User ID:", user.id);
+    console.log("Subscription found:", subscription);
+    if (!subscription && pathname !== "/subscribe" && pathname !== "/") {
+        // Allow access to home page without subscription
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/subscribe", request.url));
+    }
+    // 2. Check onboarding
+    const { data: onboarding } = await supabase.from("user_onboarding").select("completed_at").eq("user_id", user.id).not("completed_at", "is", null).single();
+    if (subscription && !onboarding && pathname !== "/onboarding") {
+        // Redirect to onboarding if not completed
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/onboarding", request.url));
+    }
+    // 3. If both are true, allow access to dashboard
+    if (pathname === "/dashboard" && (!subscription || !onboarding)) {
+        // If trying to access dashboard without both, redirect accordingly
+        if (!subscription) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/subscribe", request.url));
+        }
+        if (!onboarding) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/onboarding", request.url));
+        }
     }
     // Check if the path is protected
     const protectedRoute = protectedRoutes.find((route)=>pathname.startsWith(route.path));
     // If route is protected and user is not authenticated, redirect to login
-    if (protectedRoute?.requireAuth && !session) {
+    if (protectedRoute?.requireAuth && !user) {
         const redirectUrl = new URL("/login", request.url);
         redirectUrl.searchParams.set("redirect", pathname);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(redirectUrl);
     }
     // If authenticated and route requires a minimum tier
-    if (session && protectedRoute?.minTier) {
+    if (user && protectedRoute?.minTier) {
         // Skip tier check for admin paths if the path itself requires admin access
         if (pathname.startsWith("/admin") && protectedRoute.minTier === "admin") {
             // Check if user is admin
@@ -105,7 +136,7 @@ async function middleware(request) {
           roles!inner (
             name
           )
-        `).eq("user_id", session.user.id).eq("roles.name", "admin");
+        `).eq("user_id", user.id).eq("roles.name", "admin");
             // If not admin, redirect to dashboard
             if (!data || data.length === 0) {
                 return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
@@ -125,7 +156,7 @@ async function middleware(request) {
           roles!inner (
             name
           )
-        `).eq("user_id", session.user.id);
+        `).eq("user_id", user.id);
             const minTierLevel = getTierLevel(protectedRoute.minTier);
             const userTiers = userRoles?.map((ur)=>getTierLevel(ur.roles.name)) || [];
             const maxUserTier = Math.max(...userTiers, 0);
@@ -134,11 +165,14 @@ async function middleware(request) {
             }
         }
     }
-    // Check if the user has completed onboarding
-    if (session && pathname === "/dashboard") {
-        const { data: onboardingData, error: onboardingError } = await supabase.from("user_onboarding").select("completed_at").eq("user_id", session.user.id).not("completed_at", "is", null).single();
-        if (!onboardingData && !onboardingError?.code?.includes("not_found")) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/onboarding", request.url));
+    // Only check subscription for protected routes
+    if (protectedRoute?.requireAuth) {
+        const { data: subscription } = await supabase.from("subscriptions").select("status").eq("user_id", user.id).in("status", [
+            "active",
+            "trialing"
+        ]).single();
+        if (!subscription && pathname !== "/subscribe") {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/subscribe", request.url));
         }
     }
     return response;

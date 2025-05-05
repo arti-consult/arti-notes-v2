@@ -48,6 +48,24 @@ export async function POST(req: NextRequest) {
         case "checkout.session.completed": {
           const session = event.data.object as Stripe.Checkout.Session;
 
+          // Get the customer's user ID from metadata
+          const customer = (await stripe.customers.retrieve(
+            session.customer as string
+          )) as Stripe.Customer;
+          const userId = customer.metadata?.userId;
+
+          if (!userId) {
+            throw new Error("No user ID found in customer metadata");
+          }
+
+          // Update onboarding payment status if this is a subscription payment
+          if (session.mode === "subscription") {
+            await supabase
+              .from("user_onboarding")
+              .update({ payment_completed: true })
+              .eq("user_id", userId);
+          }
+
           // Handle subscription creation
           if (session.mode === "subscription" && session.subscription) {
             const subscription = (await stripe.subscriptions.retrieve(
@@ -64,16 +82,6 @@ export async function POST(req: NextRequest) {
 
             if (!plan) {
               throw new Error("No matching plan found for price ID");
-            }
-
-            // Get the customer's user ID from metadata
-            const customer = (await stripe.customers.retrieve(
-              session.customer as string
-            )) as Stripe.Customer;
-            const userId = customer.metadata?.userId;
-
-            if (!userId) {
-              throw new Error("No user ID found in customer metadata");
             }
 
             // Create the subscription record
@@ -94,6 +102,9 @@ export async function POST(req: NextRequest) {
               minutes_reset_at: new Date(
                 subscription.current_period_start * 1000
               ).toISOString(),
+              trial_end: subscription.trial_end
+                ? new Date(subscription.trial_end * 1000).toISOString()
+                : null,
             });
 
             // Get the role ID for this plan
@@ -205,6 +216,9 @@ export async function POST(req: NextRequest) {
                 subscription.current_period_end * 1000
               ).toISOString(),
               cancel_at_period_end: subscription.cancel_at_period_end,
+              trial_end: subscription.trial_end
+                ? new Date(subscription.trial_end * 1000).toISOString()
+                : null,
               updated_at: new Date().toISOString(),
             })
             .eq("stripe_subscription_id", subscription.id);

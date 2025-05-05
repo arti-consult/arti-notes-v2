@@ -28,6 +28,7 @@ const initialState: OnboardingState = {
   referralSource: null,
   audioPurpose: null,
   micPermission: null,
+  paymentCompleted: null,
 };
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null);
@@ -51,6 +52,8 @@ const onboardingReducer = (
       return { ...state, audioPurpose: action.payload };
     case "SET_MIC_PERMISSION":
       return { ...state, micPermission: action.payload };
+    case "SET_PAYMENT_COMPLETED":
+      return { ...state, paymentCompleted: action.payload };
     case "RESET":
       return initialState;
     default:
@@ -92,7 +95,8 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({
           !state.userType ||
           !state.teamSize ||
           !state.referralSource ||
-          !state.audioPurpose
+          !state.audioPurpose ||
+          !state.paymentCompleted
         ) {
           throw new Error("Missing required onboarding information");
         }
@@ -104,6 +108,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({
           referralSource: state.referralSource,
           audioPurpose: state.audioPurpose,
           micPermission: state.micPermission ?? false,
+          paymentCompleted: state.paymentCompleted,
         };
 
         // Get UTM data from cookies if available
@@ -128,6 +133,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({
             referral_source: onboardingData.referralSource,
             audio_purpose: onboardingData.audioPurpose,
             mic_permission: onboardingData.micPermission,
+            payment_completed: onboardingData.paymentCompleted,
             utm_source: utmData.utm_source || null,
             utm_medium: utmData.utm_medium || null,
             utm_campaign: utmData.utm_campaign || null,

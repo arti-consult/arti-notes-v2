@@ -65,6 +65,9 @@ export async function createSubscriptionCheckout(
       },
     ],
     mode: "subscription",
+    subscription_data: {
+      trial_period_days: 14,
+    },
     success_url: `${returnUrl}?success=true`,
     cancel_url: `${returnUrl}?canceled=true`,
     metadata: {

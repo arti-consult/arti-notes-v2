@@ -63,15 +63,59 @@ export async function middleware(request: NextRequest) {
     }
   );
 
+  // Use getUser for secure authentication
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
-  // Redirect authenticated users away from auth pages
-  if (session && (pathname === "/login" || pathname === "/sign-up")) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // If not logged in, redirect to login
+  if (!user) {
+    if (pathname !== "/login") {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    return response;
+  }
+
+  // 1. Check for active or trialing subscription
+  const { data: subscription } = await supabase
+    .from("subscriptions")
+    .select("status")
+    .eq("user_id", user.id)
+    .in("status", ["active", "trialing"])
+    .single();
+
+  console.log("User ID:", user.id);
+  console.log("Subscription found:", subscription);
+
+  if (!subscription && pathname !== "/subscribe" && pathname !== "/") {
+    // Allow access to home page without subscription
+    return NextResponse.redirect(new URL("/subscribe", request.url));
+  }
+
+  // 2. Check onboarding
+  const { data: onboarding } = await supabase
+    .from("user_onboarding")
+    .select("completed_at")
+    .eq("user_id", user.id)
+    .not("completed_at", "is", null)
+    .single();
+
+  if (subscription && !onboarding && pathname !== "/onboarding") {
+    // Redirect to onboarding if not completed
+    return NextResponse.redirect(new URL("/onboarding", request.url));
+  }
+
+  // 3. If both are true, allow access to dashboard
+  if (pathname === "/dashboard" && (!subscription || !onboarding)) {
+    // If trying to access dashboard without both, redirect accordingly
+    if (!subscription) {
+      return NextResponse.redirect(new URL("/subscribe", request.url));
+    }
+    if (!onboarding) {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
   }
 
   // Check if the path is protected
@@ -80,14 +124,14 @@ export async function middleware(request: NextRequest) {
   );
 
   // If route is protected and user is not authenticated, redirect to login
-  if (protectedRoute?.requireAuth && !session) {
+  if (protectedRoute?.requireAuth && !user) {
     const redirectUrl = new URL("/login", request.url);
     redirectUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(redirectUrl);
   }
 
   // If authenticated and route requires a minimum tier
-  if (session && protectedRoute?.minTier) {
+  if (user && protectedRoute?.minTier) {
     // Skip tier check for admin paths if the path itself requires admin access
     if (pathname.startsWith("/admin") && protectedRoute.minTier === "admin") {
       // Check if user is admin
@@ -100,7 +144,7 @@ export async function middleware(request: NextRequest) {
           )
         `
         )
-        .eq("user_id", session.user.id)
+        .eq("user_id", user.id)
         .eq("roles.name", "admin");
 
       // If not admin, redirect to dashboard
@@ -123,7 +167,7 @@ export async function middleware(request: NextRequest) {
           )
         `
         )
-        .eq("user_id", session.user.id);
+        .eq("user_id", user.id);
 
       const minTierLevel = getTierLevel(protectedRoute.minTier);
       const userTiers =
@@ -138,17 +182,17 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Check if the user has completed onboarding
-  if (session && pathname === "/dashboard") {
-    const { data: onboardingData, error: onboardingError } = await supabase
-      .from("user_onboarding")
-      .select("completed_at")
-      .eq("user_id", session.user.id)
-      .not("completed_at", "is", null)
+  // Only check subscription for protected routes
+  if (protectedRoute?.requireAuth) {
+    const { data: subscription } = await supabase
+      .from("subscriptions")
+      .select("status")
+      .eq("user_id", user.id)
+      .in("status", ["active", "trialing"])
       .single();
 
-    if (!onboardingData && !onboardingError?.code?.includes("not_found")) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
+    if (!subscription && pathname !== "/subscribe") {
+      return NextResponse.redirect(new URL("/subscribe", request.url));
     }
   }
 

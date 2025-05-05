@@ -23,7 +23,8 @@ const initialState = {
     teamSize: null,
     referralSource: null,
     audioPurpose: null,
-    micPermission: null
+    micPermission: null,
+    paymentCompleted: null
 };
 const OnboardingContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createContext"])(null);
 const onboardingReducer = (state, action)=>{
@@ -62,6 +63,11 @@ const onboardingReducer = (state, action)=>{
             return {
                 ...state,
                 micPermission: action.payload
+            };
+        case "SET_PAYMENT_COMPLETED":
+            return {
+                ...state,
+                paymentCompleted: action.payload
             };
         case "RESET":
             return initialState;
@@ -105,7 +111,7 @@ const OnboardingProvider = ({ children })=>{
     const submitOnboarding = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "OnboardingProvider.useCallback[submitOnboarding]": async (userId)=>{
             try {
-                if (!state.userType || !state.teamSize || !state.referralSource || !state.audioPurpose) {
+                if (!state.userType || !state.teamSize || !state.referralSource || !state.audioPurpose || !state.paymentCompleted) {
                     throw new Error("Missing required onboarding information");
                 }
                 const onboardingData = {
@@ -114,7 +120,8 @@ const OnboardingProvider = ({ children })=>{
                     teamSize: state.teamSize,
                     referralSource: state.referralSource,
                     audioPurpose: state.audioPurpose,
-                    micPermission: state.micPermission ?? false
+                    micPermission: state.micPermission ?? false,
+                    paymentCompleted: state.paymentCompleted
                 };
                 // Get UTM data from cookies if available
                 let utmData = {};
@@ -135,6 +142,7 @@ const OnboardingProvider = ({ children })=>{
                     referral_source: onboardingData.referralSource,
                     audio_purpose: onboardingData.audioPurpose,
                     mic_permission: onboardingData.micPermission,
+                    payment_completed: onboardingData.paymentCompleted,
                     utm_source: utmData.utm_source || null,
                     utm_medium: utmData.utm_medium || null,
                     utm_campaign: utmData.utm_campaign || null,
@@ -177,7 +185,7 @@ const OnboardingProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/src/contexts/OnboardingContext.tsx",
-        lineNumber: 174,
+        lineNumber: 180,
         columnNumber: 5
     }, this);
 };
@@ -572,6 +580,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-left.js [app-client] (ecmascript) <export default as ArrowLeft>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-right.js [app-client] (ecmascript) <export default as ArrowRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$circle$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check-circle-2.js [app-client] (ecmascript) <export default as CheckCircle2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/credit-card.js [app-client] (ecmascript) <export default as CreditCard>");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -643,6 +652,8 @@ function OnboardingSteps() {
             case 4:
                 return !!state.audioPurpose;
             case 5:
+                return state.paymentCompleted === true;
+            case 6:
                 return state.micPermission !== null;
             default:
                 return false;
@@ -660,20 +671,20 @@ function OnboardingSteps() {
                                     children: "About You"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 95,
+                                    lineNumber: 104,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     children: "Tell us a bit about yourself"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 96,
+                                    lineNumber: 105,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 94,
+                            lineNumber: 103,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -693,7 +704,7 @@ function OnboardingSteps() {
                                                 id: "individual"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 109,
+                                                lineNumber: 118,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -702,13 +713,13 @@ function OnboardingSteps() {
                                                 children: "Individual"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 110,
+                                                lineNumber: 119,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 108,
+                                        lineNumber: 117,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -719,7 +730,7 @@ function OnboardingSteps() {
                                                 id: "company"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 115,
+                                                lineNumber: 124,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -728,24 +739,24 @@ function OnboardingSteps() {
                                                 children: "Company"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 116,
+                                                lineNumber: 125,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 114,
+                                        lineNumber: 123,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                lineNumber: 99,
+                                lineNumber: 108,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 98,
+                            lineNumber: 107,
                             columnNumber: 13
                         }, this)
                     ]
@@ -760,20 +771,20 @@ function OnboardingSteps() {
                                     children: "Team Size"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 129,
+                                    lineNumber: 138,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     children: "How large is your team?"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 130,
+                                    lineNumber: 139,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 128,
+                            lineNumber: 137,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -793,7 +804,7 @@ function OnboardingSteps() {
                                                 id: "solo"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 143,
+                                                lineNumber: 152,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -802,13 +813,13 @@ function OnboardingSteps() {
                                                 children: "Just me"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 144,
+                                                lineNumber: 153,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 142,
+                                        lineNumber: 151,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -819,7 +830,7 @@ function OnboardingSteps() {
                                                 id: "small"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 149,
+                                                lineNumber: 158,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -828,13 +839,13 @@ function OnboardingSteps() {
                                                 children: "2-10 people"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 150,
+                                                lineNumber: 159,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 148,
+                                        lineNumber: 157,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -845,7 +856,7 @@ function OnboardingSteps() {
                                                 id: "medium"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 155,
+                                                lineNumber: 164,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -854,13 +865,13 @@ function OnboardingSteps() {
                                                 children: "11-50 people"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 156,
+                                                lineNumber: 165,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 154,
+                                        lineNumber: 163,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -871,7 +882,7 @@ function OnboardingSteps() {
                                                 id: "large"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 161,
+                                                lineNumber: 170,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -880,24 +891,24 @@ function OnboardingSteps() {
                                                 children: "51+ people"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 162,
+                                                lineNumber: 171,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 160,
+                                        lineNumber: 169,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                lineNumber: 133,
+                                lineNumber: 142,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 132,
+                            lineNumber: 141,
                             columnNumber: 13
                         }, this)
                     ]
@@ -912,20 +923,20 @@ function OnboardingSteps() {
                                     children: "How did you hear about us?"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 175,
+                                    lineNumber: 184,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     children: "We'd love to know how you found our service"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 178,
+                                    lineNumber: 187,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 174,
+                            lineNumber: 183,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -946,7 +957,7 @@ function OnboardingSteps() {
                                                     id: "search"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 190,
+                                                    lineNumber: 199,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -955,13 +966,13 @@ function OnboardingSteps() {
                                                     children: "Search engine"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 191,
+                                                    lineNumber: 200,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 189,
+                                            lineNumber: 198,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -972,7 +983,7 @@ function OnboardingSteps() {
                                                     id: "social"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 196,
+                                                    lineNumber: 205,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -981,13 +992,13 @@ function OnboardingSteps() {
                                                     children: "Social media"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 197,
+                                                    lineNumber: 206,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 195,
+                                            lineNumber: 204,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -998,7 +1009,7 @@ function OnboardingSteps() {
                                                     id: "friend"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 202,
+                                                    lineNumber: 211,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -1007,13 +1018,13 @@ function OnboardingSteps() {
                                                     children: "Friend or colleague"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 203,
+                                                    lineNumber: 212,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 201,
+                                            lineNumber: 210,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1024,7 +1035,7 @@ function OnboardingSteps() {
                                                     id: "other"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 208,
+                                                    lineNumber: 217,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -1033,19 +1044,19 @@ function OnboardingSteps() {
                                                     children: "Other"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                    lineNumber: 209,
+                                                    lineNumber: 218,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 207,
+                                            lineNumber: 216,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 183,
+                                    lineNumber: 192,
                                     columnNumber: 15
                                 }, this),
                                 state.referralSource === "other" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1056,7 +1067,7 @@ function OnboardingSteps() {
                                             children: "Please specify"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 217,
+                                            lineNumber: 226,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1068,19 +1079,19 @@ function OnboardingSteps() {
                                                 })
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 218,
+                                            lineNumber: 227,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 216,
+                                    lineNumber: 225,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 182,
+                            lineNumber: 191,
                             columnNumber: 13
                         }, this)
                     ]
@@ -1095,20 +1106,20 @@ function OnboardingSteps() {
                                     children: "How will you use our service?"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 247,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     children: "This helps us tailor the experience to your needs"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 241,
+                                    lineNumber: 250,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 237,
+                            lineNumber: 246,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1119,7 +1130,7 @@ function OnboardingSteps() {
                                     children: "Please describe your main use case"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 255,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -1133,13 +1144,13 @@ function OnboardingSteps() {
                                     rows: 4
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 249,
+                                    lineNumber: 258,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 245,
+                            lineNumber: 254,
                             columnNumber: 13
                         }, this)
                     ]
@@ -1151,23 +1162,251 @@ function OnboardingSteps() {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
                                     className: "text-2xl",
+                                    children: "Start Your Free Trial"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                    lineNumber: 278,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
+                                    children: "Enter your payment details to start your 14-day free trial"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                    lineNumber: 279,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                            lineNumber: 277,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                            className: "space-y-6",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex flex-col items-center justify-center p-6 space-y-4",
+                                children: state.paymentCompleted ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "h-24 w-24 rounded-full bg-green-100 flex items-center justify-center",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$circle$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                                className: "h-12 w-12 text-green-600"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                lineNumber: 288,
+                                                columnNumber: 23
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                            lineNumber: 287,
+                                            columnNumber: 21
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-green-600 font-medium text-center",
+                                            children: "Payment details added successfully!"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                            lineNumber: 290,
+                                            columnNumber: 21
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm text-gray-500 text-center",
+                                            children: "Your 14-day free trial has started. You won't be charged until the trial ends."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                            lineNumber: 293,
+                                            columnNumber: 21
+                                        }, this)
+                                    ]
+                                }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "h-24 w-24 rounded-full bg-blue-100 flex items-center justify-center",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__["CreditCard"], {
+                                                className: "h-12 w-12 text-blue-600"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                lineNumber: 301,
+                                                columnNumber: 23
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                            lineNumber: 300,
+                                            columnNumber: 21
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "text-center space-y-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-lg font-medium",
+                                                    children: "Start Your 14-Day Free Trial"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                    lineNumber: 304,
+                                                    columnNumber: 23
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-sm text-gray-500",
+                                                    children: "Enter your payment details to start your free trial. You won't be charged until the trial ends."
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                    lineNumber: 307,
+                                                    columnNumber: 23
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "mt-4 space-y-2",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center justify-center space-x-2 text-sm text-gray-600",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$circle$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                                                    className: "h-4 w-4 text-green-500"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                                    lineNumber: 313,
+                                                                    columnNumber: 27
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    children: "14 days of full access"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                                    lineNumber: 314,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                            lineNumber: 312,
+                                                            columnNumber: 25
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center justify-center space-x-2 text-sm text-gray-600",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$circle$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                                                    className: "h-4 w-4 text-green-500"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                                    lineNumber: 317,
+                                                                    columnNumber: 27
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    children: "No charges during trial"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                                    lineNumber: 318,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                            lineNumber: 316,
+                                                            columnNumber: 25
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center justify-center space-x-2 text-sm text-gray-600",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2d$circle$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                                                    className: "h-4 w-4 text-green-500"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                                    lineNumber: 321,
+                                                                    columnNumber: 27
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    children: "Cancel anytime"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                                    lineNumber: 322,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                            lineNumber: 320,
+                                                            columnNumber: 25
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                                    lineNumber: 311,
+                                                    columnNumber: 23
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                            lineNumber: 303,
+                                            columnNumber: 21
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                            variant: "outline",
+                                            onClick: async ()=>{
+                                                if (!user) return;
+                                                try {
+                                                    const response = await fetch("/api/onboarding/create-checkout", {
+                                                        method: "POST",
+                                                        headers: {
+                                                            "Content-Type": "application/json"
+                                                        },
+                                                        body: JSON.stringify({
+                                                            userId: user.id
+                                                        })
+                                                    });
+                                                    const data = await response.json();
+                                                    if (data.error) {
+                                                        throw new Error(data.error);
+                                                    }
+                                                    if (data.url) {
+                                                        window.location.href = data.url;
+                                                    }
+                                                } catch (error) {
+                                                    console.error("Error creating checkout session:", error);
+                                                    setError("Failed to create checkout session. Please try again.");
+                                                }
+                                            },
+                                            children: "Start Free Trial"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                            lineNumber: 326,
+                                            columnNumber: 21
+                                        }, this)
+                                    ]
+                                }, void 0, true)
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                                lineNumber: 284,
+                                columnNumber: 15
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
+                            lineNumber: 283,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true);
+            case 6:
+                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                    className: "text-2xl",
                                     children: "Microphone Access"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 269,
+                                    lineNumber: 375,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     children: "To record your meetings, we'll need access to your microphone"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 270,
+                                    lineNumber: 376,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 268,
+                            lineNumber: 374,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1182,12 +1421,12 @@ function OnboardingSteps() {
                                                 className: "h-12 w-12 text-green-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 279,
+                                                lineNumber: 385,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 278,
+                                            lineNumber: 384,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1195,7 +1434,7 @@ function OnboardingSteps() {
                                             children: "Microphone access granted. Thank you!"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 387,
                                             columnNumber: 21
                                         }, this)
                                     ]
@@ -1207,12 +1446,12 @@ function OnboardingSteps() {
                                                 className: "h-12 w-12 text-red-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 288,
+                                                lineNumber: 394,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 287,
+                                            lineNumber: 393,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1220,7 +1459,7 @@ function OnboardingSteps() {
                                             children: "Microphone access denied. Please enable it in your browser settings."
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 290,
+                                            lineNumber: 396,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1229,7 +1468,7 @@ function OnboardingSteps() {
                                             children: "Try Again"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 294,
+                                            lineNumber: 400,
                                             columnNumber: 21
                                         }, this)
                                     ]
@@ -1241,12 +1480,12 @@ function OnboardingSteps() {
                                                 className: "h-12 w-12 text-blue-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                                lineNumber: 301,
+                                                lineNumber: 407,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 300,
+                                            lineNumber: 406,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1254,7 +1493,7 @@ function OnboardingSteps() {
                                             children: "Please allow microphone access when prompted by your browser."
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 303,
+                                            lineNumber: 409,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1263,24 +1502,24 @@ function OnboardingSteps() {
                                             children: "Request Microphone Access"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 307,
+                                            lineNumber: 413,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                lineNumber: 275,
+                                lineNumber: 381,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 274,
+                            lineNumber: 380,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true);
-            case 6:
+            case 7:
                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
@@ -1290,20 +1529,20 @@ function OnboardingSteps() {
                                     children: "All Set!"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 321,
+                                    lineNumber: 427,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     children: "Thank you for completing the onboarding process"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                    lineNumber: 322,
+                                    lineNumber: 428,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 320,
+                            lineNumber: 426,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1317,12 +1556,12 @@ function OnboardingSteps() {
                                             className: "h-12 w-12 text-green-600"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                            lineNumber: 329,
+                                            lineNumber: 435,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 328,
+                                        lineNumber: 434,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1330,18 +1569,18 @@ function OnboardingSteps() {
                                         children: 'You\'re all set to start using our service. Click "Complete" to go to your dashboard.'
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 437,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                lineNumber: 327,
+                                lineNumber: 433,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                            lineNumber: 326,
+                            lineNumber: 432,
                             columnNumber: 13
                         }, this)
                     ]
@@ -1358,12 +1597,12 @@ function OnboardingSteps() {
                     children: error
                 }, void 0, false, {
                     fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                    lineNumber: 348,
+                    lineNumber: 454,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                lineNumber: 347,
+                lineNumber: 453,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardFooter"], {
@@ -1378,17 +1617,17 @@ function OnboardingSteps() {
                                 className: "mr-2 h-4 w-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                lineNumber: 359,
+                                lineNumber: 465,
                                 columnNumber: 13
                             }, this),
                             "Back"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                        lineNumber: 354,
+                        lineNumber: 460,
                         columnNumber: 11
                     }, this),
-                    state.step < 6 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                    state.step < 7 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         onClick: handleNextStep,
                         disabled: !isStepComplete() || isSubmitting,
                         className: state.step === 1 ? "ml-auto" : "",
@@ -1398,13 +1637,13 @@ function OnboardingSteps() {
                                 className: "ml-2 h-4 w-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                                lineNumber: 370,
+                                lineNumber: 476,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                        lineNumber: 364,
+                        lineNumber: 470,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         onClick: handleSubmit,
@@ -1413,19 +1652,19 @@ function OnboardingSteps() {
                         children: isSubmitting ? "Completing..." : "Complete"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                        lineNumber: 373,
+                        lineNumber: 479,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-                lineNumber: 352,
+                lineNumber: 458,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx",
-        lineNumber: 343,
+        lineNumber: 449,
         columnNumber: 5
     }, this);
 }
@@ -1452,13 +1691,11 @@ __turbopack_context__.s({
     "default": (()=>OnboardingPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$OnboardingContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/contexts/OnboardingContext.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$components$2f$OnboardingSteps$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/contexts/AuthContext.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader.js [app-client] (ecmascript) <export default as Loader>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/supabase/client.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/contexts/AuthContext.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$OnboardingContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/contexts/OnboardingContext.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$components$2f$OnboardingSteps$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/(auth)/onboarding/components/OnboardingSteps.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -1467,189 +1704,60 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-;
-;
-function LoadingFallback() {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "flex flex-col items-center",
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader$3e$__["Loader"], {
-                    className: "animate-spin h-8 w-8 text-indigo-600 mb-4"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                    lineNumber: 15,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: "text-indigo-600",
-                    children: "Loading..."
-                }, void 0, false, {
-                    fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                    lineNumber: 16,
-                    columnNumber: 9
-                }, this)
-            ]
-        }, void 0, true, {
-            fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-            lineNumber: 14,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
-        fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-        lineNumber: 13,
-        columnNumber: 5
-    }, this);
-}
-_c = LoadingFallback;
-function OnboardingContent() {
+function OnboardingPage() {
     _s();
-    const { user, isLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const [isCheckingOnboarding, setIsCheckingOnboarding] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
-    const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createClient"])();
+    const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"])();
+    const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
+    const { state, dispatch } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$OnboardingContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useOnboarding"])();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "OnboardingContent.useEffect": ()=>{
-            const checkOnboardingStatus = {
-                "OnboardingContent.useEffect.checkOnboardingStatus": async ()=>{
-                    if (!user) {
-                        router.push("/login");
-                        return;
-                    }
+        "OnboardingPage.useEffect": ()=>{
+            const checkPaymentStatus = {
+                "OnboardingPage.useEffect.checkPaymentStatus": async ()=>{
+                    if (!user || !searchParams.has("success")) return;
                     try {
-                        const { data, error } = await supabase.from("user_onboarding").select("completed_at").eq("user_id", user.id).not("completed_at", "is", null).single();
-                        if (data) {
-                            router.push("/dashboard");
-                            return;
+                        const response = await fetch(`/api/onboarding/payment-status?userId=${user.id}`);
+                        const data = await response.json();
+                        if (data.paymentCompleted) {
+                            dispatch({
+                                type: "SET_PAYMENT_COMPLETED",
+                                payload: true
+                            });
                         }
                     } catch (error) {
-                        console.error("Error checking onboarding status:", error);
-                    } finally{
-                        setIsCheckingOnboarding(false);
+                        console.error("Error checking payment status:", error);
                     }
                 }
-            }["OnboardingContent.useEffect.checkOnboardingStatus"];
-            if (!isLoading) {
-                checkOnboardingStatus();
-            }
+            }["OnboardingPage.useEffect.checkPaymentStatus"];
+            checkPaymentStatus();
         }
-    }["OnboardingContent.useEffect"], [
+    }["OnboardingPage.useEffect"], [
         user,
-        isLoading,
-        router
+        searchParams,
+        dispatch
     ]);
-    if (isLoading || isCheckingOnboarding) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(LoadingFallback, {}, void 0, false, {
-            fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-            lineNumber: 60,
-            columnNumber: 12
-        }, this);
-    }
-    if (!user) {
-        return null; // Will redirect to login via the useEffect
-    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "w-full max-w-2xl space-y-8",
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-center",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                            className: "text-3xl font-bold text-gray-900",
-                            children: "Welcome to ARTI Notes"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                            lineNumber: 71,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "mt-2 text-sm text-gray-600",
-                            children: "Let's set up your account"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                            lineNumber: 74,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                    lineNumber: 70,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$components$2f$OnboardingSteps$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["OnboardingSteps"], {}, void 0, false, {
-                    fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                    lineNumber: 79,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-center text-sm text-gray-500",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        children: [
-                            "Step ",
-                            user ? "1 of 6" : "",
-                            " - This will help us customize your experience"
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                        lineNumber: 82,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                    lineNumber: 81,
-                    columnNumber: 9
-                }, this)
-            ]
-        }, void 0, true, {
+        className: "container max-w-4xl py-8",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$components$2f$OnboardingSteps$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["OnboardingSteps"], {}, void 0, false, {
             fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-            lineNumber: 69,
+            lineNumber: 37,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-        lineNumber: 68,
+        lineNumber: 36,
         columnNumber: 5
     }, this);
 }
-_s(OnboardingContent, "iP+i3Q5lnjM7yRxxrF2Lz2iwShg=", false, function() {
+_s(OnboardingPage, "dj2ITUJ9+Yb89JB8gWQKfoV4BBE=", false, function() {
     return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$OnboardingContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useOnboarding"]
     ];
 });
-_c1 = OnboardingContent;
-function OnboardingPage() {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$contexts$2f$OnboardingContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["OnboardingProvider"], {
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Suspense"], {
-            fallback: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(LoadingFallback, {}, void 0, false, {
-                fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                lineNumber: 95,
-                columnNumber: 27
-            }, void 0),
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(OnboardingContent, {}, void 0, false, {
-                fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-                lineNumber: 96,
-                columnNumber: 9
-            }, this)
-        }, void 0, false, {
-            fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-            lineNumber: 95,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
-        fileName: "[project]/src/app/(auth)/onboarding/page.tsx",
-        lineNumber: 94,
-        columnNumber: 5
-    }, this);
-}
-_c2 = OnboardingPage;
-var _c, _c1, _c2;
-__turbopack_context__.k.register(_c, "LoadingFallback");
-__turbopack_context__.k.register(_c1, "OnboardingContent");
-__turbopack_context__.k.register(_c2, "OnboardingPage");
+_c = OnboardingPage;
+var _c;
+__turbopack_context__.k.register(_c, "OnboardingPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }

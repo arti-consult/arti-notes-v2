@@ -12,8 +12,10 @@ function SignUpFormContent() {
   const supabase = createClient();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const checkSession = async () => {
       const {
         data: { session },
@@ -26,6 +28,10 @@ function SignUpFormContent() {
 
     checkSession();
   }, [router]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);

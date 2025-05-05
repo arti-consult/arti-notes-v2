@@ -6,6 +6,8 @@ import { SectionCards } from "./components/section-cards";
 import { SiteHeader } from "./components/site-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import data from "./data.json";
+import { getPreRevenueCustomersCount } from "./actions/get-pre-revenue-customers";
+import { getRevenueCustomersCount } from "./actions/get-revenue-customers";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -14,6 +16,10 @@ export default async function DashboardPage() {
   if (error || !userData?.user) {
     redirect("/login");
   }
+
+  // Fetch pre-revenue and revenue customers count
+  const preRevenueCustomersCount = await getPreRevenueCustomersCount();
+  const revenueCustomersCount = await getRevenueCustomersCount();
 
   return (
     <SidebarProvider>
@@ -31,7 +37,10 @@ export default async function DashboardPage() {
             </div>
             <div className="relative">
               <div className="absolute inset-0 " />
-              <SectionCards />
+              <SectionCards
+                preRevenueCustomersCount={preRevenueCustomersCount}
+                revenueCustomersCount={revenueCustomersCount}
+              />
             </div>
             <div className="px-4 lg:px-6">
               <ChartAreaInteractive />

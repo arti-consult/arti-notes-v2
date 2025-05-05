@@ -9,7 +9,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export function SectionCards() {
+export function SectionCards({
+  preRevenueCustomersCount = 0,
+  revenueCustomersCount = 0,
+}: {
+  preRevenueCustomersCount?: number;
+  revenueCustomersCount?: number;
+}) {
   return (
     <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-2 xl:grid-cols-4 lg:px-6">
       <Card className="relative">
@@ -40,7 +46,7 @@ export function SectionCards() {
             <CardDescription>Pre Revenue Customers</CardDescription>
           </div>
           <CardTitle className="text-2xl font-semibold tabular-nums">
-            2,350
+            {preRevenueCustomersCount}
           </CardTitle>
           <div className="absolute right-4 top-4">
             <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
@@ -61,7 +67,7 @@ export function SectionCards() {
             <CardDescription>Revenue Customers</CardDescription>
           </div>
           <CardTitle className="text-2xl font-semibold tabular-nums">
-            12,345
+            {revenueCustomersCount}
           </CardTitle>
           <div className="absolute right-4 top-4">
             <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">

@@ -5,6 +5,7 @@ export interface OnboardingState {
   referralSource: string | null;
   audioPurpose: string | null;
   micPermission: boolean | null;
+  paymentCompleted: boolean | null;
 }
 
 export type OnboardingAction =
@@ -15,6 +16,7 @@ export type OnboardingAction =
   | { type: "SET_REFERRAL_SOURCE"; payload: string }
   | { type: "SET_AUDIO_PURPOSE"; payload: string }
   | { type: "SET_MIC_PERMISSION"; payload: boolean }
+  | { type: "SET_PAYMENT_COMPLETED"; payload: boolean }
   | { type: "RESET" };
 
 export interface OnboardingFormData {
@@ -24,4 +26,5 @@ export interface OnboardingFormData {
   referralSource: string;
   audioPurpose: string;
   micPermission: boolean;
+  paymentCompleted: boolean;
 }

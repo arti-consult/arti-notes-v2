@@ -1,8 +1,7 @@
-"use client";
-
 import { AuthProvider } from "@/contexts/AuthContext";
 import TrackingProvider from "@/components/providers/TrackingProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { AnalyticsProvider } from "./analytics";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -20,6 +19,7 @@ export default function RootLayout({
           <TrackingProvider>
             {children}
             <Toaster />
+            <AnalyticsProvider />
           </TrackingProvider>
         </AuthProvider>
       </body>

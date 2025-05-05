@@ -17,7 +17,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, MicOff, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+  Mic,
+  MicOff,
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  CreditCard,
+} from "lucide-react";
 
 export function OnboardingSteps() {
   const router = useRouter();
@@ -80,6 +87,8 @@ export function OnboardingSteps() {
       case 4:
         return !!state.audioPurpose;
       case 5:
+        return state.paymentCompleted === true;
+      case 6:
         return state.micPermission !== null;
       default:
         return false;
@@ -266,6 +275,103 @@ export function OnboardingSteps() {
         return (
           <>
             <CardHeader>
+              <CardTitle className="text-2xl">Start Your Free Trial</CardTitle>
+              <CardDescription>
+                Enter your payment details to start your 14-day free trial
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex flex-col items-center justify-center p-6 space-y-4">
+                {state.paymentCompleted ? (
+                  <>
+                    <div className="h-24 w-24 rounded-full bg-green-100 flex items-center justify-center">
+                      <CheckCircle2 className="h-12 w-12 text-green-600" />
+                    </div>
+                    <p className="text-green-600 font-medium text-center">
+                      Payment details added successfully!
+                    </p>
+                    <p className="text-sm text-gray-500 text-center">
+                      Your 14-day free trial has started. You won't be charged
+                      until the trial ends.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="h-24 w-24 rounded-full bg-blue-100 flex items-center justify-center">
+                      <CreditCard className="h-12 w-12 text-blue-600" />
+                    </div>
+                    <div className="text-center space-y-2">
+                      <p className="text-lg font-medium">
+                        Start Your 14-Day Free Trial
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Enter your payment details to start your free trial. You
+                        won't be charged until the trial ends.
+                      </p>
+                      <div className="mt-4 space-y-2">
+                        <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                          <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          <span>14 days of full access</span>
+                        </div>
+                        <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                          <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          <span>No charges during trial</span>
+                        </div>
+                        <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                          <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          <span>Cancel anytime</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        if (!user) return;
+                        try {
+                          const response = await fetch(
+                            "/api/onboarding/create-checkout",
+                            {
+                              method: "POST",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ userId: user.id }),
+                            }
+                          );
+
+                          const data = await response.json();
+
+                          if (data.error) {
+                            throw new Error(data.error);
+                          }
+
+                          if (data.url) {
+                            window.location.href = data.url;
+                          }
+                        } catch (error) {
+                          console.error(
+                            "Error creating checkout session:",
+                            error
+                          );
+                          setError(
+                            "Failed to create checkout session. Please try again."
+                          );
+                        }
+                      }}
+                    >
+                      Start Free Trial
+                    </Button>
+                  </>
+                )}
+              </div>
+            </CardContent>
+          </>
+        );
+
+      case 6:
+        return (
+          <>
+            <CardHeader>
               <CardTitle className="text-2xl">Microphone Access</CardTitle>
               <CardDescription>
                 To record your meetings, we'll need access to your microphone
@@ -314,7 +420,7 @@ export function OnboardingSteps() {
           </>
         );
 
-      case 6:
+      case 7:
         return (
           <>
             <CardHeader>
@@ -360,7 +466,7 @@ export function OnboardingSteps() {
             Back
           </Button>
         )}
-        {state.step < 6 ? (
+        {state.step < 7 ? (
           <Button
             onClick={handleNextStep}
             disabled={!isStepComplete() || isSubmitting}

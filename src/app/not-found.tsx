@@ -17,15 +17,20 @@ function NotFoundContent() {
   );
 }
 
+function NotFoundFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>
+        <p className="text-xl text-gray-600">Loading...</p>
+      </div>
+    </div>
+  );
+}
+
 export default function NotFound() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
+    <Suspense fallback={<NotFoundFallback />}>
       <NotFoundContent />
     </Suspense>
   );
