@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
 function SignUpFormContent() {
   const router = useRouter();
@@ -50,35 +51,64 @@ function SignUpFormContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">Join us to get started</p>
-        </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden"
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.2 }}
+        transition={{ duration: 0.8 }}
+        className="absolute w-[1200px] h-[1200px] bg-[#145DFC] rounded-full blur-[256px]"
+      />
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="w-full max-w-md p-8 space-y-8 bg-[#18181B] rounded-xl shadow-lg relative z-10"
+      >
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-center"
+        >
+          <h2 className="text-3xl font-bold text-white">Create your account</h2>
+          <p className="mt-2 text-sm text-gray-400">Join us to get started</p>
+        </motion.div>
 
-        {error && (
-          <div
-            className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <span className="block sm:inline">{error}</span>
-            {error.includes("already exists") && (
-              <div className="mt-2">
-                <Link
-                  href="/login"
-                  className="text-red-600 hover:text-red-800 underline"
-                >
-                  Sign in instead
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bg-red-900/50 border border-red-800 text-red-200 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <span className="block sm:inline">{error}</span>
+              {error.includes("already exists") && (
+                <div className="mt-2">
+                  <Link
+                    href="/login"
+                    className="text-red-200 hover:text-red-100 underline"
+                  >
+                    Sign in instead
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <form
+        <motion.form
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           action={async (formData) => {
             setIsLoading(true);
             setError(null);
@@ -91,10 +121,14 @@ function SignUpFormContent() {
           className="mt-8 space-y-6"
         >
           <div className="space-y-4">
-            <div>
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white"
               >
                 Email address
               </label>
@@ -103,13 +137,17 @@ function SignUpFormContent() {
                 name="email"
                 type="email"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200"
               />
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white"
               >
                 Password
               </label>
@@ -118,13 +156,17 @@ function SignUpFormContent() {
                 name="password"
                 type="password"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200"
               />
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-white"
               >
                 Confirm Password
               </label>
@@ -133,109 +175,147 @@ function SignUpFormContent() {
                 name="confirmPassword"
                 type="password"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200"
               />
-            </div>
+            </motion.div>
           </div>
 
-          <div className="flex items-center">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="flex items-center"
+          >
             <input
               id="terms"
               name="terms"
               type="checkbox"
               required
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              className="h-4 w-4 text-[#145DFC] focus:ring-[#145DFC] border-gray-700 rounded bg-black"
             />
-            <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
+            <label htmlFor="terms" className="ml-2 block text-sm text-white">
               I agree to the{" "}
               <a
                 href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-white hover:text-gray-300 transition-colors duration-200"
               >
                 Terms of Service
               </a>{" "}
               and{" "}
               <a
                 href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-white hover:text-gray-300 transition-colors duration-200"
               >
                 Privacy Policy
               </a>
             </label>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.9 }}
+          >
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#145DFC] hover:bg-[#145DFC]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#145DFC] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
               {isLoading ? "Creating account..." : "Sign up"}
             </button>
-          </div>
+          </motion.div>
 
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.0 }}
+            className="text-center"
+          >
+            <p className="text-sm">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-[#145DFC] hover:text-[#145DFC]/90 transition-colors duration-200"
               >
                 Sign in
               </Link>
             </p>
-          </div>
-        </form>
+          </motion.div>
+        </motion.form>
 
-        <div className="mt-6">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1.1 }}
+          className="mt-6"
+        >
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-full border-t border-gray-700" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
+              <span className="px-2 bg-[#18181B] text-gray-400">
                 Or continue with
               </span>
             </div>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={handleGoogleSignUp}
               disabled={isLoading}
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-700 rounded-md shadow-sm bg-black text-sm font-medium text-gray-300 hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
               <FaGoogle className="w-5 h-5" />
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               type="button"
               onClick={() => signInWithMicrosoft()}
               disabled={isLoading}
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-700 rounded-md shadow-sm bg-black text-sm font-medium text-gray-300 hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
               <FaMicrosoft className="w-5 h-5" />
-            </button>
+            </motion.button>
           </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 
 function SignUpFormFallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen flex items-center justify-center bg-black relative"
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.2 }}
+        transition={{ duration: 0.8 }}
+        className="absolute w-[1200px] h-[1200px] bg-[#145DFC] rounded-full blur-[256px]"
+      />
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md p-8 space-y-8 bg-[#18181B] rounded-xl shadow-lg relative z-10"
+      >
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">Loading...</p>
+          <h2 className="text-3xl font-bold text-white">Create your account</h2>
+          <p className="mt-2 text-sm text-gray-400">Loading...</p>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

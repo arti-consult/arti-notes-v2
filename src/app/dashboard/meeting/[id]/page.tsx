@@ -303,9 +303,9 @@ export default function MeetingPage({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-[#18181B]">
         <div className="text-center">
-          <p className="text-muted-foreground">Laster møte...</p>
+          <p className="text-gray-400">Laster møte...</p>
         </div>
       </div>
     );
@@ -313,9 +313,9 @@ export default function MeetingPage({
 
   if (!meeting) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-[#18181B]">
         <div className="text-center">
-          <p className="text-muted-foreground">Møte ikke funnet</p>
+          <p className="text-gray-400">Møte ikke funnet</p>
         </div>
       </div>
     );
@@ -433,11 +433,13 @@ export default function MeetingPage({
     switch (activeTab) {
       case "notes":
         return (
-          <div className="max-w-4xl mx-auto space-y-8">
+          <div className="max-w-4xl mx-auto space-y-8 bg-[#18181B]">
             {/* Meeting Summary */}
-            <div className="bg-white rounded-lg border p-6">
-              <h2 className="text-lg font-semibold mb-4">Møtesammendrag</h2>
-              <p className="text-sm text-muted-foreground">
+            <div className="bg-[#18181B] rounded-lg border p-6">
+              <h2 className="text-lg font-semibold mb-4 text-white">
+                Møtesammendrag
+              </h2>
+              <p className="text-sm text-gray-400">
                 Dette møtet fokuserte på gjennomgang av Fireflies AI Platform.
                 Hovedtemaene inkluderte plattformfunksjoner, integrasjoner og
                 fremtidige utviklingsplaner. Det ble diskutert spesifikke
@@ -447,8 +449,8 @@ export default function MeetingPage({
             </div>
 
             {/* Meeting Outline */}
-            <div className="bg-white rounded-lg border p-6">
-              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="bg-[#18181B] rounded-lg border p-6">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-white">
                 <ListChecks className="h-5 w-5" />
                 Møteoversikt
               </h2>
@@ -456,27 +458,29 @@ export default function MeetingPage({
                 <div className="border-l-2 border-violet-600 pl-4">
                   <div className="flex items-center gap-2 text-violet-600 font-medium">
                     <button className="hover:underline">00:00 - 02:15</button>
-                    <span>Introduksjon og agenda</span>
+                    <span className="text-white">Introduksjon og agenda</span>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     Velkommen og gjennomgang av dagens agenda
                   </p>
                 </div>
                 <div className="border-l-2 border-violet-600 pl-4">
                   <div className="flex items-center gap-2 text-violet-600 font-medium">
                     <button className="hover:underline">02:15 - 04:30</button>
-                    <span>Plattformoversikt</span>
+                    <span className="text-white">Plattformoversikt</span>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     Gjennomgang av hovedfunksjonene i plattformen
                   </p>
                 </div>
                 <div className="border-l-2 border-violet-600 pl-4">
                   <div className="flex items-center gap-2 text-violet-600 font-medium">
                     <button className="hover:underline">04:30 - 08:39</button>
-                    <span>Demonstrasjon og spørsmål</span>
+                    <span className="text-white">
+                      Demonstrasjon og spørsmål
+                    </span>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     Live demonstrasjon av funksjonalitet og Q&A
                   </p>
                 </div>
@@ -484,12 +488,12 @@ export default function MeetingPage({
             </div>
 
             {/* Bullet Points */}
-            <div className="bg-white rounded-lg border p-6">
-              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="bg-[#18181B] rounded-lg border p-6">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-white">
                 <List className="h-5 w-5" />
                 Hovedpunkter
               </h2>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-start gap-2">
                   <span className="text-violet-600 mt-1">•</span>
                   Introduserte ny søkefunksjonalitet for raskere navigering i
@@ -514,9 +518,9 @@ export default function MeetingPage({
         );
       case "video":
         return (
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg border p-6">
-              <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+          <div className="max-w-4xl mx-auto bg-[#18181B]">
+            <div className="bg-[#18181B] rounded-lg border p-6">
+              <div className="aspect-video bg-gray-900 rounded-lg flex items-center justify-center">
                 <Video className="h-12 w-12 text-gray-400" />
               </div>
             </div>
@@ -524,22 +528,22 @@ export default function MeetingPage({
         );
       case "transcript":
         return (
-          <div className="max-w-4xl mx-auto space-y-4">
-            <div className="bg-white rounded-lg border p-4">
+          <div className="max-w-4xl mx-auto space-y-4 bg-[#18181B]">
+            <div className="bg-[#18181B] rounded-lg border p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex-1" />
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="text-white">
                       <Download className="h-4 w-4 mr-2" />
                       Last ned transkripsjon
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-48" align="end">
+                  <PopoverContent className="w-48 bg-[#18181B]" align="end">
                     <div className="space-y-2">
                       <Button
                         variant="ghost"
-                        className="w-full justify-start"
+                        className="w-full justify-start hover:bg-gray-800 text-white"
                         onClick={() => {
                           // TODO: Implement Word doc download
                           console.log("Download as Word");
@@ -550,7 +554,7 @@ export default function MeetingPage({
                       </Button>
                       <Button
                         variant="ghost"
-                        className="w-full justify-start"
+                        className="w-full justify-start hover:bg-gray-800 text-white"
                         onClick={() => {
                           // TODO: Implement PDF download
                           console.log("Download as PDF");
@@ -582,30 +586,32 @@ export default function MeetingPage({
                         </button>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <div className="w-6 h-6 rounded-full bg-violet-100 flex items-center justify-center text-xs">
+                            <div className="w-6 h-6 rounded-full bg-violet-900 flex items-center justify-center text-xs text-white">
                               {transcription.speaker_count > 1
                                 ? `S${(index % 2) + 1}`
                                 : "S1"}
                             </div>
-                            <span className="font-medium">
+                            <span className="font-medium text-white">
                               {transcription.speaker_count > 1
                                 ? `Speaker ${(index % 2) + 1}`
                                 : "Speaker 1"}
                             </span>
                             {segment.confidence && (
-                              <span className="text-xs text-muted-foreground">
+                              <span className="text-xs text-gray-400">
                                 ({Math.round(segment.confidence * 100)}%
                                 confidence)
                               </span>
                             )}
                           </div>
-                          <p className="text-sm">{segment.text}</p>
+                          <p className="text-sm text-gray-400">
+                            {segment.text}
+                          </p>
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center text-muted-foreground py-8">
+                  <div className="text-center text-gray-400 py-8">
                     Ingen transkripsjon tilgjengelig
                   </div>
                 )}
@@ -615,8 +621,8 @@ export default function MeetingPage({
         );
       case "chat":
         return (
-          <div className="max-w-4xl mx-auto h-full flex flex-col">
-            <div className="bg-white rounded-lg border flex-1 flex flex-col overflow-hidden">
+          <div className="max-w-4xl mx-auto h-full flex flex-col bg-[#18181B]">
+            <div className="bg-[#18181B] rounded-lg border flex-1 flex flex-col overflow-hidden">
               <div className="flex-1 relative h-[calc(100vh-300px)]">
                 <ScrollArea
                   className="absolute inset-0 h-full"
@@ -641,13 +647,13 @@ export default function MeetingPage({
                             className={cn(
                               "flex gap-3 max-w-[80%]",
                               message.role === "assistant"
-                                ? "flex-row bg-gray-50 rounded-2xl p-4"
-                                : "flex-row-reverse bg-violet-50 rounded-2xl p-4"
+                                ? "flex-row bg-gray-900 rounded-2xl p-4"
+                                : "flex-row-reverse bg-violet-900 rounded-2xl p-4"
                             )}
                           >
                             {message.role === "assistant" ? (
                               <Avatar className="h-8 w-8 shrink-0">
-                                <AvatarFallback className="bg-violet-100 text-violet-900">
+                                <AvatarFallback className="bg-violet-900 text-white">
                                   AI
                                 </AvatarFallback>
                               </Avatar>
@@ -661,7 +667,7 @@ export default function MeetingPage({
                             <div className="flex flex-col gap-1">
                               <p
                                 className={cn(
-                                  "text-sm font-medium",
+                                  "text-sm font-medium text-white",
                                   message.role === "user"
                                     ? "text-right"
                                     : "text-left"
@@ -675,8 +681,8 @@ export default function MeetingPage({
                                 className={cn(
                                   "text-sm",
                                   message.role === "assistant"
-                                    ? "text-muted-foreground"
-                                    : "text-violet-900"
+                                    ? "text-gray-400"
+                                    : "text-white"
                                 )}
                               >
                                 {message.content}
@@ -694,9 +700,9 @@ export default function MeetingPage({
         );
       case "settings":
         return (
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg border p-6">
-              <p className="text-sm text-muted-foreground">
+          <div className="max-w-4xl mx-auto bg-[#18181B]">
+            <div className="bg-[#18181B] rounded-lg border p-6">
+              <p className="text-sm text-gray-400">
                 Innstillinger kommer snart...
               </p>
             </div>
@@ -708,16 +714,16 @@ export default function MeetingPage({
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-[#18181B]">
       {/* Mobile Menu Button */}
       <button
         className={cn(
-          "md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg border shadow-sm",
+          "md:hidden fixed top-4 left-4 z-50 p-2 bg-[#18181B] rounded-lg border shadow-sm",
           isSidebarOpen && "left-[210px]"
         )}
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
-        <Menu className="h-5 w-5" />
+        <Menu className="h-5 w-5 text-white" />
       </button>
 
       {/* Sidebar */}
@@ -729,7 +735,7 @@ export default function MeetingPage({
             exit={{ x: -200 }}
             transition={{ type: "spring", bounce: 0, duration: 0.3 }}
             className={cn(
-              "fixed md:relative z-40 h-full bg-gray-50/50 border-r",
+              "fixed md:relative z-40 h-full bg-[#18181B] border-r",
               isMobile ? "w-[200px]" : "w-[50px]"
             )}
           >
@@ -746,9 +752,9 @@ export default function MeetingPage({
                             if (isMobile) setIsSidebarOpen(false);
                           }}
                           className={cn(
-                            "w-full p-3 flex items-center justify-center hover:bg-gray-100 transition-colors gap-2",
+                            "w-full p-3 flex items-center justify-center hover:bg-gray-800 transition-colors gap-2 text-white",
                             activeTab === tab.value &&
-                              "bg-violet-50 text-violet-600",
+                              "bg-violet-900 text-violet-100",
                             isMobile && "justify-start px-4"
                           )}
                         >
@@ -759,7 +765,11 @@ export default function MeetingPage({
                         </button>
                       </TooltipTrigger>
                       {!isMobile && (
-                        <TooltipContent side="right" sideOffset={10}>
+                        <TooltipContent
+                          side="right"
+                          sideOffset={10}
+                          className="bg-[#18181B] text-white"
+                        >
                           {tab.tooltip}
                         </TooltipContent>
                       )}
@@ -787,11 +797,11 @@ export default function MeetingPage({
       {/* Main Content */}
       <div className="flex-1 flex flex-col w-full">
         {/* Breadcrumb */}
-        <div className="border-b px-4 py-2 bg-gray-50/50">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground max-w-full overflow-hidden">
+        <div className="border-b px-4 py-2 bg-[#18181B]">
+          <div className="flex items-center gap-2 text-sm text-gray-400 max-w-full overflow-hidden">
             <Link
               href="/dashboard"
-              className="hover:text-foreground flex items-center gap-1 shrink-0"
+              className="hover:text-white flex items-center gap-1 shrink-0"
             >
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">Dashboard</span>
@@ -799,26 +809,30 @@ export default function MeetingPage({
             <ChevronRight className="h-4 w-4 shrink-0" />
             <Link
               href="/dashboard/meetings"
-              className="hover:text-foreground truncate"
+              className="hover:text-white truncate"
             >
               <span className="hidden sm:inline">Møter</span>
               <span className="sm:hidden">...</span>
             </Link>
             <ChevronRight className="h-4 w-4 shrink-0" />
-            <span className="text-foreground truncate">
+            <span className="text-white truncate">
               {meeting?.title || "Møte"}
             </span>
           </div>
         </div>
 
         {/* Header */}
-        <div className="border-b">
+        <div className="border-b bg-[#18181B]">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 gap-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
-              <h1 className="text-xl font-semibold truncate max-w-[200px] sm:max-w-none">
+              <h1 className="text-xl font-semibold truncate max-w-[200px] sm:max-w-none text-white">
                 {meeting.title}
               </h1>
-              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full sm:w-auto text-white"
+              >
                 <CalendarIcon className="h-4 w-4 mr-2" />
                 {format(meeting.startTime, "d. MMMM yyyy", { locale: nb })}
               </Button>
@@ -827,7 +841,7 @@ export default function MeetingPage({
               <Button
                 variant="outline"
                 size="sm"
-                className="flex-1 sm:flex-none"
+                className="flex-1 sm:flex-none text-white"
               >
                 <Share2 className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">Share</span>
@@ -837,17 +851,17 @@ export default function MeetingPage({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1 sm:flex-none"
+                    className="flex-1 sm:flex-none text-white"
                   >
                     <Download className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Download</span>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-48" align="end">
+                <PopoverContent className="w-48 bg-[#18181B]" align="end">
                   <div className="space-y-2">
                     <Button
                       variant="ghost"
-                      className="w-full justify-start"
+                      className="w-full justify-start text-white hover:bg-gray-800"
                       onClick={() => {
                         // TODO: Implement Word doc download
                         console.log("Download as Word");
@@ -858,7 +872,7 @@ export default function MeetingPage({
                     </Button>
                     <Button
                       variant="ghost"
-                      className="w-full justify-start"
+                      className="w-full justify-start text-white hover:bg-gray-800"
                       onClick={() => {
                         // TODO: Implement PDF download
                         console.log("Download as PDF");
@@ -878,7 +892,7 @@ export default function MeetingPage({
         <div className="flex-1 p-4 overflow-y-auto">{renderTabContent()}</div>
 
         {/* Playback Controls */}
-        <div className="border-t bg-white">
+        <div className="border-t bg-[#18181B]">
           <div className="p-4 max-w-[1400px] mx-auto space-y-4">
             {/* Chat Input when in Chat Tab */}
             {activeTab === "chat" && (
@@ -887,7 +901,7 @@ export default function MeetingPage({
                   placeholder="Still et spørsmål om møtet..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  className="min-h-[60px] max-h-[120px] resize-none flex-1"
+                  className="min-h-[60px] max-h-[120px] resize-none flex-1 bg-[#18181B] text-white"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
@@ -906,7 +920,7 @@ export default function MeetingPage({
                   <Button
                     size="icon"
                     variant="outline"
-                    className="transition-colors hover:bg-gray-100"
+                    className="transition-colors hover:bg-gray-800 text-white"
                   >
                     <RefreshCw className="h-4 w-4" />
                   </Button>
@@ -917,7 +931,7 @@ export default function MeetingPage({
             {/* Audio Controls */}
             <div className="flex items-center gap-4">
               {/* Time Display */}
-              <div className="w-[100px] text-sm font-medium">
+              <div className="w-[100px] text-sm font-medium text-white">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </div>
 
@@ -926,7 +940,7 @@ export default function MeetingPage({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 text-white hover:bg-gray-800"
                   onClick={() => {
                     if (audioRef.current) {
                       audioRef.current.currentTime = Math.max(
@@ -942,7 +956,7 @@ export default function MeetingPage({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-10 w-10 p-0 text-violet-600 hover:text-violet-700"
+                  className="h-10 w-10 p-0 text-violet-600 hover:text-violet-700 hover:bg-gray-800"
                   onClick={handlePlayPause}
                   disabled={!isAudioReady}
                 >
@@ -955,7 +969,7 @@ export default function MeetingPage({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 text-white hover:bg-gray-800"
                   onClick={() => {
                     if (audioRef.current) {
                       audioRef.current.currentTime = Math.min(

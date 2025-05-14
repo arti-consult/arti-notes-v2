@@ -1,6 +1,11 @@
 "use client";
 
-import { Mic, Calendar as CalendarIcon, FileText, Download } from "lucide-react";
+import {
+  Mic,
+  Calendar as CalendarIcon,
+  FileText,
+  Download,
+} from "lucide-react";
 import { SiGooglemeet } from "react-icons/si";
 import { PiMicrosoftTeamsLogoFill } from "react-icons/pi";
 import { Card, CardContent } from "@/components/ui/card";
@@ -31,25 +36,25 @@ interface MeetingListProps {
   showEmpty?: boolean;
 }
 
-export function getMeetingTypeIcon(type: Meeting['meeting_type']) {
+export function getMeetingTypeIcon(type: Meeting["meeting_type"]) {
   switch (type) {
-    case 'microsoft-teams':
+    case "microsoft-teams":
       return <PiMicrosoftTeamsLogoFill className="h-5 w-5 text-[#464EB8]" />;
-    case 'google-meets':
+    case "google-meets":
       return <SiGooglemeet className="h-5 w-5 text-[#00AC47]" />;
-    case 'live':
+    case "live":
       return <Mic className="h-5 w-5 text-violet-600" />;
   }
 }
 
-export function getMeetingTypeLabel(type: Meeting['meeting_type']) {
+export function getMeetingTypeLabel(type: Meeting["meeting_type"]) {
   switch (type) {
-    case 'microsoft-teams':
-      return 'Microsoft Teams';
-    case 'google-meets':
-      return 'Google Meet';
-    case 'live':
-      return 'Live Recording';
+    case "microsoft-teams":
+      return "Microsoft Teams";
+    case "google-meets":
+      return "Google Meet";
+    case "live":
+      return "Live Recording";
   }
 }
 
@@ -58,69 +63,116 @@ function isValidDate(date: any): date is Date {
 }
 
 function formatDate(date: Date | string | null | undefined): string {
-  if (!date) return 'N/A';
+  if (!date) return "N/A";
   const parsedDate = date instanceof Date ? date : new Date(date);
-  if (!isValidDate(parsedDate)) return 'N/A';
+  if (!isValidDate(parsedDate)) return "N/A";
   return format(parsedDate, "d. MMMM yyyy", { locale: nb });
 }
 
 function formatTime(date: Date | string | null | undefined): string {
-  if (!date) return 'N/A';
+  if (!date) return "N/A";
   const parsedDate = date instanceof Date ? date : new Date(date);
-  if (!isValidDate(parsedDate)) return 'N/A';
+  if (!isValidDate(parsedDate)) return "N/A";
   return format(parsedDate, "HH:mm", { locale: nb });
 }
 
-function calculateDuration(startTime: Date | string | null | undefined, endTime: Date | string | null | undefined): string {
-  if (!startTime || !endTime) return 'N/A';
-  
+function calculateDuration(
+  startTime: Date | string | null | undefined,
+  endTime: Date | string | null | undefined
+): string {
+  if (!startTime || !endTime) return "N/A";
+
   const start = startTime instanceof Date ? startTime : new Date(startTime);
   const end = endTime instanceof Date ? endTime : new Date(endTime);
-  
-  if (!isValidDate(start) || !isValidDate(end)) return 'N/A';
-  
-  const diffInMinutes = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60)));
+
+  if (!isValidDate(start) || !isValidDate(end)) return "N/A";
+
+  const diffInMinutes = Math.max(
+    1,
+    Math.round((end.getTime() - start.getTime()) / (1000 * 60))
+  );
   const hours = Math.floor(diffInMinutes / 60);
   const minutes = diffInMinutes % 60;
-  
+
   if (hours > 0) {
     return `${hours}t ${minutes}m`;
   }
   return `${minutes}m`;
 }
 
-function getStatusBadge(status: Meeting['transcription_status'] | Meeting['summary_status']) {
+function getStatusBadge(
+  status: Meeting["transcription_status"] | Meeting["summary_status"]
+) {
   switch (status) {
-    case 'completed':
-      return <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-200">Fullført</Badge>;
-    case 'processing':
-      return <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">Behandler</Badge>;
-    case 'failed':
-      return <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">Feilet</Badge>;
-    case 'pending':
-      return <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200">Venter</Badge>;
+    case "completed":
+      return (
+        <Badge
+          variant="secondary"
+          className="bg-emerald-100 text-emerald-800 border-emerald-200"
+        >
+          Fullført
+        </Badge>
+      );
+    case "processing":
+      return (
+        <Badge
+          variant="secondary"
+          className="bg-blue-100 text-blue-800 border-blue-200"
+        >
+          Behandler
+        </Badge>
+      );
+    case "failed":
+      return (
+        <Badge
+          variant="destructive"
+          className="bg-red-100 text-red-800 border-red-200"
+        >
+          Feilet
+        </Badge>
+      );
+    case "pending":
+      return (
+        <Badge
+          variant="outline"
+          className="bg-gray-50 text-gray-600 border-gray-200"
+        >
+          Venter
+        </Badge>
+      );
   }
 }
 
-function getOverallStatus(meeting: Meeting): Meeting['transcription_status'] {
-  if (meeting.transcription_status === 'failed' || meeting.summary_status === 'failed') {
-    return 'failed';
+function getOverallStatus(meeting: Meeting): Meeting["transcription_status"] {
+  if (
+    meeting.transcription_status === "failed" ||
+    meeting.summary_status === "failed"
+  ) {
+    return "failed";
   }
-  if (meeting.transcription_status === 'processing' || meeting.summary_status === 'processing') {
-    return 'processing';
+  if (
+    meeting.transcription_status === "processing" ||
+    meeting.summary_status === "processing"
+  ) {
+    return "processing";
   }
-  if (meeting.transcription_status === 'completed' && meeting.summary_status === 'completed') {
-    return 'completed';
+  if (
+    meeting.transcription_status === "completed" &&
+    meeting.summary_status === "completed"
+  ) {
+    return "completed";
   }
-  return 'pending';
+  return "pending";
 }
 
 export function MeetingList({ meetings, showEmpty = true }: MeetingListProps) {
   if (meetings.length === 0 && showEmpty) {
     return (
       <Card>
-        <CardContent className="p-8 text-center">
-          <p className="text-muted-foreground">Ingen møter funnet</p>
+        <CardContent className="p-8 text-center bg-gray-500 rounded-2xl">
+          <p className="text-muted-foreground bg-gray-500 text-white">
+            Ingen møter funnet
+          </p>
         </CardContent>
       </Card>
     );
@@ -129,8 +181,8 @@ export function MeetingList({ meetings, showEmpty = true }: MeetingListProps) {
   return (
     <div className="grid gap-4">
       {meetings.map((meeting) => (
-        <Link 
-          key={meeting.id} 
+        <Link
+          key={meeting.id}
           href={`/dashboard/meeting/${meeting.id}`}
           className="block"
         >
@@ -149,14 +201,17 @@ export function MeetingList({ meetings, showEmpty = true }: MeetingListProps) {
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1.5">
                       <CalendarIcon className="h-4 w-4" />
-                      <span>
-                        {formatDate(meeting.startTime)}
-                      </span>
+                      <span>{formatDate(meeting.startTime)}</span>
                     </div>
                     <span className="text-gray-300">•</span>
-                    <span>{formatTime(meeting.startTime)} - {formatTime(meeting.endTime)}</span>
+                    <span>
+                      {formatTime(meeting.startTime)} -{" "}
+                      {formatTime(meeting.endTime)}
+                    </span>
                     <span className="text-gray-300">•</span>
-                    <span>{calculateDuration(meeting.startTime, meeting.endTime)}</span>
+                    <span>
+                      {calculateDuration(meeting.startTime, meeting.endTime)}
+                    </span>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {meeting.participants.map((participant, index) => (
@@ -206,4 +261,4 @@ export function MeetingList({ meetings, showEmpty = true }: MeetingListProps) {
       ))}
     </div>
   );
-} 
+}

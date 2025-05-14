@@ -6,7 +6,7 @@ import {
   useInView,
   useMotionValue,
   useSpring,
-} from "framer-motion";
+} from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 interface BoxConfig {
@@ -86,7 +86,7 @@ export function FourthBentoAnimation({
           { length: numberOfItems },
           (_, index) => {
             return ((itemWidth + gap) * index) / 2;
-          }
+          },
         );
         setTranslateXValues(newTranslateXValues);
       }

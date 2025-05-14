@@ -7,5 +7,9 @@ export default function OnboardingLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <OnboardingProvider>{children}</OnboardingProvider>;
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen overflow-hidden">
+      <OnboardingProvider>{children}</OnboardingProvider>
+    </div>
+  );
 }

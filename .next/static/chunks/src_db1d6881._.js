@@ -1,4 +1,4 @@
-(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push([typeof document === "object" ? document.currentScript : undefined, {
+(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push(["static/chunks/src_db1d6881._.js", {
 
 "[project]/src/components/ui/input.tsx [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -262,7 +262,7 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-left.js [app-client] (ecmascript) <export default as ChevronLeft>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-client] (ecmascript) <export default as ChevronRight>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$day$2d$picker$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-day-picker/dist/index.esm.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$day$2d$picker$2f$dist$2f$esm$2f$DayPicker$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-day-picker/dist/esm/DayPicker.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-client] (ecmascript)");
 "use client";
@@ -272,7 +272,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$b
 ;
 ;
 function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$day$2d$picker$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DayPicker"], {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$day$2d$picker$2f$dist$2f$esm$2f$DayPicker$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DayPicker"], {
         showOutsideDays: showOutsideDays,
         className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-3", className),
         classNames: {
@@ -397,8 +397,8 @@ __turbopack_context__.s({
     "DateRangePicker": (()=>DateRangePicker)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.mjs [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/locale/nb.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/locale/nb.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-client] (ecmascript) <export default as Calendar>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-client] (ecmascript)");
@@ -434,17 +434,17 @@ function DateRangePicker({ value, onChange, className }) {
                             }, this),
                             value?.from ? value.to ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
-                                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(value.from, "d. MMMM yyyy", {
-                                        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
+                                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(value.from, "d. MMMM yyyy", {
+                                        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
                                     }),
                                     " -",
                                     " ",
-                                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(value.to, "d. MMMM yyyy", {
-                                        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
+                                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(value.to, "d. MMMM yyyy", {
+                                        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
                                     })
                                 ]
-                            }, void 0, true) : (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(value.from, "d. MMMM yyyy", {
-                                locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
+                            }, void 0, true) : (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(value.from, "d. MMMM yyyy", {
+                                locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
                             }) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: "Velg datoområde"
                             }, void 0, false, {
@@ -473,7 +473,7 @@ function DateRangePicker({ value, onChange, className }) {
                         selected: value,
                         onSelect: onChange,
                         numberOfMonths: 2,
-                        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
+                        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
                     }, void 0, false, {
                         fileName: "[project]/src/components/ui/date-range-picker.tsx",
                         lineNumber: 56,
@@ -713,8 +713,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$ico
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/card.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/badge.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.mjs [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/locale/nb.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/date-fns/locale/nb.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)");
 "use client";
 ;
@@ -729,66 +729,66 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 ;
 function getMeetingTypeIcon(type) {
     switch(type){
-        case 'microsoft-teams':
+        case "microsoft-teams":
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$pi$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PiMicrosoftTeamsLogoFill"], {
                 className: "h-5 w-5 text-[#464EB8]"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 37,
+                lineNumber: 42,
                 columnNumber: 14
             }, this);
-        case 'google-meets':
+        case "google-meets":
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$si$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SiGooglemeet"], {
                 className: "h-5 w-5 text-[#00AC47]"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 39,
+                lineNumber: 44,
                 columnNumber: 14
             }, this);
-        case 'live':
+        case "live":
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mic$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mic$3e$__["Mic"], {
                 className: "h-5 w-5 text-violet-600"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 41,
+                lineNumber: 46,
                 columnNumber: 14
             }, this);
     }
 }
 function getMeetingTypeLabel(type) {
     switch(type){
-        case 'microsoft-teams':
-            return 'Microsoft Teams';
-        case 'google-meets':
-            return 'Google Meet';
-        case 'live':
-            return 'Live Recording';
+        case "microsoft-teams":
+            return "Microsoft Teams";
+        case "google-meets":
+            return "Google Meet";
+        case "live":
+            return "Live Recording";
     }
 }
 function isValidDate(date) {
     return date instanceof Date && !isNaN(date.getTime());
 }
 function formatDate(date) {
-    if (!date) return 'N/A';
+    if (!date) return "N/A";
     const parsedDate = date instanceof Date ? date : new Date(date);
-    if (!isValidDate(parsedDate)) return 'N/A';
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(parsedDate, "d. MMMM yyyy", {
-        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
+    if (!isValidDate(parsedDate)) return "N/A";
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(parsedDate, "d. MMMM yyyy", {
+        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
     });
 }
 function formatTime(date) {
-    if (!date) return 'N/A';
+    if (!date) return "N/A";
     const parsedDate = date instanceof Date ? date : new Date(date);
-    if (!isValidDate(parsedDate)) return 'N/A';
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(parsedDate, "HH:mm", {
-        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
+    if (!isValidDate(parsedDate)) return "N/A";
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(parsedDate, "HH:mm", {
+        locale: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$locale$2f$nb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["nb"]
     });
 }
 function calculateDuration(startTime, endTime) {
-    if (!startTime || !endTime) return 'N/A';
+    if (!startTime || !endTime) return "N/A";
     const start = startTime instanceof Date ? startTime : new Date(startTime);
     const end = endTime instanceof Date ? endTime : new Date(endTime);
-    if (!isValidDate(start) || !isValidDate(end)) return 'N/A';
+    if (!isValidDate(start) || !isValidDate(end)) return "N/A";
     const diffInMinutes = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60)));
     const hours = Math.floor(diffInMinutes / 60);
     const minutes = diffInMinutes % 60;
@@ -799,81 +799,81 @@ function calculateDuration(startTime, endTime) {
 }
 function getStatusBadge(status) {
     switch(status){
-        case 'completed':
+        case "completed":
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                 variant: "secondary",
                 className: "bg-emerald-100 text-emerald-800 border-emerald-200",
                 children: "Fullført"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 95,
-                columnNumber: 14
+                lineNumber: 109,
+                columnNumber: 9
             }, this);
-        case 'processing':
+        case "processing":
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                 variant: "secondary",
                 className: "bg-blue-100 text-blue-800 border-blue-200",
                 children: "Behandler"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 97,
-                columnNumber: 14
+                lineNumber: 118,
+                columnNumber: 9
             }, this);
-        case 'failed':
+        case "failed":
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                 variant: "destructive",
                 className: "bg-red-100 text-red-800 border-red-200",
                 children: "Feilet"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 99,
-                columnNumber: 14
+                lineNumber: 127,
+                columnNumber: 9
             }, this);
-        case 'pending':
+        case "pending":
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                 variant: "outline",
                 className: "bg-gray-50 text-gray-600 border-gray-200",
                 children: "Venter"
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 101,
-                columnNumber: 14
+                lineNumber: 136,
+                columnNumber: 9
             }, this);
     }
 }
 function getOverallStatus(meeting) {
-    if (meeting.transcription_status === 'failed' || meeting.summary_status === 'failed') {
-        return 'failed';
+    if (meeting.transcription_status === "failed" || meeting.summary_status === "failed") {
+        return "failed";
     }
-    if (meeting.transcription_status === 'processing' || meeting.summary_status === 'processing') {
-        return 'processing';
+    if (meeting.transcription_status === "processing" || meeting.summary_status === "processing") {
+        return "processing";
     }
-    if (meeting.transcription_status === 'completed' && meeting.summary_status === 'completed') {
-        return 'completed';
+    if (meeting.transcription_status === "completed" && meeting.summary_status === "completed") {
+        return "completed";
     }
-    return 'pending';
+    return "pending";
 }
 function MeetingList({ meetings, showEmpty = true }) {
     if (meetings.length === 0 && showEmpty) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                className: "p-8 text-center",
+                className: "p-8 text-center bg-gray-500 rounded-2xl",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: "text-muted-foreground",
+                    className: "text-muted-foreground bg-gray-500 text-white",
                     children: "Ingen møter funnet"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                    lineNumber: 123,
+                    lineNumber: 173,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 122,
+                lineNumber: 172,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-            lineNumber: 121,
+            lineNumber: 171,
             columnNumber: 7
         }, this);
     }
@@ -900,7 +900,7 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: meeting.title
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 142,
+                                                    lineNumber: 194,
                                                     columnNumber: 21
                                                 }, this),
                                                 getMeetingTypeIcon(meeting.meeting_type),
@@ -909,14 +909,14 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: getMeetingTypeLabel(meeting.meeting_type)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 144,
+                                                    lineNumber: 196,
                                                     columnNumber: 21
                                                 }, this),
                                                 getStatusBadge(getOverallStatus(meeting))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 141,
+                                            lineNumber: 193,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -929,20 +929,20 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 151,
+                                                            lineNumber: 203,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: formatDate(meeting.startTime)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 152,
+                                                            lineNumber: 204,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 150,
+                                                    lineNumber: 202,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -950,18 +950,19 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 156,
+                                                    lineNumber: 206,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: [
                                                         formatTime(meeting.startTime),
-                                                        " - ",
+                                                        " -",
+                                                        " ",
                                                         formatTime(meeting.endTime)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 157,
+                                                    lineNumber: 207,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -969,20 +970,20 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                     children: "•"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 158,
+                                                    lineNumber: 211,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: calculateDuration(meeting.startTime, meeting.endTime)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 159,
+                                                    lineNumber: 212,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 149,
+                                            lineNumber: 201,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -997,14 +998,14 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                             className: "h-4 w-4 rounded-full"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 169,
+                                                            lineNumber: 224,
                                                             columnNumber: 27
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "h-4 w-4 rounded-full bg-gray-200 flex items-center justify-center text-xs",
                                                             children: participant.name.charAt(0)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 175,
+                                                            lineNumber: 230,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1012,24 +1013,24 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                             children: participant.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                            lineNumber: 179,
+                                                            lineNumber: 234,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, index, true, {
                                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                    lineNumber: 163,
+                                                    lineNumber: 218,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 161,
+                                            lineNumber: 216,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                    lineNumber: 140,
+                                    lineNumber: 192,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1044,12 +1045,12 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                lineNumber: 191,
+                                                lineNumber: 246,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 185,
+                                            lineNumber: 240,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1061,44 +1062,44 @@ function MeetingList({ meetings, showEmpty = true }) {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                                lineNumber: 199,
+                                                lineNumber: 254,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                            lineNumber: 193,
+                                            lineNumber: 248,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                                    lineNumber: 184,
+                                    lineNumber: 239,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                            lineNumber: 139,
+                            lineNumber: 191,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                        lineNumber: 138,
+                        lineNumber: 190,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                    lineNumber: 137,
+                    lineNumber: 189,
                     columnNumber: 11
                 }, this)
             }, meeting.id, false, {
                 fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-                lineNumber: 132,
+                lineNumber: 184,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/components/meeting-list.tsx",
-        lineNumber: 130,
+        lineNumber: 182,
         columnNumber: 5
     }, this);
 }
@@ -1133,11 +1134,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$l
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$dashboard$2f$components$2f$meeting$2d$list$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/dashboard/components/meeting-list.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/supabase/client.ts [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
-;
 ;
 ;
 ;
@@ -1156,7 +1155,6 @@ function MeetingsPage() {
     const [showFilters, setShowFilters] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [meetings, setMeetings] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "MeetingsPage.useEffect": ()=>{
             const fetchMeetings = {
@@ -1184,8 +1182,8 @@ function MeetingsPage() {
                                     startTime,
                                     endTime,
                                     meeting_type: meeting.meeting_type,
-                                    transcription_status: meeting.transcription_status || 'pending',
-                                    summary_status: meeting.summary_status || 'pending',
+                                    transcription_status: meeting.transcription_status || "pending",
+                                    summary_status: meeting.summary_status || "pending",
                                     participants: [
                                         {
                                             name: "Ola Nordmann",
@@ -1216,7 +1214,7 @@ function MeetingsPage() {
         return matchesSearch && matchesDate && matchesType;
     });
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "container mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8",
+        className: "container mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8 bg-[#18181B]",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex flex-col gap-6",
@@ -1232,7 +1230,7 @@ function MeetingsPage() {
                                         children: "Alle møter"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 115,
+                                        lineNumber: 116,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1240,13 +1238,13 @@ function MeetingsPage() {
                                         children: "Oversikt over alle dine møter og opptak"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 116,
+                                        lineNumber: 117,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                lineNumber: 114,
+                                lineNumber: 115,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1266,14 +1264,14 @@ function MeetingsPage() {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 131,
+                                                lineNumber: 132,
                                                 columnNumber: 15
                                             }, this),
                                             "Vis alle møter"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 121,
+                                        lineNumber: 122,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1285,7 +1283,7 @@ function MeetingsPage() {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 139,
+                                                lineNumber: 140,
                                                 columnNumber: 15
                                             }, this),
                                             showFilters ? "Skjul filtre" : "Vis filtre",
@@ -1293,19 +1291,19 @@ function MeetingsPage() {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 142,
+                                                lineNumber: 143,
                                                 columnNumber: 17
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 144,
+                                                lineNumber: 145,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 134,
+                                        lineNumber: 135,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1317,31 +1315,31 @@ function MeetingsPage() {
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                    lineNumber: 149,
+                                                    lineNumber: 150,
                                                     columnNumber: 17
                                                 }, this),
                                                 "Nytt møte"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                            lineNumber: 148,
+                                            lineNumber: 149,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 147,
+                                        lineNumber: 148,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                lineNumber: 120,
+                                lineNumber: 121,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                        lineNumber: 113,
+                        lineNumber: 114,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1354,7 +1352,7 @@ function MeetingsPage() {
                                         className: "absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 158,
+                                        lineNumber: 159,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1364,13 +1362,13 @@ function MeetingsPage() {
                                         className: "pl-10 h-12 text-base"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 159,
+                                        lineNumber: 160,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                lineNumber: 157,
+                                lineNumber: 158,
                                 columnNumber: 11
                             }, this),
                             showFilters && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1383,7 +1381,7 @@ function MeetingsPage() {
                                                 children: "Møtetype"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 170,
+                                                lineNumber: 171,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -1395,12 +1393,12 @@ function MeetingsPage() {
                                                             placeholder: "Velg type"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                            lineNumber: 176,
+                                                            lineNumber: 177,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                        lineNumber: 175,
+                                                        lineNumber: 176,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1410,7 +1408,7 @@ function MeetingsPage() {
                                                                 children: "Alle typer"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                                lineNumber: 179,
+                                                                lineNumber: 180,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1418,7 +1416,7 @@ function MeetingsPage() {
                                                                 children: "Live opptak"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                                lineNumber: 180,
+                                                                lineNumber: 181,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1426,7 +1424,7 @@ function MeetingsPage() {
                                                                 children: "Microsoft Teams"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                                lineNumber: 181,
+                                                                lineNumber: 182,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1434,25 +1432,25 @@ function MeetingsPage() {
                                                                 children: "Google Meet"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                                lineNumber: 182,
+                                                                lineNumber: 185,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                        lineNumber: 178,
+                                                        lineNumber: 179,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 171,
+                                                lineNumber: 172,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 169,
+                                        lineNumber: 170,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1462,7 +1460,7 @@ function MeetingsPage() {
                                                 children: "Datointervall"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 187,
+                                                lineNumber: 190,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$date$2d$range$2d$picker$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DateRangePicker"], {
@@ -1470,31 +1468,31 @@ function MeetingsPage() {
                                                 onChange: setDateRange
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                                lineNumber: 188,
+                                                lineNumber: 191,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                        lineNumber: 186,
+                                        lineNumber: 189,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                                lineNumber: 168,
+                                lineNumber: 169,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                        lineNumber: 156,
+                        lineNumber: 157,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                lineNumber: 112,
+                lineNumber: 113,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1504,7 +1502,7 @@ function MeetingsPage() {
                     children: "Laster møter..."
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                    lineNumber: 197,
+                    lineNumber: 200,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "space-y-4",
@@ -1512,31 +1510,27 @@ function MeetingsPage() {
                         meetings: filteredMeetings
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                        lineNumber: 202,
+                        lineNumber: 205,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                    lineNumber: 201,
+                    lineNumber: 204,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-                lineNumber: 195,
+                lineNumber: 198,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/meetings/page.tsx",
-        lineNumber: 111,
+        lineNumber: 112,
         columnNumber: 5
     }, this);
 }
-_s(MeetingsPage, "F5yxqAs8dLb+z183kpXd7nFSR1Y=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
-    ];
-});
+_s(MeetingsPage, "JFM/lqnld9l172Fja7tgU0iWe+o=");
 _c = MeetingsPage;
 var _c;
 __turbopack_context__.k.register(_c, "MeetingsPage");

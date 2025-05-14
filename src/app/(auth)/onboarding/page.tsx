@@ -33,7 +33,7 @@ export default function OnboardingPage() {
   }, [user, searchParams, dispatch]);
 
   return (
-    <div className="container max-w-4xl py-8">
+    <div className="container min-w-4xl py-8">
       <OnboardingSteps />
     </div>
   );

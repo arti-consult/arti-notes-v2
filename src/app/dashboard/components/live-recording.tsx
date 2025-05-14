@@ -386,8 +386,8 @@ export function LiveRecording({
                     </span>
                   ) : (
                     <>
-                      <Check className="mr-2 h-4 w-4" />
-                      Save Recording
+                      <Check className="mr-2 h-4 w-4 text-white" />
+                      <span className="text-white">Save Recording</span>
                     </>
                   )}
                 </Button>

@@ -68,22 +68,24 @@ export function PurchaseCreditsDialog() {
           Kjøp AI-kreditter
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[1100px] p-0 gap-0">
-        <div className="grid grid-cols-[500px,1fr]">
+      <DialogContent className="sm:max-w-[600px] p-0 gap-0 overflow-hidden rounded-xl">
+        <div className="grid grid-cols-[250px,1fr]">
           {/* Left Column - Features */}
-          <div className="p-8 bg-violet-50 border-r">
-            <h3 className="font-semibold text-2xl mb-8">
+          <div className="p-4 bg-[#27272A] border-r border-gray-800">
+            <h3 className="font-semibold text-lg mb-4 text-gray-100">
               What's included with AI Credits
             </h3>
-            <div className="space-y-6">
+            <div className="space-y-2">
               {features.map((feature, index) => (
-                <div key={index} className="flex gap-3">
-                  <div className="h-6 w-6 rounded-full bg-violet-100 flex items-center justify-center">
-                    <feature.icon className="h-4 w-4 text-violet-600" />
+                <div key={index} className="flex gap-2 mb-2">
+                  <div className="h-6 w-6 rounded-full bg-[#3F3F46] flex items-center justify-center">
+                    <feature.icon className="h-4 w-4 text-violet-400" />
                   </div>
                   <div>
-                    <h4 className="font-medium">{feature.title}</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <h4 className="font-medium text-gray-200">
+                      {feature.title}
+                    </h4>
+                    <p className="text-xs text-gray-400">
                       {feature.description}
                     </p>
                   </div>
@@ -91,47 +93,49 @@ export function PurchaseCreditsDialog() {
               ))}
             </div>
 
-            <div className="mt-8 pt-6 border-t">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <CheckCircle2 className="h-4 w-4 text-violet-600" />
+            <div className="mt-4 pt-4 border-t border-gray-800">
+              <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                <CheckCircle2 className="h-4 w-4 text-violet-400" />
                 <span>7-day free trial with all features</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
-                <CheckCircle2 className="h-4 w-4 text-violet-600" />
+              <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                <CheckCircle2 className="h-4 w-4 text-violet-400" />
                 <span>Cancel anytime, no commitments</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
-                <CheckCircle2 className="h-4 w-4 text-violet-600" />
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <CheckCircle2 className="h-4 w-4 text-violet-400" />
                 <span>Credits shared with team members</span>
               </div>
             </div>
           </div>
 
           {/* Right Column - Credit Selection */}
-          <div className="p-6">
+          <div className="p-4 bg-[#27272A]">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-semibold text-center">
+              <DialogTitle className="text-lg font-semibold text-center text-gray-100">
                 Choose Your AI Credits
               </DialogTitle>
-              <p className="text-center text-muted-foreground mt-2">
+              <p className="text-sm text-center text-gray-400 mt-1">
                 Select the number of credits you need per month
               </p>
             </DialogHeader>
 
-            <div className="mt-8">
+            <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-violet-600" />
-                  <span className="font-medium">{credits} AI Credits / mo</span>
+                  <Sparkles className="h-4 w-4 text-violet-400" />
+                  <span className="font-medium text-sm text-gray-200">
+                    {credits} AI Credits / mo
+                  </span>
                 </div>
                 <div className="text-right">
-                  <span className="font-medium">
+                  <span className="font-medium text-sm text-gray-200">
                     ${calculatePrice(credits)}/month
                   </span>
                 </div>
               </div>
 
-              <div className="mt-6">
+              <div className="mt-4">
                 <Slider
                   value={[credits]}
                   onValueChange={handleCreditsChange}
@@ -140,28 +144,24 @@ export function PurchaseCreditsDialog() {
                   step={1243.75}
                   className="w-full"
                 />
-                <div className="flex justify-between text-sm text-muted-foreground mt-1">
+                <div className="flex justify-between text-xs text-gray-400 mt-1">
                   <span>50</span>
-                  <span>1,293</span>
                   <span>2,537</span>
-                  <span>3,781</span>
                   <span>5,025</span>
-                  <span>6,268</span>
                   <span>7,512</span>
-                  <span>8,756</span>
                   <span>10,000</span>
                 </div>
               </div>
 
-              <div className="mt-4 text-sm text-muted-foreground">
+              <div className="mt-4 text-xs text-gray-400">
                 Estimated usage: ~10 credits per meeting summary
               </div>
 
-              <div className="mt-8 space-y-4">
-                <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white h-12 text-lg">
+              <div className="mt-4">
+                <Button className="w-full bg-violet-600 hover:bg-violet-700 text-gray-100">
                   Start Free Trial
                 </Button>
-                <p className="text-xs text-center text-muted-foreground">
+                <p className="text-xs text-center text-gray-400 mt-2">
                   After 7 days, you'll be subscribed to the selected package.
                   You can change or cancel your plan at any time.
                 </p>

@@ -25,6 +25,8 @@ import {
   CheckCircle2,
   CreditCard,
 } from "lucide-react";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 
 export function OnboardingSteps() {
   const router = useRouter();
@@ -33,6 +35,53 @@ export function OnboardingSteps() {
     useOnboarding();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const controls1 = useAnimation();
+  const controls2 = useAnimation();
+  const controls3 = useAnimation();
+
+  useEffect(() => {
+    const animate = async () => {
+      controls1.start({
+        scale: [1, 1.2, 1],
+        opacity: [0.3, 0.5, 0.3],
+        x: [0, 100, 0],
+        y: [0, -50, 0],
+        transition: {
+          duration: 10,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut",
+        },
+      });
+
+      controls2.start({
+        scale: [1.1, 0.9, 1.1],
+        opacity: [0.4, 0.6, 0.4],
+        x: [-50, 50, -50],
+        y: [50, -30, 50],
+        transition: {
+          duration: 12,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut",
+        },
+      });
+
+      controls3.start({
+        scale: [0.9, 1.1, 0.9],
+        opacity: [0.2, 0.4, 0.2],
+        x: [30, -80, 30],
+        y: [-30, 60, -30],
+        transition: {
+          duration: 8,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut",
+        },
+      });
+    };
+    animate();
+  }, [controls1, controls2, controls3]);
 
   const handleNextStep = () => {
     dispatch({ type: "NEXT_STEP" });
@@ -311,52 +360,27 @@ export function OnboardingSteps() {
                       <div className="mt-4 space-y-2">
                         <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          <span>14 days of full access</span>
+                          <span className="text-white">
+                            14 days of full access
+                          </span>
                         </div>
                         <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          <span>No charges during trial</span>
+                          <span className="text-white">
+                            No charges during trial
+                          </span>
                         </div>
                         <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          <span>Cancel anytime</span>
+                          <span className="text-white">Cancel anytime</span>
                         </div>
                       </div>
                     </div>
                     <Button
                       variant="outline"
-                      onClick={async () => {
-                        if (!user) return;
-                        try {
-                          const response = await fetch(
-                            "/api/onboarding/create-checkout",
-                            {
-                              method: "POST",
-                              headers: {
-                                "Content-Type": "application/json",
-                              },
-                              body: JSON.stringify({ userId: user.id }),
-                            }
-                          );
-
-                          const data = await response.json();
-
-                          if (data.error) {
-                            throw new Error(data.error);
-                          }
-
-                          if (data.url) {
-                            window.location.href = data.url;
-                          }
-                        } catch (error) {
-                          console.error(
-                            "Error creating checkout session:",
-                            error
-                          );
-                          setError(
-                            "Failed to create checkout session. Please try again."
-                          );
-                        }
+                      className="bg-[#145DFC] text-white hover:bg-[#145DFC]/80 transition-colors duration-200"
+                      onClick={() => {
+                        router.push("/dashboard");
                       }}
                     >
                       Start Free Trial
@@ -446,45 +470,59 @@ export function OnboardingSteps() {
   };
 
   return (
-    <Card className="w-full max-w-lg mx-auto">
-      {renderStepContent()}
+    <div className="relative">
+      <motion.div
+        animate={controls1}
+        className="absolute w-[800px] h-[800px] bg-[#145DFC] rounded-full blur-[120px] opacity-30"
+      />
+      <motion.div
+        animate={controls2}
+        className="absolute w-[600px] h-[600px] bg-[#7F22FE] rounded-full blur-[100px] opacity-40"
+      />
+      <motion.div
+        animate={controls3}
+        className="absolute w-[400px] h-[400px] bg-gradient-to-r from-[#145DFC] to-[#7F22FE] rounded-full blur-[80px] opacity-20"
+      />
+      <Card className="w-full max-w-lg mx-auto relative z-10 bg-[#18181B]/80 backdrop-blur-xl">
+        {renderStepContent()}
 
-      {error && (
-        <CardContent>
-          <p className="text-red-600 text-sm">{error}</p>
-        </CardContent>
-      )}
+        {error && (
+          <CardContent>
+            <p className="text-red-600 text-sm">{error}</p>
+          </CardContent>
+        )}
 
-      <CardFooter className="flex justify-between">
-        {state.step > 1 && (
-          <Button
-            variant="outline"
-            onClick={handlePrevStep}
-            disabled={isSubmitting}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
-        )}
-        {state.step < 7 ? (
-          <Button
-            onClick={handleNextStep}
-            disabled={!isStepComplete() || isSubmitting}
-            className={state.step === 1 ? "ml-auto" : ""}
-          >
-            Next
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        ) : (
-          <Button
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-            className="ml-auto"
-          >
-            {isSubmitting ? "Completing..." : "Complete"}
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
+        <CardFooter className="flex justify-between">
+          {state.step > 1 && (
+            <Button
+              variant="outline"
+              onClick={handlePrevStep}
+              disabled={isSubmitting}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back
+            </Button>
+          )}
+          {state.step < 7 ? (
+            <Button
+              onClick={handleNextStep}
+              disabled={!isStepComplete() || isSubmitting}
+              className={state.step === 1 ? "ml-auto" : ""}
+            >
+              Next
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          ) : (
+            <Button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="ml-auto"
+            >
+              {isSubmitting ? "Completing..." : "Complete"}
+            </Button>
+          )}
+        </CardFooter>
+      </Card>
+    </div>
   );
 }

@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://D%3A/breyholtz%20holding/arti-notes/arti-notes-v2/src/app/register/page.tsx"],"sourcesContent":["'use client';\r\n\r\nimport { useEffect } from 'react';\r\nimport { useRouter } from 'next/navigation';\r\nimport RegisterPage from '@/pages/RegisterPage';\r\nimport { useSupabaseClient } from '@supabase/auth-helpers-react';\r\n\r\nexport default function Page() {\r\n  const router = useRouter();\r\n  const supabase = useSupabaseClient();\r\n\r\n  useEffect(() => {\r\n    const checkSession = async () => {\r\n      const { data: { session } } = await supabase.auth.getSession();\r\n      if (session) {\r\n        router.push('/dashboard');\r\n      }\r\n    };\r\n    checkSession();\r\n  }, [router, supabase]);\r\n\r\n  return <RegisterPage />;\r\n} "],"names":[],"mappings":";;;;AAEA;AACA;;;;;;;;;;;;;AAHA;;;;;AAOe,SAAS;;IACtB,MAAM,SAAS,CAAA,GAAA,qIAAA,CAAA,YAAS,AAAD;IACvB,MAAM,WAAW;IAEjB,CAAA,GAAA,6JAAA,CAAA,YAAS,AAAD;0BAAE;YACR,MAAM;+CAAe;oBACnB,MAAM,EAAE,MAAM,EAAE,OAAO,EAAE,EAAE,GAAG,MAAM,SAAS,IAAI,CAAC,UAAU;oBAC5D,IAAI,SAAS;wBACX,OAAO,IAAI,CAAC;oBACd;gBACF;;YACA;QACF;yBAAG;QAAC;QAAQ;KAAS;IAErB,qBAAO,6LAAC;;;;;AACV;GAfwB;;QACP,qIAAA,CAAA,YAAS;QACP;;;KAFK","debugId":null}}]
-}

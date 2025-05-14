@@ -27,7 +27,7 @@ export default function DashboardLayout({
   if (!user) return null;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <Sidebar />
       <main className="flex-1 overflow-y-auto bg-gray-50">
         <WelcomeAlert />

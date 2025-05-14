@@ -38,7 +38,7 @@ export default async function SubscriptionPage() {
   if (plansError) {
     console.error("Error fetching pricing plans:", plansError);
     return (
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 bg-[#18181B]">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600">Error</h1>
           <p className="text-muted-foreground">Failed to load pricing plans</p>
@@ -48,7 +48,7 @@ export default async function SubscriptionPage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 bg-[#18181B] px-[50px]">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Subscription Management</h1>
         <p className="text-muted-foreground">

@@ -76,7 +76,7 @@ export default function TeamPage() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto py-6 space-y-6 bg-[#18181B] px-[50px]">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Team</h1>
         <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>

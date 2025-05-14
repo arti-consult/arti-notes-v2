@@ -109,7 +109,7 @@ export default function MeetingsPage() {
   });
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8 bg-[#18181B]">
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1">

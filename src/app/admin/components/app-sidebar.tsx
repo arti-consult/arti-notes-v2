@@ -1,166 +1,164 @@
-"use client";
 
-import type * as React from "react";
-import {
-  ArrowUpCircleIcon,
-  BarChartIcon,
-  CameraIcon,
-  ClipboardListIcon,
-  DatabaseIcon,
-  FileCodeIcon,
-  FileIcon,
-  FileTextIcon,
-  FolderIcon,
-  LayoutDashboardIcon,
-  ListIcon,
-  SettingsIcon,
-  UsersIcon,
+import { 
+  LayoutDashboard, 
+  Users, 
+  Wrench, 
+  Settings, 
+  FileText, 
+  Info,
+  Share2,
+  Kanban,
+  Mail,
+  Globe,
+  BarChart
 } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
-import { NavMain } from "./nav-main";
-import { NavSecondary } from "./nav-secondary";
-import { NavUser } from "./nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+// Menu items
+const mainItems = [
+  {
+    title: "Customers",
+    url: "/",
+    icon: Kanban
   },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: LayoutDashboardIcon,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: ListIcon,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: BarChartIcon,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: FolderIcon,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: UsersIcon,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: CameraIcon,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: FileTextIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: FileCodeIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: SettingsIcon,
-    },
-  ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: DatabaseIcon,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: ClipboardListIcon,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: FileIcon,
-    },
-  ],
-};
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard
+  },
+  {
+    title: "Analytics",
+    url: "/analytics",
+    icon: BarChart
+  },
+  {
+    title: "Email Sender",
+    url: "/email-sender",
+    icon: Mail
+  },
+  {
+    title: "SEO",
+    url: "/seo",
+    icon: Globe
+  },
+  {
+    title: "Roles",
+    url: "/roles",
+    icon: Users
+  },
+  {
+    title: "Installation",
+    url: "/installation-guide",
+    icon: Wrench
+  },
+  {
+    title: "Automation",
+    url: "/automation",
+    icon: Share2
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings
+  }
+];
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+const secondaryItems = [
+  {
+    title: "Documentation",
+    url: "/docs",
+    icon: FileText
+  },
+  {
+    title: "About",
+    url: "/about",
+    icon: Info
+  }
+];
+
+export function AppSidebar() {
+  const location = useLocation();
+  
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="#">
-                <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+    <Sidebar>
+      <SidebarHeader className="flex items-center h-14 px-4 border-b">
+        <h1 className="text-xl font-bold">Customer CRM</h1>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <SidebarGroup>
+          <SidebarGroupLabel>Main Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {mainItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton 
+                    asChild 
+                    tooltip={item.title}
+                    isActive={location.pathname === item.url || 
+                             (item.url !== "/" && location.pathname.startsWith(item.url))}
+                  >
+                    <Link to={item.url}>
+                      <item.icon className={cn(
+                        "h-5 w-5",
+                        (location.pathname === item.url || 
+                         (item.url !== "/" && location.pathname.startsWith(item.url))) && 
+                        "text-primary"
+                      )} />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        
+        <SidebarGroup>
+          <SidebarGroupLabel>Resources</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {secondaryItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton 
+                    asChild 
+                    tooltip={item.title}
+                    isActive={location.pathname === item.url}
+                  >
+                    <Link to={item.url}>
+                      <item.icon className={cn(
+                        "h-5 w-5",
+                        location.pathname === item.url && "text-primary"
+                      )} />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
+      <SidebarFooter className="p-4 border-t">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span>© 2025 Customer CRM</span>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

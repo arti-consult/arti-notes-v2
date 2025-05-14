@@ -55,12 +55,12 @@ export function NewMeetingArea({ onFileUpload }: NewMeetingAreaProps) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 bg-[#18181B]">
       <div className="flex items-center gap-4">
         <NewMeetingDropdown />
         <Button
           variant="outline"
-          className="gap-2 px-8 py-6 text-lg"
+          className="gap-2 px-8 py-6 text-lg bg-zinc-900"
           size="default"
           onClick={() => setIsExpanded(!isExpanded)}
         >
@@ -72,10 +72,10 @@ export function NewMeetingArea({ onFileUpload }: NewMeetingAreaProps) {
       {isExpanded && (
         <div
           className={cn(
-            "w-full max-w-md flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg transition-colors",
+            "w-full max-w-md flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg transition-colors bg-zinc-900",
             isDragging
-              ? "border-violet-500 bg-violet-50"
-              : "border-gray-200 hover:border-gray-300"
+              ? "border-violet-500 bg-violet-900/20"
+              : "border-gray-700 hover:border-gray-600"
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -113,7 +113,10 @@ export function NewMeetingArea({ onFileUpload }: NewMeetingAreaProps) {
                     accept=".mp4,.mov,.wav,.mp3"
                     onChange={handleFileSelect}
                   />
-                  <Button variant="outline" className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 bg-zinc-900"
+                  >
                     <Plus className="h-4 w-4" />
                     Velg fil
                   </Button>

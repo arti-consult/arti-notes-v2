@@ -6,8 +6,8 @@ import {
   Reasoning,
   ReasoningContent,
   ReasoningResponse,
-} from "@/components/landing/ui/reasoning";
-import { AnimatePresence, motion, useInView } from "framer-motion";
+} from "@/components/ui/reasoning";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 export function ReasoningBasic() {

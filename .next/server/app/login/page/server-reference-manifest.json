@@ -1,9 +1,9 @@
 {
   "node": {
-    "40eb7f555376a66c8578ffb217a629765be3285e1c": {
+    "0097441b719d510f861fd6d2f9e99127e69a35a9dc": {
       "workers": {
         "app/login/page": {
-          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -11,10 +11,10 @@
         "app/login/page": "action-browser"
       }
     },
-    "40c6cd5966b91b9a16ca436c01975dc5a0199aef12": {
+    "00d9a54ee73fef35d34842dcdff4fb0d739874e151": {
       "workers": {
         "app/login/page": {
-          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -22,10 +22,10 @@
         "app/login/page": "action-browser"
       }
     },
-    "00714c02b8ce95fe2234c4c7dd1a837878c1b23f8a": {
+    "402c8f217d62da5b880e2480259c297d86230f6c20": {
       "workers": {
         "app/login/page": {
-          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -33,10 +33,10 @@
         "app/login/page": "action-browser"
       }
     },
-    "00820fb5c0faaad0f9ab4051ead88bbdd316f707a4": {
+    "40cb804e7a62af77be19a45aa503778786838da061": {
       "workers": {
         "app/login/page": {
-          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },

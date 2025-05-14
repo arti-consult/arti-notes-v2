@@ -2,7 +2,7 @@
 
 import { colorWithOpacity, getRGBA } from "@/lib/utils";
 import NumberFlow from "@number-flow/react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView } from "motion/react";
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
 interface LineChartProps {
@@ -92,7 +92,7 @@ export function LineChart({
 
   const getColorWithOpacity = useCallback(
     (opacity: number) => colorWithOpacity(computedColor, opacity),
-    [computedColor]
+    [computedColor],
   );
 
   return (
