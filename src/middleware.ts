@@ -72,7 +72,7 @@ export async function middleware(request: NextRequest) {
 
   // If not logged in, redirect to login
   if (!user) {
-    if (pathname !== "/login") {
+    if (pathname !== "/login" && pathname !== "/landing") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     return response;

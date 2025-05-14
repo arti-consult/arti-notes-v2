@@ -663,15 +663,52 @@ function useToast() {
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "cn": (()=>cn)
+    "cn": (()=>cn),
+    "colorWithOpacity": (()=>colorWithOpacity),
+    "focusInput": (()=>focusInput),
+    "focusRing": (()=>focusRing),
+    "getRGBA": (()=>getRGBA),
+    "hasErrorInput": (()=>hasErrorInput)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/clsx/dist/clsx.mjs [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$color$2d$bits$2f$build$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/color-bits/build/index.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$tailwind$2d$merge$2f$dist$2f$bundle$2d$mjs$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/tailwind-merge/dist/bundle-mjs.mjs [app-ssr] (ecmascript)");
+;
 ;
 ;
 function cn(...inputs) {
     return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$tailwind$2d$merge$2f$dist$2f$bundle$2d$mjs$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["twMerge"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["clsx"])(inputs));
 }
+const getRGBA = (cssColor, fallback = "rgba(180, 180, 180)")=>{
+    if ("TURBOPACK compile-time truthy", 1) return fallback;
+    "TURBOPACK unreachable";
+};
+const colorWithOpacity = (color, opacity)=>{
+    if (!color.startsWith("rgb")) return color;
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$color$2d$bits$2f$build$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatRGBA"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$color$2d$bits$2f$build$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["alpha"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$color$2d$bits$2f$build$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["parse"])(color), opacity));
+};
+const focusInput = [
+    // base
+    "focus:ring-2",
+    // ring color
+    "focus:ring-blue-200 focus:dark:ring-blue-700/30",
+    // border color
+    "focus:border-blue-500 focus:dark:border-blue-700"
+];
+const focusRing = [
+    // base
+    "outline outline-offset-2 outline-0 focus-visible:outline-2",
+    // outline color
+    "outline-blue-500 dark:outline-blue-500"
+];
+const hasErrorInput = [
+    // base
+    "ring-2",
+    // border color
+    "border-red-500 dark:border-red-700",
+    // ring color
+    "ring-red-200 dark:ring-red-700/30"
+];
 }}),
 "[project]/src/components/ui/toast.tsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";

@@ -40,7 +40,7 @@ function HomePage() {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             href: "/login",
-                            className: "px-8 py-3 rounded-xl font-medium transition-all duration-300   bg-gradient-to-r from-violet-600 via-fuchsia-600 to-sky-600   hover:scale-105 hover:shadow-xl hover:shadow-violet-600/20   text-white",
+                            className: "px-8 py-3 rounded-xl font-medium transition-all duration-300 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-sky-600 hover:scale-105 hover:shadow-xl hover:shadow-violet-600/20 text-white",
                             children: "Login"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
@@ -49,7 +49,7 @@ function HomePage() {
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             href: "/sign-up",
-                            className: "px-8 py-3 rounded-xl font-medium transition-all duration-300   bg-white hover:bg-gray-50 border border-gray-200   hover:scale-105 hover:shadow-xl hover:shadow-violet-600/20   text-gray-900",
+                            className: "px-8 py-3 rounded-xl font-medium transition-all duration-300 bg-white hover:bg-gray-50 border border-gray-200 hover:scale-105 hover:shadow-xl hover:shadow-violet-600/20 text-gray-900",
                             children: "Sign Up"
                         }, void 0, false, {
                             fileName: "[project]/src/app/page.tsx",
