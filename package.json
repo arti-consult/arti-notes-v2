@@ -36,7 +36,7 @@
     "clsx": "^2.1.1",
     "cobe": "^0.6.3",
     "color-bits": "^1.1.0",
-    "date-fns": "^4.1.0",
+    "date-fns": "^3.6.0",
     "google-auth-library": "^9.15.1",
     "googleapis": "^148.0.0",
     "lucide-react": "^0.479.0",
