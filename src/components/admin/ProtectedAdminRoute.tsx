@@ -1,11 +1,13 @@
-import { Navigate } from 'react-router-dom';
-import { useAdmin } from '@/contexts/AdminContext';
+import Link from "next/link";
+import { useAdmin } from "@/contexts/AdminContext";
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;
 }
 
-export default function ProtectedAdminRoute({ children }: ProtectedAdminRouteProps) {
+export default function ProtectedAdminRoute({
+  children,
+}: ProtectedAdminRouteProps) {
   const { isAdmin, isLoading } = useAdmin();
 
   if (isLoading) {
@@ -17,7 +19,7 @@ export default function ProtectedAdminRoute({ children }: ProtectedAdminRoutePro
   }
 
   if (!isAdmin) {
-    return <Navigate to="/dashboard" replace />;
+    return <Link href="/dashboard" replace />;
   }
 
   return <>{children}</>;
