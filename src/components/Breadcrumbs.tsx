@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 
 interface BreadcrumbConfig {
@@ -35,8 +36,8 @@ const breadcrumbConfigs: Record<string, BreadcrumbConfig> = {
 };
 
 export default function Breadcrumbs() {
-  const location = useLocation();
-  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const pathname = usePathname();
+  const pathSegments = pathname.split("/").filter(Boolean);
 
   // Don't show breadcrumbs on public pages
   if (pathSegments.length === 0 || !breadcrumbConfigs[pathSegments[0]]) {
@@ -44,7 +45,7 @@ export default function Breadcrumbs() {
   }
 
   const breadcrumbs = pathSegments
-    .map((_, index) => {
+    .map((segment: string, index: number) => {
       const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
       const config =
         breadcrumbConfigs[pathSegments.slice(0, index + 1).join("/")];
@@ -71,7 +72,7 @@ export default function Breadcrumbs() {
             <span className="font-medium text-gray-900">{crumb.label}</span>
           ) : (
             <Link
-              to={crumb.path}
+              href={crumb.path}
               className="text-gray-600 hover:text-violet-600 transition-colors"
             >
               {crumb.label}
