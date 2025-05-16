@@ -6,7 +6,7 @@ import { FlickeringGrid } from "@/components/ui/flickering-grid";
 import { Globe } from "@/components/ui/globe";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-
+import Image from "next/image";
 export const Highlight = ({
   children,
   className,
@@ -48,10 +48,10 @@ export const siteConfig = {
   },
   nav: {
     links: [
-      { id: 1, name: "Home", href: "#hero" },
-      { id: 2, name: "How it Works", href: "#bento" },
-      { id: 3, name: "Features", href: "#features" },
-      { id: 4, name: "Pricing", href: "#pricing" },
+      { id: 1, name: "Hjem", href: "#hero" },
+      { id: 2, name: "Hvordan fungerer det", href: "#bento" },
+      { id: 3, name: "Funksjoner", href: "#features" },
+      { id: 4, name: "Priser", href: "#pricing" },
     ],
   },
   hero: {
@@ -69,18 +69,18 @@ export const siteConfig = {
         <path d="M2.37845 10.5993L2.57045 10.4893L6.88445 12.9533C7.22435 13.1474 7.60901 13.2496 8.00045 13.2496C8.39189 13.2496 8.77656 13.1474 9.11645 12.9533L13.4305 10.4883L13.6225 10.5983C13.7374 10.6638 13.833 10.7586 13.8994 10.8731C13.9659 10.9875 14.0009 11.1175 14.0009 11.2498C14.0009 11.3821 13.9659 11.5121 13.8994 11.6265C13.833 11.7409 13.7374 11.8357 13.6225 11.9013L8.37245 14.9013C8.25915 14.966 8.13093 15 8.00045 15C7.86997 15 7.74175 14.966 7.62845 14.9013L2.37845 11.9013C2.2635 11.8357 2.16795 11.7409 2.10148 11.6265C2.03501 11.5121 2 11.3821 2 11.2498C2 11.1175 2.03501 10.9875 2.10148 10.8731C2.16795 10.7586 2.2635 10.6638 2.37845 10.5983V10.5993Z" />
       </svg>
     ),
-    badge: "Introducing custom automations",
-    title: "Meet your AI Agent Streamline your workflow",
+    badge: "Din AI-møteassistent",
+    title: "Tar notater – så du kan fokusere fullt og helt i møtet.",
     description:
-      "AI assistant designed to streamline your digital workflows and handle mundane tasks, so you can focus on what truly matters",
+      "Aldri gå glipp av viktige punkter igjen. Arti Notes deltar i møtet, skriver smarte sammendrag og sender oppfølging – helt automatisk.",
     cta: {
       primary: {
-        text: "Try for Free",
-        href: "/login",
+        text: "Prøv GRATIS",
+        href: "/sign-up",
       },
       secondary: {
-        text: "Log in",
-        href: "/app",
+        text: "Book DEMO",
+        href: "/sign-up",
       },
     },
   },
@@ -88,48 +88,26 @@ export const siteConfig = {
     companyLogos: [
       {
         id: 1,
-        name: "Company 1",
+        name: "ByBreyholtz",
         logo: (
-          <svg
-            width="110"
-            height="31"
-            viewBox="0 0 110 31"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="dark:fill-white fill-black"
-          >
-            <path d="M34.5469 14.5155C34.5469 19.4338 37.7054 22.8631 42.0822 22.8631C46.4591 22.8631 49.6176 19.4338 49.6176 14.5155C49.6176 9.59721 46.4591 6.16797 42.0822 6.16797C37.7054 6.16797 34.5469 9.59721 34.5469 14.5155ZM46.7298 14.5155C46.7298 18.035 44.8121 20.3137 42.0822 20.3137C39.3524 20.3137 37.4347 18.035 37.4347 14.5155C37.4347 10.996 39.3524 8.71736 42.0822 8.71736C44.8121 8.71736 46.7298 10.996 46.7298 14.5155Z" />
-            <path d="M57.7468 22.8652C61.0633 22.8652 62.9584 20.0676 62.9584 16.706C62.9584 13.3444 61.0633 10.5469 57.7468 10.5469C56.2127 10.5469 55.0846 11.156 54.3401 12.0359V10.7725H51.6328V26.678H54.3401V21.3761C55.0846 22.256 56.2127 22.8652 57.7468 22.8652ZM54.2724 16.3676C54.2724 14.1341 55.5359 12.9158 57.2054 12.9158C59.1682 12.9158 60.2285 14.4499 60.2285 16.706C60.2285 18.9621 59.1682 20.4963 57.2054 20.4963C55.5359 20.4963 54.2724 19.2554 54.2724 17.067V16.3676Z" />
-            <path d="M70.2843 22.8652C72.6532 22.8652 74.5258 21.6243 75.3605 19.5487L73.0367 18.6688C72.6758 19.8871 71.6154 20.5639 70.2843 20.5639C68.5471 20.5639 67.3288 19.3231 67.1258 17.2926H75.4282V16.3902C75.4282 13.1414 73.6008 10.5469 70.1715 10.5469C66.7422 10.5469 64.5312 13.2316 64.5312 16.706C64.5312 20.3609 66.9002 22.8652 70.2843 22.8652ZM70.1489 12.8255C71.8636 12.8255 72.6758 13.9536 72.6983 15.2621H67.2611C67.6672 13.6603 68.7501 12.8255 70.1489 12.8255Z" />
-            <path d="M77.4609 22.617H80.1683V15.6682C80.1683 13.9761 81.4091 13.0737 82.6274 13.0737C84.1164 13.0737 84.703 14.1341 84.703 15.6005V22.617H87.4103V14.8109C87.4103 12.2615 85.9213 10.5469 83.4396 10.5469C81.9054 10.5469 80.8451 11.2463 80.1683 12.0359V10.7725H77.4609V22.617Z" />
-            <path d="M95.3397 6.41797L89.2031 22.6167H92.0684L93.4446 18.9167H100.438L101.837 22.6167H104.748L98.611 6.41797H95.3397ZM96.919 9.62163L99.4909 16.3899H94.3921L96.919 9.62163Z" />
-            <path d="M109.396 6.46484H106.508V22.6636H109.396V6.46484Z" />
-            <path d="M27.9278 12.3665C28.6102 10.3182 28.3752 8.07433 27.2838 6.21115C25.6425 3.35343 22.343 1.88321 19.1205 2.57508C17.687 0.960086 15.6273 0.0416664 13.4681 0.054827C10.1742 0.0473067 7.25158 2.16804 6.2382 5.30213C4.12219 5.73551 2.29568 7.06002 1.22685 8.93727C-0.426682 11.7875 -0.0497272 15.3803 2.15937 17.8244C1.4769 19.8728 1.71191 22.1166 2.8033 23.9798C4.4446 26.8375 7.74416 28.3078 10.9666 27.6159C12.3992 29.2309 14.4598 30.1494 16.6191 30.1352C19.9149 30.1437 22.8384 28.021 23.8518 24.8841C25.9678 24.4508 27.7943 23.1263 28.8631 21.249C30.5148 18.3988 30.137 14.8088 27.9287 12.3646L27.9278 12.3665ZM16.621 28.1696C15.3021 28.1714 14.0246 27.7099 13.0121 26.8648C13.0582 26.8403 13.1381 26.7962 13.1898 26.7642L19.1797 23.3049C19.4862 23.131 19.6742 22.8048 19.6723 22.4522V14.0078L22.2038 15.4696C22.2311 15.4828 22.249 15.5091 22.2527 15.5392V22.5321C22.249 25.6418 19.7306 28.163 16.621 28.1696ZM4.50945 22.9965C3.84863 21.8553 3.61081 20.5176 3.83735 19.2194C3.88154 19.2457 3.95954 19.2937 4.01501 19.3257L10.0049 22.785C10.3086 22.9627 10.6846 22.9627 10.9892 22.785L18.3018 18.5624V21.4859C18.3036 21.5159 18.2895 21.5451 18.266 21.5639L12.2112 25.0599C9.51423 26.6129 6.06995 25.6897 4.51042 22.9965H4.50945ZM2.93302 9.9215C3.59104 8.77841 4.62981 7.90416 5.8669 7.45014C5.8669 7.50182 5.86408 7.59303 5.86408 7.65695V14.5766C5.86218 14.9281 6.05019 15.2543 6.35572 15.4282L13.6683 19.65L11.1368 21.1117C11.1114 21.1287 11.0794 21.1315 11.0512 21.1193L4.99548 17.6204C2.30413 16.0618 1.38101 12.6185 2.93208 9.92243L2.93302 9.9215ZM23.7324 14.7618L16.4198 10.5391L18.9513 9.07829C18.9767 9.06136 19.0087 9.05853 19.0369 9.07077L25.0926 12.5668C27.7887 14.1244 28.7127 17.5734 27.155 20.2695C26.4961 21.4107 25.4583 22.2849 24.2221 22.7399V15.6134C24.2249 15.2619 24.0379 14.9366 23.7333 14.7618H23.7324ZM26.2517 10.9697C26.2075 10.9424 26.1295 10.8954 26.074 10.8634L20.0841 7.40406C19.7804 7.2264 19.4044 7.2264 19.0998 7.40406L11.7873 11.6267V8.70321C11.7854 8.67313 11.7995 8.64398 11.823 8.62518L17.8778 5.13199C20.5748 3.57621 24.0228 4.50217 25.5777 7.20008C26.2347 8.33941 26.4726 9.67333 26.2498 10.9697H26.2517ZM10.411 16.1803L7.87856 14.7185C7.85131 14.7054 7.83347 14.679 7.82971 14.649V7.65599C7.83157 4.54257 10.3575 2.01951 13.4709 2.02139C14.7879 2.02139 16.0626 2.48389 17.075 3.32618C17.0289 3.3506 16.95 3.39479 16.8973 3.42677L10.9074 6.88612C10.6009 7.06002 10.4129 7.38526 10.4148 7.73778L10.411 16.1784V16.1803ZM11.7863 13.2154L15.0436 11.3344L18.3008 13.2145V16.9756L15.0436 18.8556L11.7863 16.9756V13.2154Z" />
-          </svg>
+          <Image
+            src="/img/bybreyholtz.png"
+            alt="Company 1"
+            width={224}
+            height={84}
+          />
         ),
       },
       {
         id: 2,
-        name: "Company 2",
+        name: "Folkekraft",
         logo: (
-          <svg
-            width="113"
-            height="25"
-            viewBox="0 0 113 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="dark:fill-white fill-black"
-          >
-            <path d="M0.75 2.69908C0.75 1.48458 1.73458 0.5 2.94908 0.5H11.551C12.7655 0.5 13.75 1.48458 13.75 2.69908V4.4005C13.75 5.00775 13.2577 5.50004 12.6505 5.50004H1.84954C1.24229 5.50004 0.75 5.00775 0.75 4.4005V2.69908Z" />
-            <path d="M0.75 9.59954C0.75 8.99224 1.24229 8.5 1.84954 8.5H22.551C23.7655 8.5 24.7501 9.48453 24.7501 10.6991V16.4005C24.7501 17.0077 24.2578 17.5 23.6506 17.5H2.94908C1.73458 17.5 0.75 16.5154 0.75 15.3009V9.59954Z" />
-            <path d="M11.75 21.5995C11.75 20.9923 12.2423 20.5 12.8495 20.5H23.6505C24.2577 20.5 24.75 20.9923 24.75 21.5995V22.3009C24.75 23.5154 23.7654 24.5 22.5509 24.5H13.9491C12.7346 24.5 11.75 23.5154 11.75 22.3009V21.5995Z" />
-            <path d="M38.3455 15.241H40.6572L44.9499 22.2582H50.2059L45.4452 14.7456C48.0872 13.8375 49.628 11.8012 49.628 8.85671C49.628 4.72899 46.7389 2.5 42.0881 2.5H33.75V22.2582H38.3455V15.241ZM38.3455 11.4985V6.38009H41.8404C44.0144 6.38009 45.115 7.31571 45.115 8.93927C45.115 10.5353 44.0144 11.4985 41.8404 11.4985H38.3455Z" />
-            <path d="M58.113 22.5607C61.0026 22.5607 63.6446 21.1023 64.7178 18.3229L61.0305 17.1396C60.6177 18.4055 59.5444 19.0659 58.1682 19.0659C56.4896 19.0659 55.3064 17.9377 55.0036 15.9563H64.8278V14.8006C64.8278 10.7002 62.4335 7.45312 58.0309 7.45312C53.8477 7.45312 50.7656 10.7002 50.7656 14.9932C50.7656 19.5062 53.7378 22.5607 58.113 22.5607ZM57.9757 10.8655C59.5991 10.8655 60.4525 11.9662 60.4799 13.2595H55.1413C55.5815 11.6635 56.6274 10.8655 57.9757 10.8655Z" />
-            <path d="M67.3281 18.378C67.3281 21.35 68.8967 22.3957 72.0335 22.3957C73.0794 22.3957 73.9051 22.3133 74.6755 22.2031V18.5982C74.1801 18.6532 73.9324 18.6807 73.4097 18.6807C72.309 18.6807 71.6759 18.4606 71.6759 17.2498V11.3884H74.5103V7.75595H71.6759V3.73828H67.3281V7.75595H65.4844V11.3884H67.3281V18.378Z" />
-            <path d="M90.4203 15.0207C90.4203 10.5077 87.4212 7.45312 83.1555 7.45312C78.8628 7.45312 75.8906 10.5077 75.8906 15.0207C75.8906 19.5337 78.8628 22.5607 83.1555 22.5607C87.4212 22.5607 90.4203 19.5337 90.4203 15.0207ZM80.2663 15.0207C80.2663 12.489 81.3943 11.0581 83.1555 11.0581C84.9171 11.0581 86.0451 12.489 86.0451 15.0207C86.0451 17.5524 84.9171 18.9833 83.1555 18.9833C81.3943 18.9833 80.2663 17.5524 80.2663 15.0207Z" />
-            <path d="M106.28 15.0207C106.28 10.5077 103.281 7.45312 99.0148 7.45312C94.7222 7.45312 91.75 10.5077 91.75 15.0207C91.75 19.5337 94.7222 22.5607 99.0148 22.5607C103.281 22.5607 106.28 19.5337 106.28 15.0207ZM96.1257 15.0207C96.1257 12.489 97.2537 11.0581 99.0148 11.0581C100.776 11.0581 101.904 12.489 101.904 15.0207C101.904 17.5524 100.776 18.9833 99.0148 18.9833C97.2537 18.9833 96.1257 17.5524 96.1257 15.0207Z" />
-            <path d="M112.747 2.5H108.344V22.2582H112.747V2.5Z" />
-          </svg>
+          <Image
+            src="/img/folkekraft.png"
+            alt="Company 1"
+            width={224}
+            height={84}
+          />
         ),
       },
       {
@@ -286,62 +264,62 @@ export const siteConfig = {
     ],
   },
   featureSection: {
-    title: "Simple. Seamless. Smart.",
+    title: "Enkelt. Sømløst. Smart.",
     description:
-      "Discover how SkyAgent transforms your commands into action in four easy steps",
+      "Oppdag hvordan Arti Notes gjør kommandoene dine om til handling – i fire enkle steg.",
     items: [
       {
         id: 1,
-        title: "Ask Your AI Agent Directly",
+        title: "Snakk direkte med din AI-assistent",
         content:
-          "Speak or type your command—let SkyAgent capture your intent. Your request instantly sets the process in motion.",
+          "Still spørsmål eller gi oppgaver akkurat som du ville gjort til et menneske – raskt og naturlig.",
         image:
           "https://images.unsplash.com/photo-1720371300677-ba4838fa0678?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         id: 2,
-        title: "Let SkyAgent Process It",
+        title: "La Arti Notes ta seg av prosesseringen",
         content:
-          "We prioritize the needs and preferences of our users in our design process.",
+          "Vår AI tolker, strukturerer og forstår behovet ditt – helt automatisk.",
         image:
           "https://images.unsplash.com/photo-1686170287433-c95faf6d3608?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8fA%3D%3D",
       },
       {
         id: 3,
-        title: "Receive Instant, Actionable Results",
+        title: "Få umiddelbare og konkrete resultater",
         content:
-          "Our features seamlessly integrate with your existing systems for a smooth experience.",
+          "Funksjonene våre integreres sømløst med systemene dine og gir deg tydelige svar og handlinger – uten friksjon.",
         image:
           "https://images.unsplash.com/photo-1720378042271-60aff1e1c538?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         id: 4,
-        title: "Continuous Improvement",
+        title: "Kontinuerlig forbedring",
         content:
-          "We are constantly updating and improving our features to provide the best experience.",
+          "Jo mer du bruker det, jo smartere blir det. Arti Notes lærer og tilpasser seg for å hjelpe deg enda bedre over tid.",
         image:
           "https://images.unsplash.com/photo-1666882990322-e7f3b8df4f75?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D",
       },
     ],
   },
   bentoSection: {
-    title: "Empower Your Workflow with AI",
+    title: "Smartere møter med AI",
     description:
-      "Ask your AI Agent for real-time collaboration, seamless integrations, and actionable insights to streamline your operations.",
+      "Få full oversikt over hva som ble diskutert – med smarte sammendrag og automatiske notater etter hvert møte.",
     items: [
       {
         id: 1,
         content: <FirstBentoAnimation />,
-        title: "Real-time AI Collaboration",
+        title: "Sanntids samarbeid med AI",
         description:
-          "Experience real-time assistance. Ask your AI Agent to coordinate tasks, answer questions, and maintain team alignment.",
+          "Få hjelp direkte i møteøyeblikket. La AI-en planlegge møter, holde teamet synkronisert og håndtere oppfølging – helt automatisk.",
       },
       {
         id: 2,
         content: <SecondBentoAnimation />,
-        title: "Seamless Integrations",
+        title: "Sømløs integrasjon",
         description:
-          "Unite your favorite tools for effortless connectivity. Boost productivity through interconnected workflows.",
+          "Koble til dine favorittverktøy som Google Kalender, Microsoft Kalender og kommer flere. Assistenten jobber sømløst med det du allerede bruker.",
       },
       {
         id: 3,
@@ -353,16 +331,16 @@ export const siteConfig = {
             ]}
           />
         ),
-        title: "Instant Insight Reporting",
+        title: "Sanntids rapportering",
         description:
-          "Transform raw data into clear insights in seconds. Empower smarter decisions with real-time, always-learning intelligence.",
+          "Gjør rådata om til tydelige innsikter på sekunder. Ta smartere beslutninger med hjelp av en AI som kontinuerlig lærer og tilpasser seg – i sanntid.",
       },
       {
         id: 4,
         content: <FourthBentoAnimation once={false} />,
-        title: "Smart Automation",
+        title: "Automatiserte oppgaver, full kontroll",
         description:
-          "Set it, forget it. Your AI Agent tackles repetitive tasks so you can focus on strategy, innovation, and growth.",
+          "Sett det opp – og glem det. Din AI-agent håndterer repeterende oppgaver som oppfølging, møtetidspunkt og koordinering, slik at du kan fokusere på strategi, vekst og samarbeid.",
       },
     ],
   },
@@ -389,9 +367,9 @@ export const siteConfig = {
     },
   ],
   growthSection: {
-    title: "Built for Secure Growth",
+    title: "Bygd for sikker og skalerbar samhandling",
     description:
-      "Where advanced security meets seamless scalability—designed to protect your data and empower your growth.",
+      "Der avansert sikkerhet møter sømløs vekst – utviklet for å beskytte dine møtedata og gi teamet ditt kraften til å jobbe smartere.",
     items: [
       {
         id: 1,
@@ -671,9 +649,9 @@ export const siteConfig = {
           </div>
         ),
 
-        title: "Advanced Task Security",
+        title: "Avansert møtesikkerhet",
         description:
-          "Safeguard your tasks with state-of-art encryption and secure access to your workflow data.",
+          "Alle møter, transkripsjoner og notater er beskyttet med ende-til-ende-kryptering og sikker tilgang – slik at sensitive samtaler forblir private.",
       },
       {
         id: 2,
@@ -683,19 +661,19 @@ export const siteConfig = {
           </div>
         ),
 
-        title: "Scalable for Teams",
+        title: "Skalerbart for team",
         description:
-          "Grow with your team. Track tasks across multiple workspaces and all team members.",
+          "Voks sammen med teamet ditt. Følg opp møter, oppgaver og referater på tvers av arbeidsområder og deltakere – uansett hvor mange dere er.",
       },
     ],
   },
   quoteSection: {
     quote:
-      "SkyAgent has transformed our daily operations. Tasks that once consumed hours now complete in moments, freeing our team to focus on creativity and strategic growth.",
+      "Arti Notes har gitt oss superkrefter i hverdagen. Det som før tok timer, går nå unna på minutter – med full kontroll og oversikt. Vi bruker mindre tid på møter og mer tid på faktisk arbeid.",
     author: {
-      name: "Alex Johnson",
-      role: "CTO, Innovatech",
-      image: "https://randomuser.me/api/portraits/men/91.jpg",
+      name: "Hans-Eirik Breyholtz-Mott",
+      role: "CTO, ByBreyholtz",
+      image: "img/hans-eirik.png",
     },
   },
   pricing: {
@@ -704,58 +682,61 @@ export const siteConfig = {
       "Whichever plan you pick, it's free until you love your docs. That's our promise.",
     pricingItems: [
       {
-        name: "Free",
+        name: "Prøv gratis i 14 dager",
         href: "#",
-        price: "$0",
-        period: "month",
-        yearlyPrice: "$0",
+        price: "0 kr",
+        period: "mnd",
+        yearlyPrice: "0 kr",
         features: [
-          "Custom domain",
-          "SEO-optimizations",
-          "Auto-generated API docs",
-          "Built-in components library",
+          "Transkripsjon av møter",
+          "Notater fra møter",
+          "Oversikt over oppgaver",
+          "Referater fra møter",
         ],
-        description: "Perfect for individual users",
-        buttonText: "Start Free",
+        description: "Perfekt for å teste ut Arti Notes",
+        buttonText: "Start GRATIS",
         buttonColor: "bg-accent text-primary",
         isPopular: false,
       },
       {
-        name: "Startup",
+        name: "Møte helter",
         href: "#",
-        price: "$12",
-        period: "month",
-        yearlyPrice: "$120",
+        price: "600 kr",
+        period: "mnd",
+        yearlyPrice: "5 760 kr",
         features: [
-          "Custom domain",
-          "SEO-optimizations",
-          "Auto-generated API docs",
-          "Built-in components library",
-          "E-commerce integration",
-          "User authentication system",
-          "Multi-language support",
-          "Real-time collaboration tools",
+          "Transkripsjon av møter",
+          "Notater fra møter",
+          "Oversikt over oppgaver",
+          "Referater fra møter",
+          "Opptak av møter",
+          "Brukerautentisering",
+          "Støtte for flere språk",
+          "AI chat med møtereferater",
         ],
-        description: "Ideal for professionals and small teams",
-        buttonText: "Upgrade to Pro",
+        description: "Ideell for møte helter",
+        buttonText: "Få oversikt over møter",
         buttonColor: "bg-secondary text-white",
         isPopular: true,
       },
       {
         name: "Enterprise",
         href: "#",
-        price: "$24",
-        period: "month",
-        yearlyPrice: "$240",
+        price: "1 200 kr",
+        period: "mnd",
+        yearlyPrice: "11 520 kr",
         features: [
-          "Custom domain",
-          "SEO-optimizations",
-          "Auto-generated API docs",
-          "Built-in components librarys",
-          "Real-time collaboration tools",
+          "Transkripsjon av møter",
+          "Notater fra møter",
+          "Oversikt over oppgaver",
+          "Referater fra møter",
+          "Opptak av møter",
+          "Brukerautentisering",
+          "Støtte for flere språk",
+          "AI chat med møtereferater",
         ],
-        description: "Best for large teams and enterprise-level organizations",
-        buttonText: "Contact Sales",
+        description: "Best for store teamer og store organisasjoner",
+        buttonText: "Kontakt oss",
         buttonColor: "bg-primary text-primary-foreground",
         isPopular: false,
       },
@@ -966,7 +947,7 @@ export const siteConfig = {
   faqSection: {
     title: "Frequently Asked Questions",
     description:
-      "Answers to common questions about SkyAgent and its features. If you have any other questions, please don't hesitate to contact us.",
+      "Answers to common questions about Arti Notes and its features. If you have any other questions, please don't hesitate to contact us.",
     faQitems: [
       {
         id: 1,
@@ -976,9 +957,9 @@ export const siteConfig = {
       },
       {
         id: 2,
-        question: "How does SkyAgent work?",
+        question: "How does Arti Notes work?",
         answer:
-          "SkyAgent works by analyzing your requirements, leveraging advanced AI algorithms to understand context, and executing tasks based on your instructions. It can integrate with your workflow, learn from feedback, and continuously improve its performance.",
+          "Arti Notes works by analyzing your requirements, leveraging advanced AI algorithms to understand context, and executing tasks based on your instructions. It can integrate with your workflow, learn from feedback, and continuously improve its performance.",
       },
       {
         id: 3,
@@ -990,7 +971,7 @@ export const siteConfig = {
         id: 4,
         question: "Can I integrate my existing tools?",
         answer:
-          "Yes, SkyAgent is designed to be highly compatible with popular tools and platforms. We offer APIs and pre-built integrations for seamless connection with your existing workflow tools and systems.",
+          "Yes, Arti Notes is designed to be highly compatible with popular tools and platforms. We offer APIs and pre-built integrations for seamless connection with your existing workflow tools and systems.",
       },
       {
         id: 5,
@@ -1000,9 +981,9 @@ export const siteConfig = {
       },
       {
         id: 6,
-        question: "How does SkyAgent save me time?",
+        question: "How does Arti Notes save me time?",
         answer:
-          "SkyAgent automates repetitive tasks, streamlines workflows, and provides quick solutions to common challenges. This automation and efficiency can save hours of manual work, allowing you to focus on more strategic activities.",
+          "Arti Notes automates repetitive tasks, streamlines workflows, and provides quick solutions to common challenges. This automation and efficiency can save hours of manual work, allowing you to focus on more strategic activities.",
       },
     ],
   },

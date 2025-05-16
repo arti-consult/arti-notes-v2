@@ -1,5 +1,5 @@
 import { SectionHeader } from "@/components/section-header";
-// import { Feature as FeatureComponent } from "@/components/ui/feature-slideshow";
+import { Feature as FeatureComponent } from "@/components/ui/feature-slideshow";
 import { siteConfig } from "@/lib/config";
 
 export function FeatureSection() {

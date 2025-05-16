@@ -536,19 +536,36 @@ class HangingPromiseRejectionError extends Error {
         super(`During prerendering, ${expression} rejects when the prerender is complete. Typically these errors are handled by React but if you move ${expression} to a different context by using \`setTimeout\`, \`after\`, or similar functions you may observe this error and you should handle it in that context.`), this.expression = expression, this.digest = HANGING_PROMISE_REJECTION;
     }
 }
+const abortListenersBySignal = new WeakMap();
 function makeHangingPromise(signal, expression) {
-    const hangingPromise = new Promise((_, reject)=>{
-        signal.addEventListener('abort', ()=>{
-            reject(new HangingPromiseRejectionError(expression));
-        }, {
-            once: true
+    if (signal.aborted) {
+        return Promise.reject(new HangingPromiseRejectionError(expression));
+    } else {
+        const hangingPromise = new Promise((_, reject)=>{
+            const boundRejection = reject.bind(null, new HangingPromiseRejectionError(expression));
+            let currentListeners = abortListenersBySignal.get(signal);
+            if (currentListeners) {
+                currentListeners.push(boundRejection);
+            } else {
+                const listeners = [
+                    boundRejection
+                ];
+                abortListenersBySignal.set(signal, listeners);
+                signal.addEventListener('abort', ()=>{
+                    for(let i = 0; i < listeners.length; i++){
+                        listeners[i]();
+                    }
+                }, {
+                    once: true
+                });
+            }
         });
-    });
-    // We are fine if no one actually awaits this promise. We shouldn't consider this an unhandled rejection so
-    // we attach a noop catch handler here to suppress this warning. If you actually await somewhere or construct
-    // your own promise out of it you'll need to ensure you handle the error when it rejects.
-    hangingPromise.catch(ignoreReject);
-    return hangingPromise;
+        // We are fine if no one actually awaits this promise. We shouldn't consider this an unhandled rejection so
+        // we attach a noop catch handler here to suppress this warning. If you actually await somewhere or construct
+        // your own promise out of it you'll need to ensure you handle the error when it rejects.
+        hangingPromise.catch(ignoreReject);
+        return hangingPromise;
+    }
 }
 function ignoreReject() {} //# sourceMappingURL=dynamic-rendering-utils.js.map
 }}),
@@ -919,7 +936,7 @@ function abortOnSynchronousPlatformIOAccess(route, expression, errorWithStack, p
             dynamicTracking.syncDynamicErrorWithStack = errorWithStack;
         }
     }
-    return abortOnSynchronousDynamicDataAccess(route, expression, prerenderStore);
+    abortOnSynchronousDynamicDataAccess(route, expression, prerenderStore);
 }
 function trackSynchronousPlatformIOAccessInDev(requestStore) {
     // We don't actually have a controller to abort but we do the semantic equivalent by
@@ -927,19 +944,27 @@ function trackSynchronousPlatformIOAccessInDev(requestStore) {
     requestStore.prerenderPhase = false;
 }
 function abortAndThrowOnSynchronousRequestDataAccess(route, expression, errorWithStack, prerenderStore) {
-    const dynamicTracking = prerenderStore.dynamicTracking;
-    if (dynamicTracking) {
-        if (dynamicTracking.syncDynamicErrorWithStack === null) {
-            dynamicTracking.syncDynamicExpression = expression;
-            dynamicTracking.syncDynamicErrorWithStack = errorWithStack;
-            if (prerenderStore.validating === true) {
-                // We always log Request Access in dev at the point of calling the function
-                // So we mark the dynamic validation as not requiring it to be printed
-                dynamicTracking.syncDynamicLogged = true;
+    const prerenderSignal = prerenderStore.controller.signal;
+    if (prerenderSignal.aborted === false) {
+        // TODO it would be better to move this aborted check into the callsite so we can avoid making
+        // the error object when it isn't relevant to the aborting of the prerender however
+        // since we need the throw semantics regardless of whether we abort it is easier to land
+        // this way. See how this was handled with `abortOnSynchronousPlatformIOAccess` for a closer
+        // to ideal implementation
+        const dynamicTracking = prerenderStore.dynamicTracking;
+        if (dynamicTracking) {
+            if (dynamicTracking.syncDynamicErrorWithStack === null) {
+                dynamicTracking.syncDynamicExpression = expression;
+                dynamicTracking.syncDynamicErrorWithStack = errorWithStack;
+                if (prerenderStore.validating === true) {
+                    // We always log Request Access in dev at the point of calling the function
+                    // So we mark the dynamic validation as not requiring it to be printed
+                    dynamicTracking.syncDynamicLogged = true;
+                }
             }
         }
+        abortOnSynchronousDynamicDataAccess(route, expression, prerenderStore);
     }
-    abortOnSynchronousDynamicDataAccess(route, expression, prerenderStore);
     throw createPrerenderInterruptedError(`Route ${route} needs to bail out of prerendering at this point because it used ${expression}.`);
 }
 const trackSynchronousRequestDataAccessInDev = trackSynchronousPlatformIOAccessInDev;
@@ -1345,12 +1370,14 @@ function throwWithStaticGenerationBailoutErrorWithDynamicError(route, expression
         configurable: true
     });
 }
-function throwForSearchParamsAccessInUseCache(route) {
-    throw Object.defineProperty(new Error(`Route ${route} used "searchParams" inside "use cache". Accessing Dynamic data sources inside a cache scope is not supported. If you need this data inside a cached function use "searchParams" outside of the cached function and pass the required dynamic data in as an argument. See more info here: https://nextjs.org/docs/messages/next-request-in-use-cache`), "__NEXT_ERROR_CODE", {
+function throwForSearchParamsAccessInUseCache(workStore) {
+    const error = Object.defineProperty(new Error(`Route ${workStore.route} used "searchParams" inside "use cache". Accessing Dynamic data sources inside a cache scope is not supported. If you need this data inside a cached function use "searchParams" outside of the cached function and pass the required dynamic data in as an argument. See more info here: https://nextjs.org/docs/messages/next-request-in-use-cache`), "__NEXT_ERROR_CODE", {
         value: "E634",
         enumerable: false,
         configurable: true
     });
+    workStore.invalidUsageError ??= error;
+    throw error;
 }
 function isRequestAPICallableInsideAfter() {
     const afterTaskStore = _aftertaskasyncstorageexternal.afterTaskAsyncStorage.getStore();
@@ -2329,8 +2356,26 @@ function draftMode() {
     const callingExpression = 'draftMode';
     const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
     const workUnitStore = _workunitasyncstorageexternal.workUnitAsyncStorage.getStore();
-    if (workUnitStore) {
-        if (workUnitStore.type === 'cache' || workUnitStore.type === 'unstable-cache' || workUnitStore.type === 'prerender' || workUnitStore.type === 'prerender-ppr' || workUnitStore.type === 'prerender-legacy') {
+    if (!workStore || !workUnitStore) {
+        (0, _workunitasyncstorageexternal.throwForMissingRequestStore)(callingExpression);
+    }
+    switch(workUnitStore.type){
+        case 'request':
+            return createOrGetCachedExoticDraftMode(workUnitStore.draftMode, workStore);
+        case 'cache':
+        case 'unstable-cache':
+            // Inside of `"use cache"` or `unstable_cache`, draft mode is available if
+            // the outmost work unit store is a request store, and if draft mode is
+            // enabled.
+            const draftModeProvider = (0, _workunitasyncstorageexternal.getDraftModeProviderForCacheScope)(workStore, workUnitStore);
+            if (draftModeProvider) {
+                return createOrGetCachedExoticDraftMode(draftModeProvider, workStore);
+            }
+        // Otherwise, we fall through to providing an empty draft mode.
+        // eslint-disable-next-line no-fallthrough
+        case 'prerender':
+        case 'prerender-ppr':
+        case 'prerender-legacy':
             // Return empty draft mode
             if (("TURBOPACK compile-time value", "development") === 'development' && !(workStore == null ? void 0 : workStore.isPrefetchRequest)) {
                 const route = workStore == null ? void 0 : workStore.route;
@@ -2338,21 +2383,24 @@ function draftMode() {
             } else {
                 return createExoticDraftMode(null);
             }
-        }
+        default:
+            const _exhaustiveCheck = workUnitStore;
+            return _exhaustiveCheck;
     }
-    const requestStore = (0, _workunitasyncstorageexternal.getExpectedRequestStore)(callingExpression);
-    const cachedDraftMode = CachedDraftModes.get(requestStore.draftMode);
+}
+function createOrGetCachedExoticDraftMode(draftModeProvider, workStore) {
+    const cachedDraftMode = CachedDraftModes.get(draftMode);
     if (cachedDraftMode) {
         return cachedDraftMode;
     }
     let promise;
     if (("TURBOPACK compile-time value", "development") === 'development' && !(workStore == null ? void 0 : workStore.isPrefetchRequest)) {
         const route = workStore == null ? void 0 : workStore.route;
-        promise = createExoticDraftModeWithDevWarnings(requestStore.draftMode, route);
+        promise = createExoticDraftModeWithDevWarnings(draftModeProvider, route);
     } else {
-        promise = createExoticDraftMode(requestStore.draftMode);
+        promise = createExoticDraftMode(draftModeProvider);
     }
-    CachedDraftModes.set(requestStore.draftMode, promise);
+    CachedDraftModes.set(draftModeProvider, promise);
     return promise;
 }
 const CachedDraftModes = new WeakMap();

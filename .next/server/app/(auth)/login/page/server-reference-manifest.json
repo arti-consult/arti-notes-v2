@@ -1,27 +1,5 @@
 {
   "node": {
-    "0097441b719d510f861fd6d2f9e99127e69a35a9dc": {
-      "workers": {
-        "app/(auth)/login/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/login/page": "action-browser"
-      }
-    },
-    "00d9a54ee73fef35d34842dcdff4fb0d739874e151": {
-      "workers": {
-        "app/(auth)/login/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/login/page": "action-browser"
-      }
-    },
     "402c8f217d62da5b880e2480259c297d86230f6c20": {
       "workers": {
         "app/(auth)/login/page": {
@@ -33,7 +11,7 @@
         "app/(auth)/login/page": "action-browser"
       }
     },
-    "40cb804e7a62af77be19a45aa503778786838da061": {
+    "0097441b719d510f861fd6d2f9e99127e69a35a9dc": {
       "workers": {
         "app/(auth)/login/page": {
           "moduleId": "[project]/.next-internal/server/app/(auth)/login/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",

@@ -204,6 +204,11 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+        marquee: "marquee var(--marquee-duration) linear infinite",
+        "marquee-reverse":
+          "marquee var(--marquee-duration) linear infinite reverse",
+        pause: "none",
+        orbit: "orbit var(--orbit-duration) linear infinite",
       },
       keyframes: {
         "fade-in": {
@@ -254,6 +259,20 @@ module.exports = {
         "caret-blink": {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        orbit: {
+          "0%": {
+            transform:
+              "rotate(0deg) translateX(calc(var(--orbit-size) / 2)) rotate(0deg)",
+          },
+          "100%": {
+            transform:
+              "rotate(360deg) translateX(calc(var(--orbit-size) / 2)) rotate(-360deg)",
+          },
         },
       },
       borderRadius: {

@@ -41,15 +41,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans bg-background`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {/* <Navbar /> */}
-          {children}
-        </ThemeProvider>
+        {/* <Navbar /> */}
+        {children}
       </body>
     </html>
   );

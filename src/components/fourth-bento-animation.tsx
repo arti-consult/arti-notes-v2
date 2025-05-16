@@ -16,15 +16,15 @@ interface BoxConfig {
 
 const boxConfigs: BoxConfig[] = [
   {
-    title: "Bento grid",
+    title: "Møte med Hans-Eirik",
     className: "bg-secondary text-white",
   },
   {
-    title: "Landing Page",
+    title: "Videreutvikling av Arti Notes",
     className: "bg-secondary/40 text-white",
   },
   {
-    title: "Add Task",
+    title: "Ny funksjon landeres",
     className:
       "bg-secondary/20 border border-secondary border-dashed text-secondary",
   },
@@ -86,7 +86,7 @@ export function FourthBentoAnimation({
           { length: numberOfItems },
           (_, index) => {
             return ((itemWidth + gap) * index) / 2;
-          },
+          }
         );
         setTranslateXValues(newTranslateXValues);
       }

@@ -1,4 +1,4 @@
-(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push(["static/chunks/src_utils_tracking_5da3dab3._.js", {
+(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push([typeof document === "object" ? document.currentScript : undefined, {
 
 "[project]/src/utils/tracking/constants.ts [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
