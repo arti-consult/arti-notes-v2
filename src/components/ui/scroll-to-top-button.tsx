@@ -1,13 +1,10 @@
-
 import * as React from "react";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { useToast } from "@/hooks/use-toast";
 
 export function ScrollToTopButton() {
   const [isVisible, setIsVisible] = React.useState(false);
-  const { toast } = useToast();
 
   React.useEffect(() => {
     const toggleVisibility = () => {
@@ -25,13 +22,7 @@ export function ScrollToTopButton() {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
-    });
-    
-    toast({
-      title: "Back to top",
-      description: "You've scrolled to the top of the page",
-      duration: 2000,
+      behavior: "smooth",
     });
   };
 

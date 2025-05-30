@@ -5,7 +5,6 @@ import { Calendar, Loader2, RefreshCw } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CalendarConnect } from "./calendar-connect";
-import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
 
 interface Attendee {
@@ -35,8 +34,10 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
   const checkCalendarConnection = async () => {
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
       if (!user) {
         setIsConnected(false);
         return false;
@@ -44,16 +45,16 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
 
       // Check for calendar connection
       const { data, error } = await supabase
-        .from('calendar_connections')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('provider', 'google')
+        .from("calendar_connections")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("provider", "google")
         .single();
 
       setIsConnected(!!data && !error);
       return !!data && !error;
     } catch (error) {
-      console.error('Error checking calendar connection:', error);
+      console.error("Error checking calendar connection:", error);
       setIsConnected(false);
       return false;
     }
@@ -64,12 +65,14 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
       setIsLoading(true);
       const supabase = createClient();
 
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) {
         throw new Error("Not authenticated");
       }
 
-      console.log('Fetching calendar events...');
+      console.log("Fetching calendar events...");
 
       // Calculate date range
       const now = new Date();
@@ -93,11 +96,7 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
       setEvents(data || []);
     } catch (error) {
       console.error("Error fetching calendar events:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load upcoming meetings",
-        variant: "destructive",
-      });
+      console.log("Failed to load upcoming meetings");
     } finally {
       setIsLoading(false);
     }
@@ -119,17 +118,10 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
       }
 
       await fetchEvents();
-      toast({
-        title: "Success",
-        description: "Calendar synced successfully",
-      });
+      console.log("Success: Calendar synced successfully");
     } catch (error) {
       console.error("Error syncing calendar:", error);
-      toast({
-        title: "Error",
-        description: "Failed to sync calendar",
-        variant: "destructive",
-      });
+      console.log("Failed to sync calendar");
     } finally {
       setIsSyncing(false);
     }
@@ -148,38 +140,31 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
     init();
 
     // Listen for URL changes to detect successful connection
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
-      const success = urlParams.get('success');
-      const error = urlParams.get('error');
-      
+      const success = urlParams.get("success");
+      const error = urlParams.get("error");
+
       if (success) {
-        console.log('Success message detected:', success);
-        toast({
-          title: "Success",
-          description: success,
-        });
-        
+        console.log("Success message detected:", success);
+        console.log("Success:", success);
+
         // Remove parameters from URL
         const newUrl = new URL(window.location.href);
-        newUrl.searchParams.delete('success');
+        newUrl.searchParams.delete("success");
         window.history.replaceState({}, document.title, newUrl);
-        
+
         // Refresh events after successful connection
         init();
       }
-      
+
       if (error) {
-        console.log('Error message detected:', error);
-        toast({
-          title: "Error",
-          description: error,
-          variant: "destructive",
-        });
-        
+        console.log("Error message detected:", error);
+        console.log("Error:", error);
+
         // Remove parameters from URL
         const newUrl = new URL(window.location.href);
-        newUrl.searchParams.delete('error');
+        newUrl.searchParams.delete("error");
         window.history.replaceState({}, document.title, newUrl);
       }
     }
@@ -199,7 +184,9 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
   const formatDuration = (start: string, end: string) => {
     const startTime = new Date(start);
     const endTime = new Date(end);
-    const hours = Math.round((endTime.getTime() - startTime.getTime()) / 3600000);
+    const hours = Math.round(
+      (endTime.getTime() - startTime.getTime()) / 3600000
+    );
     return `${hours}h`;
   };
 
@@ -282,4 +269,4 @@ export function UpcomingMeetings({ daysAhead = 7 }: Props) {
       </CardContent>
     </Card>
   );
-} 
+}

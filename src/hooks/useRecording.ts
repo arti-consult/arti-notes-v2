@@ -1,5 +1,4 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { useToast } from "@/components/ui/use-toast";
 import { getAudioDuration } from "@/lib/audioDuration";
 import { uploadRecording } from "@/lib/api";
 
@@ -19,7 +18,6 @@ interface RecordingState {
 }
 
 export function useRecording() {
-  const { toast } = useToast();
   const [state, setState] = useState<RecordingState>({
     isRecording: false,
     audioBlob: null,
@@ -320,13 +318,8 @@ export function useRecording() {
       console.debug("Recording reset completed");
     } catch (error) {
       console.error("Error resetting recording:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Kunne ikke tilbakestille opptaket",
-      });
     }
-  }, [toast]);
+  }, []);
 
   const cleanup = useCallback(() => {
     try {
@@ -476,11 +469,7 @@ export function useRecording() {
     onProgress?: (progress: number) => void
   ) => {
     if (!state.audioBlob || state.duration < 1) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Ugyldig opptak. Sjekk at opptaket er fullført.",
-      });
+      console.error("Invalid recording. Check that the recording is complete.");
       return;
     }
 
@@ -535,21 +524,13 @@ export function useRecording() {
       return recording;
     } catch (error) {
       console.error("Upload error:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description:
-          error instanceof Error
-            ? error.message
-            : "Kunne ikke laste opp opptaket",
-      });
       setState((prev) => ({
         ...prev,
         transcriptionStatus: "error",
         error:
           error instanceof Error
             ? error.message
-            : "Kunne ikke laste opp opptaket",
+            : "Could not upload the recording",
       }));
       throw error;
     }
