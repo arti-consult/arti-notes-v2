@@ -18,8 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
-import { DateRange } from "react-day-picker";
+
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { MeetingList, Meeting } from "@/app/dashboard/components/meeting-list";
@@ -27,7 +26,6 @@ import { createClient } from "@/utils/supabase/client";
 
 export default function MeetingsPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [meetingTypeFilter, setMeetingTypeFilter] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -97,15 +95,10 @@ export default function MeetingsPage() {
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
-    const matchesDate =
-      !dateRange?.from ||
-      !dateRange?.to ||
-      (meeting.startTime >= dateRange.from && meeting.endTime <= dateRange.to);
-
     const matchesType =
       meetingTypeFilter === "all" || meeting.meeting_type === meetingTypeFilter;
 
-    return matchesSearch && matchesDate && matchesType;
+    return matchesSearch && matchesType;
   });
 
   return (
@@ -123,7 +116,6 @@ export default function MeetingsPage() {
               variant="outline"
               onClick={() => {
                 setSearchQuery("");
-                setDateRange(undefined);
                 setMeetingTypeFilter("all");
                 setShowFilters(false);
               }}
@@ -185,10 +177,6 @@ export default function MeetingsPage() {
                     <SelectItem value="google-meets">Google Meet</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Datointervall</Label>
-                <DateRangePicker value={dateRange} onChange={setDateRange} />
               </div>
             </div>
           )}
