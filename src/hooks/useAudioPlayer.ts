@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, MutableRefObject } from "react";
 
 interface UseAudioPlayerOptions {
   onTimeUpdate?: (currentTime: number) => void;
@@ -12,7 +12,9 @@ export function useAudioPlayer(src: string, options?: UseAudioPlayerOptions) {
   const [volume, setVolume] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(
+    null
+  ) as MutableRefObject<HTMLAudioElement | null>;
 
   useEffect(() => {
     const audio = new Audio(src);
@@ -34,20 +36,20 @@ export function useAudioPlayer(src: string, options?: UseAudioPlayerOptions) {
     };
 
     const handleError = () => {
-      setError('Kunne ikke laste lydfilen');
+      setError("Kunne ikke laste lydfilen");
       setIsLoading(false);
     };
 
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('error', handleError);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("error", handleError);
 
     return () => {
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('error', handleError);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("error", handleError);
       audio.pause();
     };
   }, [src, options]);
@@ -85,6 +87,6 @@ export function useAudioPlayer(src: string, options?: UseAudioPlayerOptions) {
     error,
     togglePlay,
     seek,
-    setVolume: setAudioVolume
+    setVolume: setAudioVolume,
   };
 }
