@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { AudioVisualizer } from "./audio-visualizer";
 import { DeleteRecordingDialog } from "./delete-recording-dialog";
 import { saveRecording } from "@/utils/recordings/recording-service";
-import { toast } from "@/components/ui/use-toast";
 import { createMeeting } from "@/utils/meetings/meeting-service";
 
 interface LiveRecordingProps {
@@ -125,12 +124,7 @@ export function LiveRecording({
       console.error("Error accessing microphone:", error);
       setShowAnimation(false);
       cleanupAudioResources();
-      toast({
-        title: "Microphone Error",
-        description:
-          "Failed to access your microphone. Please check permissions.",
-        variant: "destructive",
-      });
+      alert("Failed to access your microphone. Please check permissions.");
     }
   };
 
@@ -221,10 +215,7 @@ export function LiveRecording({
         throw new Error("Failed to save recording");
       }
 
-      toast({
-        title: "Recording Saved",
-        description: "Your recording has been saved successfully.",
-      });
+      alert("Your recording has been saved successfully.");
 
       if (onComplete) {
         onComplete(meeting.id);
@@ -233,14 +224,11 @@ export function LiveRecording({
       onClose?.();
     } catch (error) {
       console.error("Error saving recording:", error);
-      toast({
-        title: "Save Failed",
-        description:
-          error instanceof Error
-            ? error.message
-            : "There was an error saving your recording. Please try again.",
-        variant: "destructive",
-      });
+      alert(
+        error instanceof Error
+          ? error.message
+          : "There was an error saving your recording. Please try again."
+      );
     } finally {
       setIsSaving(false);
     }
