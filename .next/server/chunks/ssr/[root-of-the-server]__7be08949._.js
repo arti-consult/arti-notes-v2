@@ -45,12 +45,17 @@ module.exports = mod;
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-__turbopack_context__.s({
+/* __next_internal_action_entry_do_not_use__ [{"006833ae4a3e4bc312b0517f93af9f917ebef44fad":"createClient"},"",""] */ __turbopack_context__.s({
     "createClient": (()=>createClient)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/server-reference.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$app$2d$render$2f$encryption$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/app-render/encryption.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$index$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/@supabase/ssr/dist/module/index.js [app-rsc] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$ssr$2f$dist$2f$module$2f$createServerClient$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@supabase/ssr/dist/module/createServerClient.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/headers.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-validate.js [app-rsc] (ecmascript)");
+;
+;
 ;
 ;
 async function createClient() {
@@ -61,22 +66,37 @@ async function createClient() {
                 return cookieStore.get(name)?.value;
             },
             set (name, value, options) {
-                cookieStore.set({
-                    name,
-                    value,
-                    ...options
-                });
+                try {
+                    cookieStore.set({
+                        name,
+                        value,
+                        ...options
+                    });
+                } catch (error) {
+                    // Handle cookie setting error
+                    console.error("Error setting cookie:", error);
+                }
             },
             remove (name, options) {
-                cookieStore.set({
-                    name,
-                    value: "",
-                    ...options
-                });
+                try {
+                    cookieStore.set({
+                        name,
+                        value: "",
+                        ...options
+                    });
+                } catch (error) {
+                    // Handle cookie removal error
+                    console.error("Error removing cookie:", error);
+                }
             }
         }
     });
 }
+;
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
+    createClient
+]);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(createClient, "006833ae4a3e4bc312b0517f93af9f917ebef44fad", null);
 }}),
 "[project]/src/app/(auth)/login/actions.ts [app-rsc] (ecmascript)": ((__turbopack_context__) => {
 "use strict";

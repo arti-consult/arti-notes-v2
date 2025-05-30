@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,13 +17,56 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createClient } from "@/utils/supabase/client";
 import { CreditCard } from "lucide-react";
 
-interface NavbarProps {
-  user: User;
-}
+type AuthUser = {
+  id: string;
+  email?: string;
+  user_metadata?: {
+    full_name?: string;
+    avatar_url?: string;
+  };
+};
 
-export function Navbar({ user }: NavbarProps) {
+export function Navbar() {
   const router = useRouter();
-  const userInitials = user.email ? user.email[0].toUpperCase() : "U";
+  const [user, setUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    // Get initial user
+    const getInitialUser = async () => {
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
+      setUser(authUser);
+    };
+
+    getInitialUser();
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event: string, session: { user: AuthUser | null } | null) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const getUserInitials = (user: AuthUser | null) => {
+    if (!user) return "";
+    const name = user.user_metadata?.full_name || user.email || "";
+    return name
+      .split(" ")
+      .map((n: string) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -69,8 +113,8 @@ export function Navbar({ user }: NavbarProps) {
                 className="relative h-10 w-10 rounded-full"
               >
                 <Avatar>
-                  <AvatarImage src={user.user_metadata.avatar_url} />
-                  <AvatarFallback>{userInitials}</AvatarFallback>
+                  <AvatarImage src={user?.user_metadata?.avatar_url} />
+                  <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -78,10 +122,10 @@ export function Navbar({ user }: NavbarProps) {
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">
-                    {user.email}
+                    {user?.email}
                   </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    {user.user_metadata.full_name || user.email}
+                    {user?.user_metadata?.full_name || user?.email}
                   </p>
                 </div>
               </DropdownMenuLabel>

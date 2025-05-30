@@ -1,7 +1,7 @@
 const CHUNK_PUBLIC_PATH = "server/app/auth/callback/route.js";
 const runtime = require("../../../chunks/[turbopack]_runtime.js");
-runtime.loadChunk("server/chunks/node_modules_c4eb941e._.js");
-runtime.loadChunk("server/chunks/node_modules_next_2cd3f683._.js");
+runtime.loadChunk("server/chunks/node_modules_23eec3f4._.js");
+runtime.loadChunk("server/chunks/node_modules_next_93c2c8ba._.js");
 runtime.loadChunk("server/chunks/node_modules_tr46_816df9d9._.js");
 runtime.loadChunk("server/chunks/node_modules_@supabase_auth-js_dist_module_fbd19a5c._.js");
 runtime.loadChunk("server/chunks/node_modules_2ba84061._.js");

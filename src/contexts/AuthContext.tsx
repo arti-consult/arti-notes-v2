@@ -1,15 +1,30 @@
 // src/contexts/AuthContext.tsx
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { Session, User } from "@supabase/supabase-js";
-import { UserSubscription, PricingTier } from "@/types/subscription";
+import { UserSubscription } from "@/types/subscription";
 import { Profile } from "@/types/auth";
+import { User, Session } from "@supabase/supabase-js";
+
+export interface AuthUser {
+  id: string;
+  email?: string;
+  user_metadata?: {
+    full_name?: string;
+    avatar_url?: string;
+  };
+}
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   profile: Profile | null;
   session: Session | null;
   subscription: UserSubscription | null;
@@ -17,29 +32,21 @@ interface AuthContextType {
   signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  profile: null,
-  session: null,
-  subscription: null,
-  isLoading: true,
-  signOut: async () => {},
-});
-
-export const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
+  initialUser?: AuthUser | null;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+export function AuthProvider({ children, initialUser }: AuthProviderProps) {
+  const [user, setUser] = useState<AuthUser | null>(initialUser || null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [subscription, setSubscription] = useState<UserSubscription | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!initialUser);
   const router = useRouter();
   const supabase = createClient();
 
@@ -48,7 +55,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         setIsLoading(true);
 
-        // Get session
         const {
           data: { session },
         } = await supabase.auth.getSession();
@@ -56,18 +62,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(session?.user || null);
 
         if (session?.user) {
-          // Link anonymous tracking data to the user
-          try {
-            // Dynamic import to avoid issues with SSR
-            const { linkTrackingDataToUser } = await import(
-              "@/utils/tracking/server"
-            );
-            await linkTrackingDataToUser(session.user.id);
-          } catch (err) {
-            // Non-fatal error
-            console.error("Error linking tracking data:", err);
-          }
-
           // Get profile
           const { data: profileData } = await supabase
             .from("profiles")
@@ -91,13 +85,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             .single();
 
           if (subscriptionData) {
-            // Format the subscription data
-            setSubscription({
-              ...subscriptionData,
-              plan: subscriptionData.plan as PricingTier,
-            });
-          } else {
-            setSubscription(null);
+            setSubscription(subscriptionData);
           }
         }
       } catch (error) {
@@ -107,9 +95,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
-    fetchUserData();
+    if (initialUser) {
+      console.log("AuthProvider - Setting initial user:", initialUser);
+      setUser(initialUser);
+      setIsLoading(false);
+    } else {
+      fetchUserData();
+    }
 
-    // Subscribe to auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -127,21 +120,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase, router]);
+  }, [supabase, router, initialUser]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
     router.push("/login");
   };
 
-  const value = {
-    user,
-    profile,
-    session,
-    subscription,
-    isLoading,
-    signOut,
-  };
+  return (
+    <AuthContext.Provider
+      value={{ user, profile, session, subscription, isLoading, signOut }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}
