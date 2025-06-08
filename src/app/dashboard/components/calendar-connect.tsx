@@ -11,11 +11,11 @@ export function CalendarConnect() {
     try {
       setIsLoading(true);
 
-      // Get Google OAuth URL
-      const response = await fetch("/api/auth/google");
+      // Get Nylas OAuth URL
+      const response = await fetch("/api/auth/nylas");
       const { url } = await response.json();
 
-      // Redirect to Google OAuth
+      // Redirect to Nylas OAuth
       window.location.href = url;
     } catch (error) {
       console.error("Error connecting to Google Calendar:", error);
@@ -43,11 +43,6 @@ export function CalendarConnect() {
           ) : (
             <>
               <Calendar className="h-5 w-5 text-gray-500" />
-              <img
-                src="/google-calendar-icon.svg"
-                alt="Google Calendar"
-                className="h-5 w-5"
-              />
             </>
           )}
         </div>
@@ -60,11 +55,6 @@ export function CalendarConnect() {
       >
         <div className="flex items-center gap-2">
           <Calendar className="h-5 w-5 text-gray-500" />
-          <img
-            src="/microsoft-calendar-icon.svg"
-            alt="Microsoft Calendar"
-            className="h-5 w-5"
-          />
         </div>
         Connect Microsoft Calendar
       </Button>

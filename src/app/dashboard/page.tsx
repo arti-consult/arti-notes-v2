@@ -116,17 +116,17 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#18181B] px-[50px]">
-      <main className="flex-1 overflow-y-auto bg-[#18181B] text-gray-300 transition-colors duration-300">
+    <div className="flex h-screen bg-gray-50">
+      <main className="flex-1 overflow-y-auto text-gray-700 transition-colors duration-300">
         <div className="w-full h-full">
-          <div className="border-b border-gray-800">
+          <div className="border-b border-gray-200">
             <div className="flex h-16 items-center px-4">
               <div className="flex-1" />
               <div className="flex items-center justify-center flex-1">
                 <SearchDialog />
               </div>
               <div className="flex items-center justify-end gap-4 flex-1">
-                <div className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-300 transition-colors">
+                <div className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors">
                   <CreditCard className="h-4 w-4" />
                   <span>100 kreditter igjen</span>
                 </div>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="relative h-8 w-8 rounded-full hover:bg-gray-900"
+                      className="relative h-8 w-8 rounded-full hover:bg-gray-100"
                     >
                       <Avatar className="h-8 w-8">
                         <AvatarImage src="/avatars/01.png" alt="@user" />
@@ -144,33 +144,33 @@ export default function DashboardPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
-                    className="w-56 bg-[#18181B] border-gray-800"
+                    className="w-56 bg-white border-gray-200"
                     align="end"
                     forceMount
                   >
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none text-gray-300">
+                        <p className="text-sm font-medium leading-none text-gray-700">
                           User Name
                         </p>
-                        <p className="text-xs leading-none text-gray-400">
+                        <p className="text-xs leading-none text-gray-500">
                           user@example.com
                         </p>
                       </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-gray-800" />
-                    <DropdownMenuItem className="hover:bg-gray-900 text-gray-300">
+                    <DropdownMenuSeparator className="bg-gray-200" />
+                    <DropdownMenuItem className="hover:bg-gray-100 text-gray-700">
                       <User className="mr-2 h-4 w-4" />
                       <span>Profil</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="hover:bg-gray-900 text-gray-300">
+                    <DropdownMenuItem className="hover:bg-gray-100 text-gray-700">
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Innstillinger</span>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator className="bg-gray-800" />
+                    <DropdownMenuSeparator className="bg-gray-200" />
                     <DropdownMenuItem
                       onClick={handleSignOut}
-                      className="hover:bg-gray-900 text-gray-300"
+                      className="hover:bg-gray-100 text-gray-700"
                     >
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>Logg ut</span>
@@ -180,46 +180,48 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <div className="p-4">
-            <div className="grid grid-cols-[1fr,350px] gap-4">
+          <div className="py-4 px-[50px] max-w-[1200px] mx-auto">
+            <div className="flex gap-4 w-full">
               {/* Main Column - Meetings */}
-              <Card className="bg-[#18181B] border-gray-800">
-                <CardContent className="p-6">
-                  <div className="space-y-8">
-                    <div className="flex flex-col items-center gap-4">
-                      <NewMeetingArea onFileUpload={handleFileUpload} />
+              <div className="flex flex-col gap-4 w-full">
+                <Card className="bg-white border-gray-200">
+                  <CardContent className="p-6">
+                    <div className="space-y-8">
+                      <div className="flex flex-col items-center gap-4">
+                        <NewMeetingArea onFileUpload={handleFileUpload} />
+                      </div>
+                      <div className="space-y-3">
+                        {isLoading ? (
+                          <div className="text-center text-gray-500">
+                            Loading meetings...
+                          </div>
+                        ) : (
+                          <MeetingList meetings={meetings} showEmpty={false} />
+                        )}
+                      </div>
                     </div>
-                    <div className="space-y-3">
-                      {isLoading ? (
-                        <div className="text-center text-gray-400">
-                          Loading meetings...
-                        </div>
-                      ) : (
-                        <MeetingList meetings={meetings} showEmpty={false} />
-                      )}
+                    <div className="flex justify-center mt-8">
+                      <Link href="/dashboard/meetings">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border-gray-200 cursor-pointer hover:text-[#145DFC]"
+                        >
+                          <List className="h-4 w-4" />
+                          Se alle møter
+                        </Button>
+                      </Link>
                     </div>
-                  </div>
-                  <div className="flex justify-center mt-8">
-                    <Link href="/dashboard/meetings">
-                      <Button
-                        variant="outline"
-                        className="flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-gray-300 border-gray-700"
-                      >
-                        <List className="h-4 w-4" />
-                        Se alle møter
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
 
-              {/* Right Column - Controls and Upcoming Meetings */}
-              <div className="space-y-4">
+              {/* Right Column - Controls and Settings */}
+              <div className="flex flex-col gap-4 flex-1">
                 {/* Live Meeting Button */}
-                <Card className="bg-[#18181B] border-gray-800">
+                <Card className="bg-white border-gray-200">
                   <CardContent className="pt-6">
                     <Button
-                      className="w-full bg-violet-700 hover:bg-violet-800 gap-2 text-gray-300"
+                      className="w-full bg-violet-600 hover:bg-violet-700 gap-2 text-white"
                       size="lg"
                       onClick={() => setShowLiveMeeting(true)}
                     >
@@ -230,44 +232,44 @@ export default function DashboardPage() {
                 </Card>
 
                 {/* Note Taking Settings */}
-                <Card className="bg-[#18181B] border-gray-800">
+                <Card className="bg-white border-gray-200">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-lg text-gray-300">
+                    <CardTitle className="flex items-center gap-2 text-lg text-gray-700">
                       <Settings2 className="h-5 w-5" />
                       Innstillinger for notatskriving
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300">
+                      <label className="text-sm font-medium text-gray-700">
                         Språk
                       </label>
                       <Select defaultValue="no">
-                        <SelectTrigger className="bg-gray-900 border-gray-700 text-gray-300">
+                        <SelectTrigger className="bg-white border-gray-200 text-gray-700">
                           <SelectValue placeholder="Velg språk" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-gray-700">
+                        <SelectContent className="bg-white border-gray-200">
                           <SelectItem
                             value="no"
-                            className="text-gray-300 hover:bg-gray-800"
+                            className="text-gray-700 hover:bg-gray-50"
                           >
                             Norsk
                           </SelectItem>
                           <SelectItem
                             value="en"
-                            className="text-gray-300 hover:bg-gray-800"
+                            className="text-gray-700 hover:bg-gray-50"
                           >
                             Engelsk
                           </SelectItem>
                           <SelectItem
                             value="sv"
-                            className="text-gray-300 hover:bg-gray-800"
+                            className="text-gray-700 hover:bg-gray-50"
                           >
                             Svensk
                           </SelectItem>
                           <SelectItem
                             value="da"
-                            className="text-gray-300 hover:bg-gray-800"
+                            className="text-gray-700 hover:bg-gray-50"
                           >
                             Dansk
                           </SelectItem>
@@ -275,29 +277,29 @@ export default function DashboardPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300">
+                      <label className="text-sm font-medium text-gray-700">
                         Notatstil
                       </label>
                       <Select defaultValue="detailed">
-                        <SelectTrigger className="bg-gray-900 border-gray-700 text-gray-300">
+                        <SelectTrigger className="bg-white border-gray-200 text-gray-700">
                           <SelectValue placeholder="Velg notatstil" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-gray-700">
+                        <SelectContent className="bg-white border-gray-200">
                           <SelectItem
                             value="detailed"
-                            className="text-gray-300 hover:bg-gray-800"
+                            className="text-gray-700 hover:bg-gray-50"
                           >
                             Detaljert
                           </SelectItem>
                           <SelectItem
                             value="summary"
-                            className="text-gray-300 hover:bg-gray-800"
+                            className="text-gray-700 hover:bg-gray-50"
                           >
                             Sammendrag
                           </SelectItem>
                           <SelectItem
                             value="bullet"
-                            className="text-gray-300 hover:bg-gray-800"
+                            className="text-gray-700 hover:bg-gray-50"
                           >
                             Punktliste
                           </SelectItem>

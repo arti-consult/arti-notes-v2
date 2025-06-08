@@ -14,7 +14,9 @@ export default function OnboardingPage() {
     >
       {/* Animated background gradients */}
 
-      <OnboardingSteps />
+      <div className="w-full h-full max-w-[700px] mx-auto">
+        <OnboardingSteps />
+      </div>
     </motion.div>
   );
 }

@@ -170,7 +170,7 @@ export function MeetingList({ meetings, showEmpty = true }: MeetingListProps) {
     return (
       <Card>
         <CardContent className="p-8 text-center bg-gray-500 rounded-2xl">
-          <p className="text-muted-foreground bg-gray-500 text-white">
+          <p className="text-muted-foreground bg-gray-500 ">
             Ingen møter funnet
           </p>
         </CardContent>

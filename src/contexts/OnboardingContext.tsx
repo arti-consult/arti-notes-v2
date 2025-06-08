@@ -1,47 +1,60 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-  useCallback,
-} from "react";
-import {
-  OnboardingState,
-  OnboardingAction,
-  OnboardingFormData,
-} from "@/types/onboarding";
-import { createClient } from "@/utils/supabase/client";
-import { UTMParams } from "@/utils/tracking/utm";
+import React, { createContext, useContext, useReducer, ReactNode } from "react";
+
+// Types
+interface OnboardingState {
+  step: number;
+  userType: "individual" | "company" | null;
+  teamSize: "solo" | "small" | "medium" | "large" | null;
+  referralSource: string | null;
+  audioPurpose: string | null;
+  paymentCompleted: boolean;
+  micPermission: boolean | null;
+}
+
+type OnboardingAction =
+  | { type: "NEXT_STEP" }
+  | { type: "PREV_STEP" }
+  | { type: "SET_STEP"; payload: number }
+  | { type: "SET_USER_TYPE"; payload: "individual" | "company" }
+  | { type: "SET_TEAM_SIZE"; payload: "solo" | "small" | "medium" | "large" }
+  | { type: "SET_REFERRAL_SOURCE"; payload: string }
+  | { type: "SET_AUDIO_PURPOSE"; payload: string }
+  | { type: "SET_PAYMENT_COMPLETED"; payload: boolean }
+  | { type: "SET_MIC_PERMISSION"; payload: boolean }
+  | { type: "RESET" };
 
 interface OnboardingContextType {
   state: OnboardingState;
   dispatch: React.Dispatch<OnboardingAction>;
   submitOnboarding: (userId: string) => Promise<void>;
-  requestMicPermission: () => Promise<boolean>;
+  requestMicPermission: () => Promise<void>;
 }
 
+// Initial state
 const initialState: OnboardingState = {
   step: 1,
   userType: null,
   teamSize: null,
   referralSource: null,
   audioPurpose: null,
+  paymentCompleted: false,
   micPermission: null,
-  paymentCompleted: null,
 };
 
-const OnboardingContext = createContext<OnboardingContextType | null>(null);
-
-const onboardingReducer = (
+// Reducer
+function onboardingReducer(
   state: OnboardingState,
   action: OnboardingAction
-): OnboardingState => {
+): OnboardingState {
   switch (action.type) {
     case "NEXT_STEP":
-      return { ...state, step: state.step + 1 };
+      return { ...state, step: Math.min(state.step + 1, 7) };
     case "PREV_STEP":
-      return { ...state, step: Math.max(1, state.step - 1) };
+      return { ...state, step: Math.max(state.step - 1, 1) };
+    case "SET_STEP":
+      return { ...state, step: action.payload };
     case "SET_USER_TYPE":
       return { ...state, userType: action.payload };
     case "SET_TEAM_SIZE":
@@ -50,126 +63,72 @@ const onboardingReducer = (
       return { ...state, referralSource: action.payload };
     case "SET_AUDIO_PURPOSE":
       return { ...state, audioPurpose: action.payload };
-    case "SET_MIC_PERMISSION":
-      return { ...state, micPermission: action.payload };
     case "SET_PAYMENT_COMPLETED":
       return { ...state, paymentCompleted: action.payload };
+    case "SET_MIC_PERMISSION":
+      return { ...state, micPermission: action.payload };
     case "RESET":
       return initialState;
     default:
       return state;
   }
-};
+}
 
-export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+// Context
+const OnboardingContext = createContext<OnboardingContextType | undefined>(
+  undefined
+);
+
+// Provider component
+export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(onboardingReducer, initialState);
-  const supabase = createClient();
 
-  const requestMicPermission = useCallback(async (): Promise<boolean> => {
+  const submitOnboarding = async (userId: string): Promise<void> => {
     try {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error("Browser does not support media devices");
+      // Create FormData with onboarding information
+      const formData = new FormData();
+      formData.append("userType", state.userType || "");
+      formData.append("teamSize", state.teamSize || "");
+      formData.append("referralSource", state.referralSource || "");
+      formData.append("audioPurpose", state.audioPurpose || "");
+      formData.append("paymentCompleted", state.paymentCompleted.toString());
+      formData.append(
+        "micPermission",
+        (state.micPermission || false).toString()
+      );
+
+      // Import the server action dynamically to avoid SSR issues
+      const { completeOnboarding } = await import(
+        "../app/(auth)/onboarding/actions"
+      );
+
+      // Call the server action
+      const result = await completeOnboarding(formData);
+
+      // Handle any errors returned from the server action
+      if (result && "error" in result) {
+        throw new Error(result.error);
       }
-
-      // Request microphone access
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-      // Stop all tracks immediately after permission is granted
-      stream.getTracks().forEach((track) => track.stop());
-
-      dispatch({ type: "SET_MIC_PERMISSION", payload: true });
-      return true;
     } catch (error) {
-      console.error("Error requesting microphone permission:", error);
-      dispatch({ type: "SET_MIC_PERMISSION", payload: false });
-      return false;
+      console.error("Error submitting onboarding:", error);
+      throw error;
     }
-  }, []);
+  };
 
-  const submitOnboarding = useCallback(
-    async (userId: string): Promise<void> => {
-      try {
-        if (
-          !state.userType ||
-          !state.teamSize ||
-          !state.referralSource ||
-          !state.audioPurpose ||
-          !state.paymentCompleted
-        ) {
-          throw new Error("Missing required onboarding information");
-        }
+  const requestMicPermission = async (): Promise<void> => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Stop the stream immediately as we just needed permission
+      stream.getTracks().forEach((track) => track.stop());
+      dispatch({ type: "SET_MIC_PERMISSION", payload: true });
+    } catch (error) {
+      console.error("Microphone permission denied:", error);
+      dispatch({ type: "SET_MIC_PERMISSION", payload: false });
+      throw error;
+    }
+  };
 
-        const onboardingData: OnboardingFormData = {
-          userId,
-          userType: state.userType,
-          teamSize: state.teamSize,
-          referralSource: state.referralSource,
-          audioPurpose: state.audioPurpose,
-          micPermission: state.micPermission ?? false,
-          paymentCompleted: state.paymentCompleted,
-        };
-
-        // Get UTM data from cookies if available
-        let utmData: UTMParams = {};
-        try {
-          if (typeof window !== "undefined") {
-            // Dynamically import to avoid SSR issues
-            const { getAllTrackingData } = await import("@/utils/tracking/utm");
-            utmData = await getAllTrackingData();
-          }
-        } catch (err) {
-          console.error("Error getting UTM data:", err);
-        }
-
-        // Save onboarding data to Supabase
-        const { data, error } = await supabase
-          .from("user_onboarding")
-          .upsert({
-            user_id: userId,
-            user_type: onboardingData.userType,
-            team_size: onboardingData.teamSize,
-            referral_source: onboardingData.referralSource,
-            audio_purpose: onboardingData.audioPurpose,
-            mic_permission: onboardingData.micPermission,
-            payment_completed: onboardingData.paymentCompleted,
-            utm_source: utmData.utm_source || null,
-            utm_medium: utmData.utm_medium || null,
-            utm_campaign: utmData.utm_campaign || null,
-            referrer: utmData.referrer || null,
-            completed_at: new Date().toISOString(),
-          })
-          .select("id")
-          .single();
-
-        if (error) throw error;
-
-        if (data?.id) {
-          // Link tracking data to onboarding data
-          try {
-            // Dynamically import server utility
-            const { saveUTMDataDuringOnboarding } = await import(
-              "@/utils/tracking/server"
-            );
-            await saveUTMDataDuringOnboarding(userId, data.id);
-          } catch (err) {
-            console.error("Error linking tracking data:", err);
-            // Non-fatal error, continue
-          }
-        }
-
-        // Reset the state after successful submission
-        dispatch({ type: "RESET" });
-      } catch (error) {
-        console.error("Error submitting onboarding data:", error);
-        throw error;
-      }
-    },
-    [state, supabase]
-  );
-
-  const value = {
+  const value: OnboardingContextType = {
     state,
     dispatch,
     submitOnboarding,
@@ -181,12 +140,13 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </OnboardingContext.Provider>
   );
-};
+}
 
-export const useOnboarding = () => {
+// Hook to use the context
+export function useOnboarding(): OnboardingContextType {
   const context = useContext(OnboardingContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useOnboarding must be used within an OnboardingProvider");
   }
   return context;
-};
+}

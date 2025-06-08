@@ -1,9 +1,9 @@
 {
   "node": {
-    "40dfba1b4d0f1a8a0eb3c0d61678bb0bdd4ef43864": {
+    "40456e47ffa0d243b28358a525af33782f47e31018": {
       "workers": {
         "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -11,10 +11,10 @@
         "app/(auth)/onboarding/page": "action-browser"
       }
     },
-    "40be47499aa392bde94d11dbd572fa6a00f1c43886": {
+    "4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9": {
       "workers": {
         "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -22,98 +22,10 @@
         "app/(auth)/onboarding/page": "action-browser"
       }
     },
-    "6034f71fc2f07ef481deb854aeae48101ab1da1fd4": {
+    "40408aa358ff3c32694cfde6f469fcf704c3cdfddb": {
       "workers": {
         "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "005491b78a73d69a03de472ac7422e9520af53db1b": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "006415926712ff60a555bc50ef51aca7a8dcc6e22c": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "00e351330a8720caffb24b805f731ed9ad48cf36ab": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "0015128e4398e14ed78630247b65ba92906854373e": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "408d897c822b7b195fd52e6c73f730fddb6532adbd": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "40956b1da6d4ce87bbb87b2bd578180c2dfe5b1d43": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "408621c2c0c9b668d8b2cc517ab3ab4f2e12302ab4": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "action-browser"
-      }
-    },
-    "00805d9cdfbf56e11a7ebc4b47757eca72763e6b1d": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/tracking/server.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },

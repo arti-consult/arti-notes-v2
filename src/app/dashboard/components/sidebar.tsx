@@ -49,7 +49,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full w-64 flex-col border-r bg-[#18181B]">
+    <div className="flex h-screen  w-64 flex-col border-r ">
       <div className="flex h-16 items-center border-b px-6">
         <h1 className="text-xl font-semibold">Arti Notes</h1>
       </div>
@@ -67,7 +67,7 @@ export function Sidebar() {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                 isActive
                   ? "bg-[#145DFC]/10 text-[#145DFC]"
-                  : "text-gray-700 hover:bg-[#145DFC]/10 hover:text-white"
+                  : "text-gray-700 hover:bg-[#145DFC]/10 hover:text-[#145DFC]"
               )}
             >
               <item.icon className="h-4 w-4" />

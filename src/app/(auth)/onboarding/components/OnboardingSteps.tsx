@@ -1,6 +1,7 @@
+// src/app/(auth)/onboarding/components/OnboardingSteps.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOnboarding } from "@/contexts/OnboardingContext";
@@ -24,6 +25,7 @@ import {
   ArrowRight,
   CheckCircle2,
   CreditCard,
+  Loader2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
@@ -97,6 +99,81 @@ export function OnboardingSteps() {
     useOnboarding();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isCheckingPayment, setIsCheckingPayment] = useState(false);
+  const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
+
+  // Check payment status when component mounts and user is available
+  useEffect(() => {
+    if (user && state.step === 5 && !state.paymentCompleted) {
+      checkPaymentStatus();
+    }
+  }, [user, state.step]);
+
+  const checkPaymentStatus = async () => {
+    if (!user) return;
+
+    try {
+      setIsCheckingPayment(true);
+      const response = await fetch(
+        `/api/onboarding/payment-status?userId=${user.id}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to check payment status");
+      }
+
+      const data = await response.json();
+
+      if (data.paymentCompleted) {
+        dispatch({ type: "SET_PAYMENT_COMPLETED", payload: true });
+      }
+    } catch (error) {
+      console.error("Error checking payment status:", error);
+    } finally {
+      setIsCheckingPayment(false);
+    }
+  };
+
+  const handleCreateCheckout = async () => {
+    if (!user) {
+      setError("You must be logged in to start a subscription");
+      return;
+    }
+
+    try {
+      setIsCreatingCheckout(true);
+      setError(null);
+
+      const response = await fetch("/api/onboarding/create-checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user.id,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create checkout session");
+      }
+
+      const data = await response.json();
+
+      // Redirect to Stripe Checkout
+      window.location.href = data.url;
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to create checkout session. Please try again."
+      );
+    } finally {
+      setIsCreatingCheckout(false);
+    }
+  };
 
   const handleNextStep = () => {
     dispatch({ type: "NEXT_STEP" });
@@ -278,7 +355,18 @@ export function OnboardingSteps() {
           />
           <CardContent className="space-y-6">
             <div className="flex flex-col items-center justify-center p-6 space-y-4">
-              {state.paymentCompleted ? (
+              {isCheckingPayment ? (
+                <>
+                  <StatusIcon
+                    icon={Loader2}
+                    color="text-primary"
+                    bgColor="bg-accent"
+                  />
+                  <p className="text-primary font-medium text-center">
+                    Checking payment status...
+                  </p>
+                </>
+              ) : state.paymentCompleted ? (
                 <>
                   <StatusIcon
                     icon={CheckCircle2}
@@ -325,11 +413,26 @@ export function OnboardingSteps() {
                     </div>
                   </div>
                   <Button
-                    variant="outline"
+                    onClick={handleCreateCheckout}
+                    disabled={isCreatingCheckout}
                     className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200"
-                    onClick={() => router.push("/dashboard")}
                   >
-                    Start Free Trial
+                    {isCreatingCheckout ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Creating checkout...
+                      </>
+                    ) : (
+                      "Start Free Trial"
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={checkPaymentStatus}
+                    disabled={isCheckingPayment || isCreatingCheckout}
+                    className="border-border hover:bg-accent/50"
+                  >
+                    Check Payment Status
                   </Button>
                 </>
               )}
@@ -457,7 +560,7 @@ export function OnboardingSteps() {
                 <Button
                   variant="outline"
                   onClick={handlePrevStep}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isCreatingCheckout}
                   className="border-border hover:bg-accent/50 transition-colors"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
@@ -467,7 +570,9 @@ export function OnboardingSteps() {
               {state.step < 7 ? (
                 <Button
                   onClick={handleNextStep}
-                  disabled={!isStepComplete() || isSubmitting}
+                  disabled={
+                    !isStepComplete() || isSubmitting || isCreatingCheckout
+                  }
                   className={`${
                     state.step === 1 ? "ml-auto" : ""
                   } bg-primary text-primary-foreground hover:bg-primary/90 transition-colors`}
@@ -481,7 +586,14 @@ export function OnboardingSteps() {
                   disabled={isSubmitting}
                   className="ml-auto bg-green-600 text-white hover:bg-green-600/90 transition-colors"
                 >
-                  {isSubmitting ? "Completing..." : "Complete"}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Completing...
+                    </>
+                  ) : (
+                    "Complete"
+                  )}
                 </Button>
               )}
             </CardFooter>
