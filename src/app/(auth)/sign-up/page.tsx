@@ -4,19 +4,27 @@ import { signup, signInWithGoogle, signInWithMicrosoft } from "./actions";
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState, Suspense } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 function SignUpFormContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [productTag, setProductTag] = useState<string | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
+
+    // Get product tag from URL parameter
+    const pTag = searchParams.get("p");
+    setProductTag(pTag);
+
+    console.log("Product tag from URL:", pTag);
 
     // Only check session once when component mounts
     const checkInitialSession = async () => {
@@ -53,15 +61,14 @@ function SignUpFormContent() {
 
       if (event === "SIGNED_IN" && session?.user?.email_confirmed_at) {
         console.log(
-          "SignUp: User signed in, triggering page refresh to let middleware redirect"
+          "SignUp: User signed in, will redirect to payment after form success"
         );
-        // Instead of manually redirecting, refresh the page to trigger middleware
-        window.location.reload();
+        // Don't redirect immediately - let the form handle success flow
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  }, [supabase, searchParams]);
 
   if (!isMounted) {
     return null;
@@ -71,8 +78,11 @@ function SignUpFormContent() {
     setIsLoading(true);
     setError(null);
     try {
-      console.log("SignUp: Starting Google sign up");
-      await signInWithGoogle();
+      console.log(
+        "SignUp: Starting Google sign up with product tag:",
+        productTag
+      );
+      await signInWithGoogle(productTag);
     } catch (error) {
       console.error("SignUp: Google sign up error:", error);
       setError(
@@ -81,6 +91,63 @@ function SignUpFormContent() {
           : "An error occurred during Google sign-up"
       );
       setIsLoading(false);
+    }
+  };
+
+  const handleMicrosoftSignUp = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      console.log(
+        "SignUp: Starting Microsoft sign up with product tag:",
+        productTag
+      );
+      await signInWithMicrosoft(productTag);
+    } catch (error) {
+      console.error("SignUp: Microsoft sign up error:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "An error occurred during Microsoft sign-up"
+      );
+      setIsLoading(false);
+    }
+  };
+
+  const handleFormSubmit = async (formData: FormData) => {
+    console.log(
+      "SignUp: Form submission started with product tag:",
+      productTag
+    );
+    setIsLoading(true);
+    setError(null);
+
+    // Add product tag to form data if present
+    if (productTag) {
+      formData.set("productTag", productTag);
+    }
+
+    const result = await signup(formData);
+    console.log("SignUp: Form submission result:", result);
+
+    if (result?.error) {
+      setError(result.error);
+      setIsLoading(false);
+      return;
+    }
+
+    if (result?.success) {
+      // Successful signup - redirect directly to Stripe payment link
+      console.log(
+        "SignUp: Success, redirecting to Stripe with tag:",
+        productTag
+      );
+      const stripeUrl = productTag
+        ? `https://buy.stripe.com/${productTag}`
+        : "https://buy.stripe.com/test_fZufZhb5M5uY57l9xlak003";
+
+      console.log("Redirecting to Stripe URL:", stripeUrl);
+      window.location.href = stripeUrl;
     }
   };
 
@@ -111,7 +178,18 @@ function SignUpFormContent() {
           className="text-center"
         >
           <h2 className="text-3xl font-bold text-white">Create your account</h2>
-          <p className="mt-2 text-sm text-gray-400">Join us to get started</p>
+          <p className="mt-2 text-sm text-gray-400">
+            {productTag
+              ? "Complete your purchase by creating an account"
+              : "Join us to get started"}
+          </p>
+          {productTag && (
+            <div className="mt-3 px-3 py-2 bg-blue-600/20 border border-blue-600/30 rounded-lg">
+              <p className="text-xs text-blue-300">
+                Selected plan: {productTag}
+              </p>
+            </div>
+          )}
         </motion.div>
 
         <AnimatePresence>
@@ -128,7 +206,7 @@ function SignUpFormContent() {
               {error.includes("already exists") && (
                 <div className="mt-2">
                   <Link
-                    href="/login"
+                    href={`/login${productTag ? `?p=${productTag}` : ""}`}
                     className="text-red-200 hover:text-red-100 underline"
                   >
                     Sign in instead
@@ -143,21 +221,7 @@ function SignUpFormContent() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          action={async (formData) => {
-            console.log("SignUp: Form submission started");
-            setIsLoading(true);
-            setError(null);
-
-            const result = await signup(formData);
-            console.log("SignUp: Form submission result:", result);
-
-            if (result?.error) {
-              setError(result.error);
-              setIsLoading(false);
-            }
-            // If successful, the server action will redirect
-            // Don't set loading to false for successful cases
-          }}
+          action={handleFormSubmit}
           className="mt-8 space-y-6"
         >
           <div className="space-y-4">
@@ -265,7 +329,9 @@ function SignUpFormContent() {
               disabled={isLoading}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#145DFC] hover:bg-[#145DFC]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#145DFC] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
-              {isLoading ? "Creating account..." : "Sign up"}
+              {isLoading
+                ? "Creating account..."
+                : "Create Account & Continue to Payment"}
             </button>
           </motion.div>
 
@@ -278,7 +344,7 @@ function SignUpFormContent() {
             <p className="text-sm">
               Already have an account?{" "}
               <Link
-                href="/login"
+                href={`/login${productTag ? `?p=${productTag}` : ""}`}
                 className="font-medium text-[#145DFC] hover:text-[#145DFC]/90 transition-colors duration-200"
               >
                 Sign in
@@ -320,7 +386,7 @@ function SignUpFormContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="button"
-              onClick={() => signInWithMicrosoft()}
+              onClick={handleMicrosoftSignUp}
               disabled={isLoading}
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-700 rounded-md shadow-sm bg-black text-sm font-medium text-gray-300 hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >

@@ -248,6 +248,7 @@ async function GET(request) {
                     id: userId,
                     nylas_grant_id: grantId,
                     calendar_connected: true,
+                    completed_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 }).select();
                 if (upsertError) {
@@ -266,6 +267,7 @@ async function GET(request) {
         try {
             const { data: onboardingData, error: onboardingError } = await supabase.from("user_onboarding").update({
                 calendar_connected: true,
+                completed_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             }).eq("user_id", userId).select();
             if (onboardingError) {

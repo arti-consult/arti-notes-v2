@@ -308,7 +308,8 @@ async function POST(request) {
             // Also update onboarding record
             const { error: onboardingError } = await supabase.from("user_onboarding").update({
                 calendar_connected: true,
-                updated_at: new Date().toISOString()
+                updated_at: new Date().toISOString(),
+                completed_at: new Date().toISOString()
             }).eq("user_id", finalUserId);
             if (onboardingError) {
                 console.log("⚠️ Could not update onboarding record:", onboardingError.message);

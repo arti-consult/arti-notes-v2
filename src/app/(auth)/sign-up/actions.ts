@@ -12,13 +12,13 @@ export async function signup(formData: FormData) {
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
   const email = formData.get("email") as string;
-  const paymentLinkTag = formData.get("paymentLinkTag") as string;
+  const productTag = formData.get("productTag") as string;
 
   console.log(
     "Signup attempt for email:",
     email,
-    "with payment tag:",
-    paymentLinkTag
+    "with product tag:",
+    productTag
   );
 
   // Validate password match
@@ -32,7 +32,7 @@ export async function signup(formData: FormData) {
     password: password,
     options: {
       data: {
-        payment_link_tag: paymentLinkTag || null, // Store in user metadata
+        product_tag: productTag || null, // Store in user metadata
       },
     },
   };
@@ -52,7 +52,7 @@ export async function signup(formData: FormData) {
           email: authData.user.email,
           email_confirmed_at: authData.user.email_confirmed_at,
           created_at: authData.user.created_at,
-          payment_link_tag: authData.user.user_metadata?.payment_link_tag,
+          product_tag: authData.user.user_metadata?.product_tag,
         }
       : null,
     session: authData.session
@@ -100,14 +100,14 @@ export async function signup(formData: FormData) {
       console.log("Session explicitly set on server");
     }
 
-    // Create initial onboarding record with nullable fields
+    // Create initial onboarding record with product tag
     try {
       const { error: onboardingError } = await supabase
         .from("user_onboarding")
         .insert({
           user_id: authData.user?.id,
           payment_completed: false,
-          payment_link_tag: paymentLinkTag || null,
+          product_tag: productTag || null,
           // Make all fields explicitly nullable
           user_type: null,
           team_size: null,
@@ -124,8 +124,8 @@ export async function signup(formData: FormData) {
         // Don't fail signup, but log the error
       } else {
         console.log(
-          "Created initial onboarding record with payment tag:",
-          paymentLinkTag
+          "Created initial onboarding record with product tag:",
+          productTag
         );
       }
     } catch (error) {
@@ -135,11 +135,11 @@ export async function signup(formData: FormData) {
     console.log("Calling revalidatePath...");
     revalidatePath("/", "layout");
 
-    // Don't redirect here - let the frontend handle the payment redirect
+    // Return success with product tag for frontend to handle redirect
     console.log("Signup successful, returning success response");
     return {
       success: true,
-      paymentLinkTag: paymentLinkTag,
+      productTag: productTag,
       user: authData.user,
     };
   }
@@ -152,14 +152,19 @@ export async function signup(formData: FormData) {
   };
 }
 
-export async function signInWithGoogle() {
-  console.log("=== GOOGLE SIGNIN START ===");
+export async function signInWithGoogle(productTag?: string | null) {
+  console.log("=== GOOGLE SIGNIN START ===", "Product tag:", productTag);
   const supabase = await createClient();
+
+  // Build redirect URL with product tag if present
+  const redirectUrl = productTag
+    ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?p=${productTag}`
+    : `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/payment`,
+      redirectTo: redirectUrl,
     },
   });
 
@@ -167,6 +172,7 @@ export async function signInWithGoogle() {
     hasUrl: !!data.url,
     url: data.url,
     error: error?.message,
+    redirectTo: redirectUrl,
   });
 
   if (error) {
@@ -181,14 +187,19 @@ export async function signInWithGoogle() {
   }
 }
 
-export async function signInWithMicrosoft() {
-  console.log("=== MICROSOFT SIGNIN START ===");
+export async function signInWithMicrosoft(productTag?: string | null) {
+  console.log("=== MICROSOFT SIGNIN START ===", "Product tag:", productTag);
   const supabase = await createClient();
+
+  // Build redirect URL with product tag if present
+  const redirectUrl = productTag
+    ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?p=${productTag}`
+    : `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "azure",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/payment`,
+      redirectTo: redirectUrl,
     },
   });
 
@@ -196,6 +207,7 @@ export async function signInWithMicrosoft() {
     hasUrl: !!data.url,
     url: data.url,
     error: error?.message,
+    redirectTo: redirectUrl,
   });
 
   if (error) {

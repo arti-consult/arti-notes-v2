@@ -103,6 +103,7 @@ export async function GET(request: NextRequest) {
         .update({
           nylas_grant_id: grantId,
           calendar_connected: true,
+
           updated_at: new Date().toISOString(),
         })
         .eq("id", userId)
@@ -119,6 +120,7 @@ export async function GET(request: NextRequest) {
             id: userId,
             nylas_grant_id: grantId,
             calendar_connected: true,
+            completed_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           })
           .select();
@@ -142,6 +144,7 @@ export async function GET(request: NextRequest) {
         .from("user_onboarding")
         .update({
           calendar_connected: true,
+          completed_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
         .eq("user_id", userId)

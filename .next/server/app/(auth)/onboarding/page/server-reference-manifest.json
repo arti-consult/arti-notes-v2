@@ -1,20 +1,9 @@
 {
   "node": {
-    "006833ae4a3e4bc312b0517f93af9f917ebef44fad": {
-      "workers": {
-        "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/supabase/server.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(auth)/onboarding/page": "rsc"
-      }
-    },
     "40456e47ffa0d243b28358a525af33782f47e31018": {
       "workers": {
         "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/supabase/server.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -25,7 +14,7 @@
     "4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9": {
       "workers": {
         "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/supabase/server.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -36,7 +25,7 @@
     "40408aa358ff3c32694cfde6f469fcf704c3cdfddb": {
       "workers": {
         "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/supabase/server.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },
@@ -47,7 +36,7 @@
     "40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f": {
       "workers": {
         "app/(auth)/onboarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/utils/supabase/server.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         }
       },

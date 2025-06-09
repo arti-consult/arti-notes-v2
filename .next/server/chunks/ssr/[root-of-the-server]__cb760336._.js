@@ -103,7 +103,7 @@ async function createClient() {
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-/* __next_internal_action_entry_do_not_use__ [{"006ed028e74cd5196a24223a69b41ef8a32901e2e9":"signInWithMicrosoft","00ab0c8391139fc3c22aca998772286d1a711da417":"signInWithGoogle","40e2e96b184365ca49be176bc0a9e082e8c985c13f":"signup"},"",""] */ __turbopack_context__.s({
+/* __next_internal_action_entry_do_not_use__ [{"406ed028e74cd5196a24223a69b41ef8a32901e2e9":"signInWithMicrosoft","40ab0c8391139fc3c22aca998772286d1a711da417":"signInWithGoogle","40e2e96b184365ca49be176bc0a9e082e8c985c13f":"signup"},"",""] */ __turbopack_context__.s({
     "signInWithGoogle": (()=>signInWithGoogle),
     "signInWithMicrosoft": (()=>signInWithMicrosoft),
     "signup": (()=>signup)
@@ -126,8 +126,8 @@ async function signup(formData) {
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
     const email = formData.get("email");
-    const paymentLinkTag = formData.get("paymentLinkTag");
-    console.log("Signup attempt for email:", email, "with payment tag:", paymentLinkTag);
+    const productTag = formData.get("productTag");
+    console.log("Signup attempt for email:", email, "with product tag:", productTag);
     // Validate password match
     if (password !== confirmPassword) {
         console.log("Password mismatch");
@@ -140,7 +140,7 @@ async function signup(formData) {
         password: password,
         options: {
             data: {
-                payment_link_tag: paymentLinkTag || null
+                product_tag: productTag || null
             }
         }
     };
@@ -155,7 +155,7 @@ async function signup(formData) {
             email: authData.user.email,
             email_confirmed_at: authData.user.email_confirmed_at,
             created_at: authData.user.created_at,
-            payment_link_tag: authData.user.user_metadata?.payment_link_tag
+            product_tag: authData.user.user_metadata?.product_tag
         } : null,
         session: authData.session ? {
             access_token: authData.session.access_token ? "present" : "missing",
@@ -193,12 +193,12 @@ async function signup(formData) {
         } else {
             console.log("Session explicitly set on server");
         }
-        // Create initial onboarding record with nullable fields
+        // Create initial onboarding record with product tag
         try {
             const { error: onboardingError } = await supabase.from("user_onboarding").insert({
                 user_id: authData.user?.id,
                 payment_completed: false,
-                payment_link_tag: paymentLinkTag || null,
+                product_tag: productTag || null,
                 // Make all fields explicitly nullable
                 user_type: null,
                 team_size: null,
@@ -213,18 +213,18 @@ async function signup(formData) {
                 console.error("Error creating onboarding record:", onboardingError);
             // Don't fail signup, but log the error
             } else {
-                console.log("Created initial onboarding record with payment tag:", paymentLinkTag);
+                console.log("Created initial onboarding record with product tag:", productTag);
             }
         } catch (error) {
             console.error("Exception creating onboarding record:", error);
         }
         console.log("Calling revalidatePath...");
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$cache$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["revalidatePath"])("/", "layout");
-        // Don't redirect here - let the frontend handle the payment redirect
+        // Return success with product tag for frontend to handle redirect
         console.log("Signup successful, returning success response");
         return {
             success: true,
-            paymentLinkTag: paymentLinkTag,
+            productTag: productTag,
             user: authData.user
         };
     }
@@ -234,19 +234,22 @@ async function signup(formData) {
         error: "Signup completed but no session was created. Please try logging in."
     };
 }
-async function signInWithGoogle() {
-    console.log("=== GOOGLE SIGNIN START ===");
+async function signInWithGoogle(productTag) {
+    console.log("=== GOOGLE SIGNIN START ===", "Product tag:", productTag);
     const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["createClient"])();
+    // Build redirect URL with product tag if present
+    const redirectUrl = productTag ? `${"TURBOPACK compile-time value", "http://localhost:3000"}/auth/callback?p=${productTag}` : `${"TURBOPACK compile-time value", "http://localhost:3000"}/auth/callback`;
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-            redirectTo: `${("TURBOPACK compile-time value", "http://localhost:3000")}/auth/callback?next=/payment`
+            redirectTo: redirectUrl
         }
     });
     console.log("Google OAuth result:", {
         hasUrl: !!data.url,
         url: data.url,
-        error: error?.message
+        error: error?.message,
+        redirectTo: redirectUrl
     });
     if (error) {
         console.log("Google OAuth error:", error);
@@ -258,19 +261,22 @@ async function signInWithGoogle() {
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$navigation$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["redirect"])(data.url);
     }
 }
-async function signInWithMicrosoft() {
-    console.log("=== MICROSOFT SIGNIN START ===");
+async function signInWithMicrosoft(productTag) {
+    console.log("=== MICROSOFT SIGNIN START ===", "Product tag:", productTag);
     const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["createClient"])();
+    // Build redirect URL with product tag if present
+    const redirectUrl = productTag ? `${"TURBOPACK compile-time value", "http://localhost:3000"}/auth/callback?p=${productTag}` : `${"TURBOPACK compile-time value", "http://localhost:3000"}/auth/callback`;
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "azure",
         options: {
-            redirectTo: `${("TURBOPACK compile-time value", "http://localhost:3000")}/auth/callback?next=/payment`
+            redirectTo: redirectUrl
         }
     });
     console.log("Microsoft OAuth result:", {
         hasUrl: !!data.url,
         url: data.url,
-        error: error?.message
+        error: error?.message,
+        redirectTo: redirectUrl
     });
     if (error) {
         console.log("Microsoft OAuth error:", error);
@@ -289,8 +295,8 @@ async function signInWithMicrosoft() {
     signInWithMicrosoft
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(signup, "40e2e96b184365ca49be176bc0a9e082e8c985c13f", null);
-(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(signInWithGoogle, "00ab0c8391139fc3c22aca998772286d1a711da417", null);
-(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(signInWithMicrosoft, "006ed028e74cd5196a24223a69b41ef8a32901e2e9", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(signInWithGoogle, "40ab0c8391139fc3c22aca998772286d1a711da417", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(signInWithMicrosoft, "406ed028e74cd5196a24223a69b41ef8a32901e2e9", null);
 }}),
 "[project]/.next-internal/server/app/(auth)/sign-up/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/sign-up/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <locals>": ((__turbopack_context__) => {
 "use strict";
@@ -318,8 +324,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "006ed028e74cd5196a24223a69b41ef8a32901e2e9": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["signInWithMicrosoft"]),
-    "00ab0c8391139fc3c22aca998772286d1a711da417": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["signInWithGoogle"]),
+    "406ed028e74cd5196a24223a69b41ef8a32901e2e9": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["signInWithMicrosoft"]),
+    "40ab0c8391139fc3c22aca998772286d1a711da417": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["signInWithGoogle"]),
     "40e2e96b184365ca49be176bc0a9e082e8c985c13f": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["signup"])
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/(auth)/sign-up/actions.ts [app-rsc] (ecmascript)");
@@ -331,8 +337,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "006ed028e74cd5196a24223a69b41ef8a32901e2e9": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$sign$2d$up$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["006ed028e74cd5196a24223a69b41ef8a32901e2e9"]),
-    "00ab0c8391139fc3c22aca998772286d1a711da417": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$sign$2d$up$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["00ab0c8391139fc3c22aca998772286d1a711da417"]),
+    "406ed028e74cd5196a24223a69b41ef8a32901e2e9": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$sign$2d$up$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["406ed028e74cd5196a24223a69b41ef8a32901e2e9"]),
+    "40ab0c8391139fc3c22aca998772286d1a711da417": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$sign$2d$up$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["40ab0c8391139fc3c22aca998772286d1a711da417"]),
     "40e2e96b184365ca49be176bc0a9e082e8c985c13f": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$sign$2d$up$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["40e2e96b184365ca49be176bc0a9e082e8c985c13f"])
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$sign$2d$up$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i('[project]/.next-internal/server/app/(auth)/sign-up/page/actions.js { ACTIONS_MODULE0 => "[project]/src/app/(auth)/sign-up/actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) <module evaluation>');
