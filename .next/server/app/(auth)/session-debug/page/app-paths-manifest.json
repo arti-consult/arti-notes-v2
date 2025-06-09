@@ -1,0 +1,3 @@
+{
+  "/(auth)/session-debug/page": "app/(auth)/session-debug/page.js"
+}

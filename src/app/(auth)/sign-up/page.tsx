@@ -1,6 +1,6 @@
 "use client";
 
-import { signup, signInWithGoogle, signInWithMicrosoft } from "./actions";
+import { signup } from "./actions";
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState, Suspense } from "react";
@@ -17,37 +17,55 @@ function SignUpFormContent() {
 
   useEffect(() => {
     setIsMounted(true);
-    const checkSession = async () => {
+
+    // Only check session once when component mounts
+    const checkInitialSession = async () => {
+      console.log("SignUp: Checking initial session...");
       const {
         data: { session },
+        error: sessionError,
       } = await supabase.auth.getSession();
 
-      if (session) {
-        router.push("/dashboard");
+      if (sessionError) {
+        console.error("Session error:", sessionError);
+        return;
+      }
+
+      if (session?.user?.email_confirmed_at) {
+        console.log(
+          "SignUp: User already has confirmed session, letting middleware handle redirect"
+        );
+        // Don't manually redirect here - let the middleware handle it
+        // The middleware will redirect based on onboarding status
       }
     };
 
-    checkSession();
-  }, [router]);
+    checkInitialSession();
+
+    // Listen for auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("SignUp: Auth state changed:", {
+        event,
+        hasSession: !!session,
+      });
+
+      if (event === "SIGNED_IN" && session?.user?.email_confirmed_at) {
+        console.log(
+          "SignUp: User signed in, triggering page refresh to let middleware redirect"
+        );
+        // Instead of manually redirecting, refresh the page to trigger middleware
+        window.location.reload();
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
 
   if (!isMounted) {
     return null;
   }
-
-  const handleGoogleSignUp = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      await signInWithGoogle();
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "An error occurred during Google sign-up"
-      );
-    }
-    setIsLoading(false);
-  };
 
   return (
     <motion.div
@@ -109,13 +127,19 @@ function SignUpFormContent() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           action={async (formData) => {
+            console.log("SignUp: Form submission started");
             setIsLoading(true);
             setError(null);
+
             const result = await signup(formData);
+            console.log("SignUp: Form submission result:", result);
+
             if (result?.error) {
               setError(result.error);
+              setIsLoading(false);
             }
-            setIsLoading(false);
+            // If successful, the server action will redirect
+            // Don't set loading to false for successful cases
           }}
           className="mt-8 space-y-6"
         >
@@ -136,7 +160,8 @@ function SignUpFormContent() {
                 name="email"
                 type="email"
                 required
-                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200"
+                disabled={isLoading}
+                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200 disabled:opacity-50"
               />
             </motion.div>
             <motion.div
@@ -155,7 +180,8 @@ function SignUpFormContent() {
                 name="password"
                 type="password"
                 required
-                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200"
+                disabled={isLoading}
+                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200 disabled:opacity-50"
               />
             </motion.div>
             <motion.div
@@ -174,7 +200,8 @@ function SignUpFormContent() {
                 name="confirmPassword"
                 type="password"
                 required
-                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200"
+                disabled={isLoading}
+                className="mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200 disabled:opacity-50"
               />
             </motion.div>
           </div>
@@ -190,7 +217,8 @@ function SignUpFormContent() {
               name="terms"
               type="checkbox"
               required
-              className="h-4 w-4 text-[#145DFC] focus:ring-[#145DFC] border-gray-700 rounded bg-black"
+              disabled={isLoading}
+              className="h-4 w-4 text-[#145DFC] focus:ring-[#145DFC] border-gray-700 rounded bg-black disabled:opacity-50"
             />
             <label htmlFor="terms" className="ml-2 block text-sm text-white">
               I agree to the{" "}
@@ -264,7 +292,6 @@ function SignUpFormContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="button"
-              onClick={handleGoogleSignUp}
               disabled={isLoading}
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-700 rounded-md shadow-sm bg-black text-sm font-medium text-gray-300 hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
@@ -275,7 +302,6 @@ function SignUpFormContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="button"
-              onClick={() => signInWithMicrosoft()}
               disabled={isLoading}
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-700 rounded-md shadow-sm bg-black text-sm font-medium text-gray-300 hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >

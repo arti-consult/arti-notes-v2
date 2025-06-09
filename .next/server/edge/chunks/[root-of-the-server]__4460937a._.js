@@ -82,66 +82,110 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$
 ;
 // Route constants
 const ROUTES = {
-    AUTH: {
-        BASE: "/(auth)",
-        LOGIN: "/login",
-        SIGNUP: "/sign-up",
-        PAYMENT: "/payment",
-        ONBOARDING: "/onboarding"
-    },
+    LOGIN: "/login",
+    SIGNUP: "/sign-up",
+    PAYMENT: "/payment",
+    ONBOARDING: "/onboarding",
     DASHBOARD: "/dashboard"
 };
 async function middleware(request) {
     try {
-        let response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next({
+        const currentPath = request.nextUrl.pathname;
+        console.log("=== MIDDLEWARE START ===", {
+            pathname: currentPath,
+            timestamp: new Date().toISOString()
+        });
+        // Skip middleware for static files, API routes, and auth callback
+        if (currentPath.startsWith("/_next") || currentPath.startsWith("/api") || currentPath.startsWith("/auth/callback") || currentPath === "/session-debug" || // Allow session debug page
+        currentPath.includes(".")) {
+            console.log("Skipping middleware for:", currentPath);
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
+        }
+        const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next({
             request: {
                 headers: request.headers
             }
         });
-        // Initialize Supabase client using the existing server client
+        // Initialize Supabase client
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["createClient"])();
-        const { data: { user } } = await supabase.auth.getUser();
-        const isAuthRoute = request.nextUrl.pathname.startsWith(ROUTES.AUTH.BASE) || [
-            ROUTES.AUTH.LOGIN,
-            ROUTES.AUTH.SIGNUP,
-            ROUTES.AUTH.PAYMENT,
-            ROUTES.AUTH.ONBOARDING
-        ].includes(request.nextUrl.pathname);
-        const isDashboard = request.nextUrl.pathname.startsWith(ROUTES.DASHBOARD);
-        // If no user and trying to access protected routes, redirect to sign-up
-        if (!user && (isDashboard || request.nextUrl.pathname === "/")) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.AUTH.SIGNUP, request.url));
-        }
-        // If user exists, check their flow status
-        if (user && isAuthRoute) {
-            const { data: onboardingData, error } = await supabase.from("user_onboarding").select("payment_completed, completed_at").eq("user_id", user.id).single();
-            if (error) {
-                console.error("Error fetching onboarding data:", error);
-                return response;
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        console.log("=== USER CHECK ===", {
+            hasUser: !!user,
+            userId: user?.id,
+            userEmail: user?.email,
+            emailConfirmed: user?.email_confirmed_at,
+            userError: userError?.message
+        });
+        // Define route categories
+        const isAuthRoute = [
+            ROUTES.LOGIN,
+            ROUTES.SIGNUP,
+            ROUTES.PAYMENT,
+            ROUTES.ONBOARDING
+        ].includes(currentPath);
+        const isDashboard = currentPath.startsWith(ROUTES.DASHBOARD);
+        const isHomePage = currentPath === "/";
+        // No user - redirect to signup (except if already on auth routes)
+        if (!user) {
+            if (isDashboard || isHomePage) {
+                console.log("No user, redirecting to signup");
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.SIGNUP, request.url));
             }
-            const hasCompletedPayment = onboardingData?.payment_completed || false;
-            const hasCompletedOnboarding = onboardingData?.completed_at !== null;
-            // Redirect logic based on completion status
-            if (hasCompletedPayment && hasCompletedOnboarding) {
-                // Everything complete, go to dashboard
-                if (!isDashboard) {
-                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.DASHBOARD, request.url));
-                }
-            } else if (hasCompletedPayment && !hasCompletedOnboarding) {
-                // Payment done, needs onboarding
-                if (request.nextUrl.pathname !== ROUTES.AUTH.ONBOARDING) {
-                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.AUTH.ONBOARDING, request.url));
-                }
-            } else if (!hasCompletedPayment) {
-                // Needs payment first
-                if (request.nextUrl.pathname !== ROUTES.AUTH.PAYMENT) {
-                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.AUTH.PAYMENT, request.url));
-                }
+            console.log("No user, but on auth route - allowing");
+            return response;
+        }
+        // User exists but email not confirmed (shouldn't happen with disabled confirmation, but just in case)
+        if (!user.email_confirmed_at) {
+            console.log("User email not confirmed");
+            if (isDashboard) {
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.SIGNUP, request.url));
+            }
+            return response;
+        }
+        // User exists and email confirmed - check onboarding status
+        console.log("=== CHECKING ONBOARDING STATUS ===");
+        const { data: onboardingData, error: onboardingError } = await supabase.from("user_onboarding").select("payment_completed, completed_at").eq("user_id", user.id).maybeSingle();
+        if (onboardingError && onboardingError.code !== "PGRST116") {
+            console.error("Error fetching onboarding data:", onboardingError);
+        }
+        const hasCompletedPayment = onboardingData?.payment_completed || false;
+        const hasCompletedOnboarding = onboardingData?.completed_at !== null && onboardingData !== null;
+        console.log("=== USER STATUS ===", {
+            hasCompletedPayment,
+            hasCompletedOnboarding,
+            currentPath,
+            onboardingData
+        });
+        // CRITICAL: Prevent redirect loops by being very specific about when to redirect
+        if (hasCompletedPayment && hasCompletedOnboarding) {
+            // User is fully complete - only redirect auth routes to dashboard
+            if (isAuthRoute) {
+                console.log("Complete user on auth route, redirecting to dashboard");
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.DASHBOARD, request.url));
+            }
+        } else if (hasCompletedPayment && !hasCompletedOnboarding) {
+            // Payment complete, needs onboarding - only redirect if NOT on onboarding page
+            if (currentPath !== ROUTES.ONBOARDING) {
+                console.log("Payment complete, redirecting to onboarding");
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.ONBOARDING, request.url));
+            }
+        } else {
+            // No payment completed yet - redirect to payment BUT...
+            // IMPORTANT: Don't redirect if already on payment page or signup/login pages
+            if (currentPath !== ROUTES.PAYMENT && currentPath !== ROUTES.LOGIN && currentPath !== ROUTES.SIGNUP) {
+                console.log("No payment, redirecting to payment");
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.PAYMENT, request.url));
+            }
+            // Special case: if user is on signup page but they already exist, redirect to payment
+            if (currentPath === ROUTES.SIGNUP) {
+                console.log("Existing user on signup page, redirecting to payment");
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(ROUTES.PAYMENT, request.url));
             }
         }
+        console.log("=== MIDDLEWARE END - NO REDIRECT ===");
         return response;
     } catch (error) {
-        console.error("Middleware error:", error);
+        console.error("=== MIDDLEWARE ERROR ===", error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
     }
 }

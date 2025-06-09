@@ -171,29 +171,46 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/supabase/server.ts [app-route] (ecmascript)");
 ;
 ;
-async function GET(req) {
+async function GET(request) {
     try {
-        const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
-        const { searchParams } = new URL(req.url);
+        const { searchParams } = new URL(request.url);
         const userId = searchParams.get("userId");
         if (!userId) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: "Missing userId parameter"
+                error: "User ID is required"
             }, {
                 status: 400
             });
         }
-        const { data, error } = await supabase.from("user_onboarding").select("payment_completed").eq("user_id", userId).single();
-        if (error) {
-            throw error;
+        const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
+        // Verify the requesting user matches the userId parameter
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError || !user || user.id !== userId) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "Unauthorized"
+            }, {
+                status: 401
+            });
+        }
+        // Check payment status in onboarding table
+        const { data, error } = await supabase.from("user_onboarding").select("payment_completed").eq("user_id", userId).maybeSingle(); // Use maybeSingle to handle no records
+        if (error && error.code !== "PGRST116") {
+            // PGRST116 = Row not found, which is fine for new users
+            console.error("Error checking payment status:", error);
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "Failed to check payment status"
+            }, {
+                status: 500
+            });
         }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             paymentCompleted: data?.payment_completed || false
         });
     } catch (error) {
-        console.error("Error checking payment status:", error);
+        console.error("Unexpected error checking payment status:", error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Failed to check payment status"
+            error: "An unexpected error occurred",
+            paymentCompleted: false
         }, {
             status: 500
         });
