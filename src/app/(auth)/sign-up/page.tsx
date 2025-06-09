@@ -1,6 +1,6 @@
 "use client";
 
-import { signup, signInWithMicrosoft } from "./actions";
+import { signup, signInWithGoogle, signInWithMicrosoft } from "./actions";
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState, Suspense } from "react";
@@ -37,15 +37,14 @@ function SignUpFormContent() {
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
     setError(null);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-
-    if (error) {
-      setError(error.message);
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "An error occurred during Google sign-up"
+      );
     }
     setIsLoading(false);
   };

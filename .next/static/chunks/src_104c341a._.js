@@ -15,24 +15,22 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
 "use client";
 ;
-// Initial state
+// Initial state - simplified
 const initialState = {
     step: 1,
     userType: null,
     teamSize: null,
     referralSource: null,
-    audioPurpose: null,
-    paymentCompleted: false,
-    micPermission: null
+    audioPurpose: null
 };
-// Reducer
+// Reducer - simplified
 function onboardingReducer(state, action) {
     switch(action.type){
         case "NEXT_STEP":
             return {
                 ...state,
-                step: Math.min(state.step + 1, 7)
-            };
+                step: Math.min(state.step + 1, 5)
+            }; // Changed max to 5
         case "PREV_STEP":
             return {
                 ...state,
@@ -63,16 +61,6 @@ function onboardingReducer(state, action) {
                 ...state,
                 audioPurpose: action.payload
             };
-        case "SET_PAYMENT_COMPLETED":
-            return {
-                ...state,
-                paymentCompleted: action.payload
-            };
-        case "SET_MIC_PERMISSION":
-            return {
-                ...state,
-                micPermission: action.payload
-            };
         case "RESET":
             return initialState;
         default:
@@ -92,8 +80,8 @@ function OnboardingProvider({ children }) {
             formData.append("teamSize", state.teamSize || "");
             formData.append("referralSource", state.referralSource || "");
             formData.append("audioPurpose", state.audioPurpose || "");
-            formData.append("paymentCompleted", state.paymentCompleted.toString());
-            formData.append("micPermission", (state.micPermission || false).toString());
+            formData.append("paymentCompleted", "true"); // Payment already completed
+            formData.append("micPermission", "true"); // Default to true for simplified flow
             // Import the server action dynamically to avoid SSR issues
             const { completeOnboarding } = await __turbopack_context__.r("[project]/src/app/(auth)/onboarding/actions.ts [app-client] (ecmascript, async loader)")(__turbopack_context__.i);
             // Call the server action
@@ -107,38 +95,17 @@ function OnboardingProvider({ children }) {
             throw error;
         }
     };
-    const requestMicPermission = async ()=>{
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                audio: true
-            });
-            // Stop the stream immediately as we just needed permission
-            stream.getTracks().forEach((track)=>track.stop());
-            dispatch({
-                type: "SET_MIC_PERMISSION",
-                payload: true
-            });
-        } catch (error) {
-            console.error("Microphone permission denied:", error);
-            dispatch({
-                type: "SET_MIC_PERMISSION",
-                payload: false
-            });
-            throw error;
-        }
-    };
     const value = {
         state,
         dispatch,
-        submitOnboarding,
-        requestMicPermission
+        submitOnboarding
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(OnboardingContext.Provider, {
         value: value,
         children: children
     }, void 0, false, {
         fileName: "[project]/src/contexts/OnboardingContext.tsx",
-        lineNumber: 139,
+        lineNumber: 111,
         columnNumber: 5
     }, this);
 }

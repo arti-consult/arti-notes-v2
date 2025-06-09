@@ -2,15 +2,13 @@
 
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
 
-// Types
+// Types - simplified without payment fields
 interface OnboardingState {
   step: number;
   userType: "individual" | "company" | null;
   teamSize: "solo" | "small" | "medium" | "large" | null;
   referralSource: string | null;
   audioPurpose: string | null;
-  paymentCompleted: boolean;
-  micPermission: boolean | null;
 }
 
 type OnboardingAction =
@@ -21,36 +19,31 @@ type OnboardingAction =
   | { type: "SET_TEAM_SIZE"; payload: "solo" | "small" | "medium" | "large" }
   | { type: "SET_REFERRAL_SOURCE"; payload: string }
   | { type: "SET_AUDIO_PURPOSE"; payload: string }
-  | { type: "SET_PAYMENT_COMPLETED"; payload: boolean }
-  | { type: "SET_MIC_PERMISSION"; payload: boolean }
   | { type: "RESET" };
 
 interface OnboardingContextType {
   state: OnboardingState;
   dispatch: React.Dispatch<OnboardingAction>;
   submitOnboarding: (userId: string) => Promise<void>;
-  requestMicPermission: () => Promise<void>;
 }
 
-// Initial state
+// Initial state - simplified
 const initialState: OnboardingState = {
   step: 1,
   userType: null,
   teamSize: null,
   referralSource: null,
   audioPurpose: null,
-  paymentCompleted: false,
-  micPermission: null,
 };
 
-// Reducer
+// Reducer - simplified
 function onboardingReducer(
   state: OnboardingState,
   action: OnboardingAction
 ): OnboardingState {
   switch (action.type) {
     case "NEXT_STEP":
-      return { ...state, step: Math.min(state.step + 1, 7) };
+      return { ...state, step: Math.min(state.step + 1, 5) }; // Changed max to 5
     case "PREV_STEP":
       return { ...state, step: Math.max(state.step - 1, 1) };
     case "SET_STEP":
@@ -63,10 +56,6 @@ function onboardingReducer(
       return { ...state, referralSource: action.payload };
     case "SET_AUDIO_PURPOSE":
       return { ...state, audioPurpose: action.payload };
-    case "SET_PAYMENT_COMPLETED":
-      return { ...state, paymentCompleted: action.payload };
-    case "SET_MIC_PERMISSION":
-      return { ...state, micPermission: action.payload };
     case "RESET":
       return initialState;
     default:
@@ -91,11 +80,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       formData.append("teamSize", state.teamSize || "");
       formData.append("referralSource", state.referralSource || "");
       formData.append("audioPurpose", state.audioPurpose || "");
-      formData.append("paymentCompleted", state.paymentCompleted.toString());
-      formData.append(
-        "micPermission",
-        (state.micPermission || false).toString()
-      );
+      formData.append("paymentCompleted", "true"); // Payment already completed
+      formData.append("micPermission", "true"); // Default to true for simplified flow
 
       // Import the server action dynamically to avoid SSR issues
       const { completeOnboarding } = await import(
@@ -115,24 +101,10 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const requestMicPermission = async (): Promise<void> => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // Stop the stream immediately as we just needed permission
-      stream.getTracks().forEach((track) => track.stop());
-      dispatch({ type: "SET_MIC_PERMISSION", payload: true });
-    } catch (error) {
-      console.error("Microphone permission denied:", error);
-      dispatch({ type: "SET_MIC_PERMISSION", payload: false });
-      throw error;
-    }
-  };
-
   const value: OnboardingContextType = {
     state,
     dispatch,
     submitOnboarding,
-    requestMicPermission,
   };
 
   return (

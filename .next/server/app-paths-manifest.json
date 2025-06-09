@@ -1,3 +1,10 @@
 {
-  "/api/webhooks/stripe/route": "app/api/webhooks/stripe/route.js"
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(auth)/onboarding/page": "app/(auth)/onboarding/page.js",
+  "/(auth)/payment/page": "app/(auth)/payment/page.js",
+  "/(auth)/sign-up/page": "app/(auth)/sign-up/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js"
 }

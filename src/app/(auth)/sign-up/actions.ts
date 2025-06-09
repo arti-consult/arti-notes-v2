@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
 import { createClient } from "@/utils/supabase/server";
 
 export async function signup(formData: FormData) {
@@ -28,7 +27,8 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/onboarding");
+  // Redirect to payment instead of onboarding
+  redirect("/payment");
 }
 
 export async function signInWithGoogle() {
@@ -36,7 +36,7 @@ export async function signInWithGoogle() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/payment`,
     },
   });
 
@@ -50,7 +50,7 @@ export async function signInWithMicrosoft() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "azure",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/payment`,
     },
   });
 
