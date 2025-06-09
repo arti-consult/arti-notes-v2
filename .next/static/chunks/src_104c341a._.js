@@ -19,9 +19,7 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 const initialState = {
     step: 1,
     userType: null,
-    teamSize: null,
-    referralSource: null,
-    audioPurpose: null
+    referralSource: null
 };
 // Reducer - simplified
 function onboardingReducer(state, action) {
@@ -29,8 +27,8 @@ function onboardingReducer(state, action) {
         case "NEXT_STEP":
             return {
                 ...state,
-                step: Math.min(state.step + 1, 5)
-            }; // Changed max to 5
+                step: Math.min(state.step + 1, 4)
+            }; // Changed max to 4
         case "PREV_STEP":
             return {
                 ...state,
@@ -46,20 +44,10 @@ function onboardingReducer(state, action) {
                 ...state,
                 userType: action.payload
             };
-        case "SET_TEAM_SIZE":
-            return {
-                ...state,
-                teamSize: action.payload
-            };
         case "SET_REFERRAL_SOURCE":
             return {
                 ...state,
                 referralSource: action.payload
-            };
-        case "SET_AUDIO_PURPOSE":
-            return {
-                ...state,
-                audioPurpose: action.payload
             };
         case "RESET":
             return initialState;
@@ -74,14 +62,15 @@ function OnboardingProvider({ children }) {
     const [state, dispatch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReducer"])(onboardingReducer, initialState);
     const submitOnboarding = async (userId)=>{
         try {
-            // Create FormData with onboarding information
+            // Create FormData with simplified onboarding information
             const formData = new FormData();
             formData.append("userType", state.userType || "");
-            formData.append("teamSize", state.teamSize || "");
             formData.append("referralSource", state.referralSource || "");
-            formData.append("audioPurpose", state.audioPurpose || "");
+            // Set default values for removed fields to maintain database compatibility
+            formData.append("teamSize", ""); // No longer asked
+            formData.append("audioPurpose", ""); // No longer asked
             formData.append("paymentCompleted", "true"); // Payment already completed
-            formData.append("micPermission", "true"); // Default to true for simplified flow
+            formData.append("micPermission", "true"); // Default to true
             // Import the server action dynamically to avoid SSR issues
             const { completeOnboarding } = await __turbopack_context__.r("[project]/src/app/(auth)/onboarding/actions.ts [app-client] (ecmascript, async loader)")(__turbopack_context__.i);
             // Call the server action
@@ -105,7 +94,7 @@ function OnboardingProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/src/contexts/OnboardingContext.tsx",
-        lineNumber: 111,
+        lineNumber: 103,
         columnNumber: 5
     }, this);
 }

@@ -45,13 +45,15 @@ export async function completeOnboarding(formData: FormData) {
     redirect("/login");
   }
 
-  // Extract form data
+  // Extract form data - simplified to just the two questions
   const userType = formData.get("userType") as string;
-  const teamSize = formData.get("teamSize") as string;
   const referralSource = formData.get("referralSource") as string;
-  const audioPurpose = formData.get("audioPurpose") as string;
   const paymentCompleted = formData.get("paymentCompleted") === "true";
-  const micPermission = formData.get("micPermission") === "true";
+
+  // Set default values for fields we no longer ask about
+  const teamSize = null; // No longer asking this
+  const audioPurpose = null; // No longer asking this
+  const micPermission = true; // Default to true
 
   try {
     // Check if onboarding record already exists
@@ -66,9 +68,10 @@ export async function completeOnboarding(formData: FormData) {
       completed_at: new Date().toISOString(),
       answers: {
         userType,
-        teamSize,
         referralSource,
-        audioPurpose,
+        // Keep the structure but set defaults for removed fields
+        teamSize: null,
+        audioPurpose: null,
         micPermission,
       },
       payment_completed: paymentCompleted,
@@ -77,6 +80,7 @@ export async function completeOnboarding(formData: FormData) {
       referral_source: referralSource,
       audio_purpose: audioPurpose,
       mic_permission: micPermission,
+      // Don't override calendar_connected if it was already set during the flow
       updated_at: new Date().toISOString(),
     };
 
@@ -115,10 +119,20 @@ export async function completeOnboarding(formData: FormData) {
       // Don't return error here as onboarding data was saved successfully
     }
 
-    console.log("✅ Onboarding completed successfully for user:", user.id);
+    console.log(
+      "✅ Simplified onboarding answers saved successfully for user:",
+      user.id,
+      {
+        userType,
+        referralSource,
+      }
+    );
 
     revalidatePath("/", "layout");
-    redirect("/dashboard");
+
+    // Don't redirect to dashboard yet - user still needs to connect calendar
+    // The frontend will handle moving to the next step
+    return { success: true, message: "Answers submitted successfully" };
   } catch (error) {
     console.error("Unexpected error during onboarding:", error);
     return {
@@ -160,37 +174,31 @@ export async function checkPaymentStatus(userId: string) {
   }
 }
 
-// New function to verify payment completion (can be called from Stripe webhook)
-export async function markPaymentCompleted(
-  userId: string,
-  stripeSessionId?: string
-) {
+// Function to mark onboarding as fully completed (after calendar connection)
+export async function finalizeOnboarding(userId: string) {
   const supabase = await createClient();
 
   try {
-    const updateData: any = {
-      payment_completed: true,
-      updated_at: new Date().toISOString(),
-    };
-
-    if (stripeSessionId) {
-      updateData.stripe_session_id = stripeSessionId;
-    }
-
+    // Just update the completed_at timestamp since answers are already saved
     const { error } = await supabase
       .from("user_onboarding")
-      .update(updateData)
+      .update({
+        completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
       .eq("user_id", userId);
 
     if (error) {
-      console.error("Error marking payment as completed:", error);
+      console.error("Error finalizing onboarding:", error);
       return { error: error.message };
     }
 
-    console.log("✅ Payment marked as completed for user:", userId);
-    return { success: true };
+    console.log("✅ Onboarding finalized successfully for user:", userId);
+
+    revalidatePath("/", "layout");
+    redirect("/dashboard");
   } catch (error) {
-    console.error("Unexpected error marking payment as completed:", error);
+    console.error("Unexpected error finalizing onboarding:", error);
     return {
       error:
         error instanceof Error ? error.message : "An unexpected error occurred",

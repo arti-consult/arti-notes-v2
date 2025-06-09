@@ -69,7 +69,7 @@ export async function GET(request: Request) {
         } else {
           // Use default payment link
           const defaultPaymentUrl =
-            "https://buy.stripe.com/test_8x228r7TA4qU57l4d1ak002";
+            "https://buy.stripe.com/test_fZufZhb5M5uY57l9xlak003";
           console.log(
             "Redirecting to default payment link:",
             defaultPaymentUrl

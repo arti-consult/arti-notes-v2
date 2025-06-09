@@ -1,3 +1,4 @@
+// src/middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createClient } from "@/utils/supabase/server";
@@ -15,7 +16,10 @@ const publicRoutes = [
 ];
 
 // Routes that require authentication but have specific flow logic
-const authRoutes = ["/payment", "/onboarding", "/dashboard"];
+const authRoutes = ["/onboarding", "/dashboard"];
+
+// Routes that should check payment status but allow access
+const paymentAwareRoutes = ["/payment"];
 
 function isPublicRoute(pathname: string): boolean {
   return publicRoutes.some((route) => {
@@ -28,6 +32,12 @@ function isPublicRoute(pathname: string): boolean {
 
 function isAuthRoute(pathname: string): boolean {
   return authRoutes.some((route) => {
+    return pathname === route || pathname.startsWith(`${route}/`);
+  });
+}
+
+function isPaymentAwareRoute(pathname: string): boolean {
+  return paymentAwareRoutes.some((route) => {
     return pathname === route || pathname.startsWith(`${route}/`);
   });
 }
@@ -83,7 +93,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // For authenticated routes, check user's flow status
-    if (isAuthRoute(pathname)) {
+    if (isAuthRoute(pathname) || isPaymentAwareRoute(pathname)) {
       // Get user's onboarding status
       const { data: onboarding, error: onboardingError } = await supabase
         .from("user_onboarding")
@@ -99,6 +109,12 @@ export async function middleware(request: NextRequest) {
 
       const hasCompletedPayment = onboarding?.payment_completed || false;
       const hasCompletedOnboarding = onboarding?.completed_at !== null;
+
+      // Updated for simplified onboarding - only check user_type and referral_source
+      const hasOnboardingAnswers = !!(
+        onboarding?.user_type && onboarding?.referral_source
+      );
+
       const paymentLinkTag =
         onboarding?.payment_link_tag || user.user_metadata?.payment_link_tag;
 
@@ -106,6 +122,10 @@ export async function middleware(request: NextRequest) {
         userId: user.id,
         hasCompletedPayment,
         hasCompletedOnboarding,
+        hasOnboardingAnswers,
+        userType: onboarding?.user_type,
+        referralSource: onboarding?.referral_source,
+        completedAt: onboarding?.completed_at,
         paymentLinkTag,
         currentPath: pathname,
       });
@@ -113,7 +133,7 @@ export async function middleware(request: NextRequest) {
       // Flow logic based on current status
       if (!hasCompletedPayment) {
         // User hasn't completed payment
-        if (pathname !== "/payment") {
+        if (pathname !== "/payment" && !isPaymentAwareRoute(pathname)) {
           console.log("💳 Redirecting to payment");
 
           // Construct payment URL with tag if available
@@ -121,19 +141,29 @@ export async function middleware(request: NextRequest) {
           if (paymentLinkTag) {
             paymentUrl = `https://buy.stripe.com/${paymentLinkTag}`;
           } else {
-            paymentUrl = "https://buy.stripe.com/test_8x228r7TA4qU57l4d1ak002"; // Default
+            paymentUrl = "https://buy.stripe.com/test_fZufZhb5M5uY57l9xlak003"; // Default
           }
 
           return NextResponse.redirect(new URL(paymentUrl));
         }
-      } else if (hasCompletedPayment && !hasCompletedOnboarding) {
+      } else if (
+        hasCompletedPayment &&
+        (!hasOnboardingAnswers || !hasCompletedOnboarding)
+      ) {
         // User completed payment but not onboarding
         if (pathname !== "/onboarding") {
-          console.log("📝 Redirecting to onboarding");
+          console.log("📝 Redirecting to onboarding - Missing:", {
+            needsAnswers: !hasOnboardingAnswers,
+            needsCompletion: !hasCompletedOnboarding,
+          });
           const onboardingUrl = new URL("/onboarding", request.url);
           return NextResponse.redirect(onboardingUrl);
         }
-      } else if (hasCompletedPayment && hasCompletedOnboarding) {
+      } else if (
+        hasCompletedPayment &&
+        hasCompletedOnboarding &&
+        hasOnboardingAnswers
+      ) {
         // User has completed both payment and onboarding
         if (pathname === "/payment" || pathname === "/onboarding") {
           console.log("🏠 Redirecting completed user to dashboard");
@@ -141,6 +171,7 @@ export async function middleware(request: NextRequest) {
           return NextResponse.redirect(dashboardUrl);
         }
         // Allow access to dashboard and other authenticated routes
+        console.log("✅ Fully completed user accessing dashboard");
       }
     }
 

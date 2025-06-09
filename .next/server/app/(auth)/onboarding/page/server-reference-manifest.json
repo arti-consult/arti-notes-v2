@@ -33,7 +33,18 @@
         "app/(auth)/onboarding/page": "action-browser"
       }
     },
-    "60df81e3b58f784fc45f47aaaad31ef424016dbaeb": {
+    "40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f": {
+      "workers": {
+        "app/(auth)/onboarding/page": {
+          "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(auth)/onboarding/page": "action-browser"
+      }
+    },
+    "40ff840b837bbb28f34c50d8821ed248516e628165": {
       "workers": {
         "app/(auth)/onboarding/page": {
           "moduleId": "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",

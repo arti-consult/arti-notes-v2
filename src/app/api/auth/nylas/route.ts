@@ -1,3 +1,4 @@
+// src/app/api/auth/nylas/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { nylas, nylasConfig } from "@/lib/nlyas";
 import { createClient } from "@/utils/supabase/server";
@@ -29,10 +30,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Generate Nylas OAuth URL
+    // Generate Nylas OAuth URL with correct callback
     const authUrl = nylas.auth.urlForOAuth2({
       clientId: nylasConfig.clientId,
-      redirectUri: nylasConfig.callbackUri,
+      redirectUri: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/nylas/callback`, // Fixed callback URL
+      scope: [
+        "https://www.googleapis.com/auth/calendar.readonly",
+        "https://www.googleapis.com/auth/calendar.events",
+      ],
+      state: user.id, // Pass user ID in state for tracking
     });
 
     console.log("Generated Nylas OAuth URL:", authUrl);

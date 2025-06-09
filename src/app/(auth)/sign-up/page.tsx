@@ -8,78 +8,261 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Helper functions (inline for now to avoid import issues)
+interface UserStatus {
+  hasCompletedPayment: boolean;
+  hasCompletedOnboarding: boolean;
+  hasOnboardingAnswers: boolean;
+  paymentLinkTag?: string | null;
+  onboarding?: any;
+}
+
+async function checkUserStatus(
+  supabase: any,
+  userId: string
+): Promise<UserStatus | null> {
+  try {
+    const { data: onboarding, error: onboardingError } = await supabase
+      .from("user_onboarding")
+      .select(
+        "payment_completed, completed_at, user_type, team_size, referral_source, audio_purpose, payment_link_tag"
+      )
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (onboardingError && onboardingError.code !== "PGRST116") {
+      console.error("Error fetching onboarding data:", onboardingError);
+      return null;
+    }
+
+    const hasCompletedPayment = onboarding?.payment_completed || false;
+    const hasCompletedOnboarding = onboarding?.completed_at !== null;
+    const hasOnboardingAnswers = !!(
+      onboarding?.user_type &&
+      onboarding?.team_size &&
+      onboarding?.referral_source &&
+      onboarding?.audio_purpose
+    );
+
+    return {
+      hasCompletedPayment,
+      hasCompletedOnboarding,
+      hasOnboardingAnswers,
+      paymentLinkTag: onboarding?.payment_link_tag,
+      onboarding,
+    };
+  } catch (error) {
+    console.error("Exception checking user status:", error);
+    return null;
+  }
+}
+
+function getRedirectPath(userStatus: UserStatus): string | null {
+  const { hasCompletedPayment, hasCompletedOnboarding, hasOnboardingAnswers } =
+    userStatus;
+
+  if (hasCompletedPayment && hasCompletedOnboarding && hasOnboardingAnswers) {
+    return "/dashboard";
+  } else if (
+    hasCompletedPayment &&
+    (!hasOnboardingAnswers || !hasCompletedOnboarding)
+  ) {
+    return "/onboarding";
+  } else if (!hasCompletedPayment) {
+    return "payment";
+  }
+
+  return null;
+}
+
+function getPaymentUrl(
+  paymentLinkTag?: string | null,
+  defaultTag?: string
+): string {
+  if (paymentLinkTag) {
+    return `https://buy.stripe.com/${paymentLinkTag}`;
+  }
+
+  if (defaultTag) {
+    return `https://buy.stripe.com/${defaultTag}`;
+  }
+
+  // Fallback to your default test link
+  return "https://buy.stripe.com/test_fZufZhb5M5uY57l9xlak003";
+}
+
 function SignUpFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
   // Get payment link tag from URL params
   const paymentLinkTag = searchParams.get("p");
 
-  // Default payment link (your test link)
-  const defaultPaymentLink =
-    "https://buy.stripe.com/test_fZufZhb5M5uY57l9xlak003";
-
   // Construct the payment URL based on tag
-  const getPaymentUrl = () => {
-    if (paymentLinkTag) {
-      return `https://buy.stripe.com/${paymentLinkTag}`;
-    }
-    return defaultPaymentLink;
+  const getPaymentUrlForSignup = () => {
+    return getPaymentUrl(paymentLinkTag || "", paymentLinkTag || "");
   };
 
   useEffect(() => {
     setIsMounted(true);
 
-    // Only check session once when component mounts
-    const checkInitialSession = async () => {
-      console.log("SignUp: Checking initial session...");
-      const {
-        data: { session },
-        error: sessionError,
-      } = await supabase.auth.getSession();
+    // Check session and user status when component mounts
+    const checkUserStatusOnMount = async () => {
+      console.log("SignUp: Checking user status...");
+      setIsCheckingSession(true);
 
-      if (sessionError) {
-        console.error("Session error:", sessionError);
-        return;
-      }
+      try {
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
 
-      if (session?.user?.email_confirmed_at) {
-        console.log(
-          "SignUp: User already has confirmed session, letting middleware handle redirect"
-        );
-        // Don't manually redirect here - let the middleware handle it
-        // The middleware will redirect based on onboarding status
+        if (sessionError) {
+          console.error("Session error:", sessionError);
+          setIsCheckingSession(false);
+          return;
+        }
+
+        if (session?.user?.email_confirmed_at) {
+          console.log(
+            "SignUp: User already has confirmed session, checking onboarding status"
+          );
+
+          const userStatus = await checkUserStatus(supabase, session.user.id);
+
+          if (!userStatus) {
+            setIsCheckingSession(false);
+            return;
+          }
+
+          console.log("SignUp: User status check:", userStatus);
+
+          const redirectPath = getRedirectPath(userStatus);
+
+          if (redirectPath === "/dashboard") {
+            console.log(
+              "SignUp: User fully complete, redirecting to dashboard"
+            );
+            router.push("/dashboard");
+            return;
+          } else if (redirectPath === "/onboarding") {
+            console.log(
+              "SignUp: Payment complete but onboarding incomplete, redirecting to onboarding"
+            );
+            router.push("/onboarding");
+            return;
+          } else if (redirectPath === "payment") {
+            console.log("SignUp: Payment not complete, redirecting to payment");
+            const paymentUrl = getPaymentUrl(
+              userStatus.paymentLinkTag ||
+                session.user.user_metadata?.payment_link_tag,
+              paymentLinkTag || ""
+            );
+
+            console.log(
+              "SignUp: Redirecting existing user to payment:",
+              paymentUrl
+            );
+            window.location.href = paymentUrl;
+            return;
+          }
+        }
+
+        // If we reach here, user is not logged in or needs to stay on signup page
+        setIsCheckingSession(false);
+      } catch (error) {
+        console.error("Error checking user status:", error);
+        setIsCheckingSession(false);
       }
     };
 
-    checkInitialSession();
+    checkUserStatusOnMount();
 
     // Listen for auth state changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("SignUp: Auth state changed:", {
         event,
         hasSession: !!session,
       });
 
       if (event === "SIGNED_IN" && session?.user?.email_confirmed_at) {
-        console.log("SignUp: User signed in, redirecting to payment with tag");
-        // Redirect to payment with the payment link tag
-        const paymentUrl = getPaymentUrl();
-        window.location.href = paymentUrl;
+        console.log("SignUp: User signed in, checking their status");
+
+        const userStatus = await checkUserStatus(supabase, session.user.id);
+
+        if (!userStatus) {
+          return;
+        }
+
+        const redirectPath = getRedirectPath(userStatus);
+
+        if (redirectPath === "/dashboard") {
+          console.log(
+            "SignUp: Newly signed in user is complete, redirecting to dashboard"
+          );
+          router.push("/dashboard");
+        } else if (redirectPath === "/onboarding") {
+          console.log(
+            "SignUp: Newly signed in user needs onboarding, redirecting to onboarding"
+          );
+          router.push("/onboarding");
+        } else if (redirectPath === "payment") {
+          console.log(
+            "SignUp: Newly signed in user needs payment, redirecting to payment"
+          );
+          const paymentUrl = getPaymentUrl(
+            userStatus.paymentLinkTag ||
+              session.user.user_metadata?.payment_link_tag,
+            paymentLinkTag || ""
+          );
+
+          window.location.href = paymentUrl;
+        }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase, paymentLinkTag]);
+  }, [supabase, paymentLinkTag, router]);
 
-  if (!isMounted) {
-    return null;
+  if (!isMounted || isCheckingSession) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen flex items-center justify-center bg-black relative"
+      >
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.2 }}
+          transition={{ duration: 0.8 }}
+          className="absolute w-[1200px] h-[1200px] bg-[#145DFC] rounded-full blur-[256px]"
+        />
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md p-8 space-y-8 bg-[#18181B] rounded-xl shadow-lg relative z-10"
+        >
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-white">Please wait...</h2>
+            <p className="mt-2 text-sm text-gray-400">
+              {isCheckingSession
+                ? "Checking your account status..."
+                : "Loading..."}
+            </p>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
   }
 
   return (
@@ -162,17 +345,71 @@ function SignUpFormContent() {
               setError(result.error);
               setIsLoading(false);
             } else if (result?.success && !result?.needsConfirmation) {
-              // Successful signup, redirect to payment
-              console.log("Signup successful, redirecting to payment");
-              const paymentUrl = getPaymentUrl();
-              console.log("Payment URL:", paymentUrl);
-              window.location.href = paymentUrl;
+              // Successful signup - check if user already has payment/onboarding completed
+              console.log(
+                "Signup successful, checking user status before redirect"
+              );
+
+              try {
+                // Get fresh session after signup
+                const {
+                  data: { session },
+                } = await supabase.auth.getSession();
+
+                if (session?.user) {
+                  // Check onboarding status using helper
+                  const userStatus = await checkUserStatus(
+                    supabase,
+                    session.user.id
+                  );
+
+                  if (userStatus) {
+                    const redirectPath = getRedirectPath(userStatus);
+
+                    console.log("New user status after signup:", userStatus);
+
+                    if (redirectPath === "/dashboard") {
+                      console.log(
+                        "New user already complete, redirecting to dashboard"
+                      );
+                      router.push("/dashboard");
+                    } else if (redirectPath === "/onboarding") {
+                      console.log("New user has payment but needs onboarding");
+                      router.push("/onboarding");
+                    } else {
+                      console.log(
+                        "New user needs payment, redirecting to Stripe"
+                      );
+                      const paymentUrl = getPaymentUrlForSignup();
+                      console.log("Payment URL:", paymentUrl);
+                      window.location.href = paymentUrl;
+                    }
+                  } else {
+                    // Fallback if status check fails
+                    const paymentUrl = getPaymentUrlForSignup();
+                    window.location.href = paymentUrl;
+                  }
+                } else {
+                  console.log(
+                    "No session found after signup, redirecting to payment"
+                  );
+                  const paymentUrl = getPaymentUrlForSignup();
+                  window.location.href = paymentUrl;
+                }
+              } catch (error) {
+                console.error(
+                  "Error checking user status after signup:",
+                  error
+                );
+                // Fallback to payment redirect
+                const paymentUrl = getPaymentUrlForSignup();
+                window.location.href = paymentUrl;
+              }
             } else if (result?.needsConfirmation) {
               // Email confirmation needed
+              console.log("Email confirmation required");
               setIsLoading(false);
             }
-            // If successful, the server action will redirect
-            // Don't set loading to false for successful cases
           }}
           className="mt-8 space-y-6"
         >

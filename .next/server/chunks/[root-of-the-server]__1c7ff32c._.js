@@ -138,26 +138,35 @@ module.exports = mod;
 
 var { g: global, __dirname } = __turbopack_context__;
 {
+// src/lib/nlyas.ts
 __turbopack_context__.s({
+    "getNylasAuthUrl": (()=>getNylasAuthUrl),
     "nylas": (()=>nylas),
     "nylasConfig": (()=>nylasConfig)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nylas$2f$lib$2f$esm$2f$nylas$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/nylas/lib/esm/nylas.js [app-route] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nylas$2f$lib$2f$esm$2f$nylas$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/nylas/lib/esm/nylas.js [app-route] (ecmascript) <locals>");
 ;
-if (!process.env.NYLAS_API_KEY) {
-    throw new Error("NYLAS_API_KEY is required");
-}
 const nylasConfig = {
-    clientId: process.env.NYLAS_CLIENT_ID,
-    callbackUri: process.env.NYLAS_CALLBACK_URI,
     apiKey: process.env.NYLAS_API_KEY,
-    apiUri: process.env.NYLAS_API_URI
+    clientId: process.env.NYLAS_CLIENT_ID,
+    callbackUri: `${("TURBOPACK compile-time value", "http://localhost:3000")}/api/auth/nylas/callback`
 };
 const nylas = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nylas$2f$lib$2f$esm$2f$nylas$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"]({
     apiKey: nylasConfig.apiKey,
-    apiUri: nylasConfig.apiUri
+    apiUri: process.env.NYLAS_API_URI || "https://api.nylas.com"
 });
+function getNylasAuthUrl(userId) {
+    return nylas.auth.urlForOAuth2({
+        clientId: nylasConfig.clientId,
+        redirectUri: nylasConfig.callbackUri,
+        scope: [
+            "https://www.googleapis.com/auth/calendar.readonly",
+            "https://www.googleapis.com/auth/calendar.events"
+        ],
+        state: userId
+    });
+}
 }}),
 "[project]/src/utils/supabase/server.ts [app-route] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -222,6 +231,7 @@ async function createClient() {
 
 var { g: global, __dirname } = __turbopack_context__;
 {
+// src/app/api/auth/nylas/route.ts
 __turbopack_context__.s({
     "GET": (()=>GET)
 });
@@ -253,10 +263,15 @@ async function GET(request) {
                 status: 500
             });
         }
-        // Generate Nylas OAuth URL
+        // Generate Nylas OAuth URL with correct callback
         const authUrl = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$nlyas$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["nylas"].auth.urlForOAuth2({
             clientId: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$nlyas$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["nylasConfig"].clientId,
-            redirectUri: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$nlyas$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["nylasConfig"].callbackUri
+            redirectUri: `${("TURBOPACK compile-time value", "http://localhost:3000")}/api/auth/nylas/callback`,
+            scope: [
+                "https://www.googleapis.com/auth/calendar.readonly",
+                "https://www.googleapis.com/auth/calendar.events"
+            ],
+            state: user.id
         });
         console.log("Generated Nylas OAuth URL:", authUrl);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
