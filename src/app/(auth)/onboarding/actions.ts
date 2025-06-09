@@ -65,7 +65,6 @@ export async function completeOnboarding(formData: FormData) {
 
     const onboardingData = {
       user_id: user.id,
-      completed_at: new Date().toISOString(),
       answers: {
         userType,
         referralSource,
@@ -80,7 +79,7 @@ export async function completeOnboarding(formData: FormData) {
       referral_source: referralSource,
       audio_purpose: audioPurpose,
       mic_permission: micPermission,
-      // Don't override calendar_connected if it was already set during the flow
+      // Don't set completed_at yet - that happens in finalizeOnboarding
       updated_at: new Date().toISOString(),
     };
 
@@ -110,7 +109,7 @@ export async function completeOnboarding(formData: FormData) {
     // Update user profile if needed
     const { error: profileError } = await supabase.from("profiles").upsert({
       id: user.id,
-      onboarding_completed: true,
+      onboarding_completed: false, // Set to false since calendar connection is still needed
       updated_at: new Date().toISOString(),
     });
 
@@ -119,19 +118,14 @@ export async function completeOnboarding(formData: FormData) {
       // Don't return error here as onboarding data was saved successfully
     }
 
-    console.log(
-      "✅ Simplified onboarding answers saved successfully for user:",
-      user.id,
-      {
-        userType,
-        referralSource,
-      }
-    );
+    console.log("✅ Onboarding answers saved successfully for user:", user.id, {
+      userType,
+      referralSource,
+    });
 
     revalidatePath("/", "layout");
 
-    // Don't redirect to dashboard yet - user still needs to connect calendar
-    // The frontend will handle moving to the next step
+    // Don't redirect here - let the frontend handle the redirect to calendar connection
     return { success: true, message: "Answers submitted successfully" };
   } catch (error) {
     console.error("Unexpected error during onboarding:", error);
@@ -179,7 +173,7 @@ export async function finalizeOnboarding(userId: string) {
   const supabase = await createClient();
 
   try {
-    // Just update the completed_at timestamp since answers are already saved
+    // Update the onboarding record to mark it as completed
     const { error } = await supabase
       .from("user_onboarding")
       .update({
@@ -191,6 +185,20 @@ export async function finalizeOnboarding(userId: string) {
     if (error) {
       console.error("Error finalizing onboarding:", error);
       return { error: error.message };
+    }
+
+    // Update the profile to mark onboarding as completed
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({
+        onboarding_completed: true,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", userId);
+
+    if (profileError) {
+      console.error("Error updating profile onboarding status:", profileError);
+      // Don't return error here as the main onboarding was completed
     }
 
     console.log("✅ Onboarding finalized successfully for user:", userId);

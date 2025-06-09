@@ -91,6 +91,7 @@ export async function POST(request: NextRequest) {
         .update({
           calendar_connected: true,
           updated_at: new Date().toISOString(),
+          completed_at: new Date().toISOString(),
         })
         .eq("user_id", finalUserId);
 

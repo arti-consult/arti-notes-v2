@@ -144,28 +144,33 @@ async function middleware(request) {
         if (!session) {
             console.log("❌ No session, redirecting to login");
             const loginUrl = new URL("/login", request.url);
+            loginUrl.searchParams.set("error", "session_not_found");
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(loginUrl);
         }
         const user = session.user;
         // Check if email is confirmed
         if (!user.email_confirmed_at) {
-            console.log("📧 Email not confirmed, allowing access to current page");
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
+            console.log("📧 Email not confirmed, redirecting to login");
+            const loginUrl = new URL("/login", request.url);
+            loginUrl.searchParams.set("error", "email_not_confirmed");
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(loginUrl);
         }
         // For authenticated routes, check user's flow status
         if (isAuthRoute(pathname) || isPaymentAwareRoute(pathname)) {
             // Get user's onboarding status
             const { data: onboarding, error: onboardingError } = await supabase.from("user_onboarding").select("*").eq("user_id", user.id).maybeSingle();
-            if (onboardingError && onboardingError.code !== "PGRST116") {
+            if (onboardingError) {
                 console.error("🚨 Error fetching onboarding data:", onboardingError);
-                // Allow access on error to prevent blocking
-                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
+                // Redirect to error page on database error
+                const errorUrl = new URL("/error", request.url);
+                errorUrl.searchParams.set("message", "Failed to fetch user data");
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(errorUrl);
             }
             const hasCompletedPayment = onboarding?.payment_completed || false;
             const hasCompletedOnboarding = onboarding?.completed_at !== null;
-            // Updated for simplified onboarding - only check user_type and referral_source
             const hasOnboardingAnswers = !!(onboarding?.user_type && onboarding?.referral_source);
-            const paymentLinkTag = onboarding?.payment_link_tag || user.user_metadata?.payment_link_tag;
+            // Get payment link from environment variable or fallback to user metadata
+            const paymentLinkTag = process.env.DEFAULT_PAYMENT_LINK_TAG || onboarding?.payment_link_tag || user.user_metadata?.payment_link_tag;
             console.log("📊 User flow status:", {
                 userId: user.id,
                 hasCompletedPayment,
@@ -182,31 +187,27 @@ async function middleware(request) {
                 // User hasn't completed payment
                 if (pathname !== "/payment" && !isPaymentAwareRoute(pathname)) {
                     console.log("💳 Redirecting to payment");
-                    // Construct payment URL with tag if available
-                    let paymentUrl;
-                    if (paymentLinkTag) {
-                        paymentUrl = `https://buy.stripe.com/${paymentLinkTag}`;
-                    } else {
-                        paymentUrl = "https://buy.stripe.com/test_fZufZhb5M5uY57l9xlak003"; // Default
-                    }
-                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(paymentUrl));
+                    const paymentUrl = paymentLinkTag ? `https://buy.stripe.com/${paymentLinkTag}` : new URL("/payment", request.url);
+                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(paymentUrl);
                 }
-            } else if (hasCompletedPayment && (!hasOnboardingAnswers || !hasCompletedOnboarding)) {
-                // User completed payment but not onboarding
-                if (pathname !== "/onboarding") {
-                    console.log("📝 Redirecting to onboarding - Missing:", {
-                        needsAnswers: !hasOnboardingAnswers,
-                        needsCompletion: !hasCompletedOnboarding
-                    });
-                    const onboardingUrl = new URL("/onboarding", request.url);
-                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(onboardingUrl);
+            } else if (hasCompletedPayment && !hasOnboardingAnswers) {
+                // User completed payment but hasn't answered onboarding questions
+                if (!pathname.startsWith("/onboarding")) {
+                    console.log("📝 Redirecting to onboarding - Missing answers");
+                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/onboarding", request.url));
+                }
+            } else if (hasCompletedPayment && hasOnboardingAnswers && !hasCompletedOnboarding) {
+                // User has answered questions but hasn't completed the full onboarding flow
+                const connectAccountPath = "/onboarding/connect-account";
+                if (pathname === "/onboarding" || !pathname.startsWith("/onboarding")) {
+                    console.log("📅 Redirecting to calendar connection");
+                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL(connectAccountPath, request.url));
                 }
             } else if (hasCompletedPayment && hasCompletedOnboarding && hasOnboardingAnswers) {
                 // User has completed both payment and onboarding
-                if (pathname === "/payment" || pathname === "/onboarding") {
+                if (pathname === "/payment" || pathname.startsWith("/onboarding")) {
                     console.log("🏠 Redirecting completed user to dashboard");
-                    const dashboardUrl = new URL("/dashboard", request.url);
-                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(dashboardUrl);
+                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.url));
                 }
                 // Allow access to dashboard and other authenticated routes
                 console.log("✅ Fully completed user accessing dashboard");

@@ -104,11 +104,10 @@ async function createClient() {
 var { g: global, __dirname } = __turbopack_context__;
 {
 // src/app/(auth)/onboarding/actions.ts
-/* __next_internal_action_entry_do_not_use__ [{"4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9":"completeOnboarding","40408aa358ff3c32694cfde6f469fcf704c3cdfddb":"checkPaymentStatus","40456e47ffa0d243b28358a525af33782f47e31018":"updateProfile","40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f":"finalizeOnboarding","40ff840b837bbb28f34c50d8821ed248516e628165":"submitOnboarding"},"",""] */ __turbopack_context__.s({
+/* __next_internal_action_entry_do_not_use__ [{"4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9":"completeOnboarding","40408aa358ff3c32694cfde6f469fcf704c3cdfddb":"checkPaymentStatus","40456e47ffa0d243b28358a525af33782f47e31018":"updateProfile","40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f":"finalizeOnboarding"},"",""] */ __turbopack_context__.s({
     "checkPaymentStatus": (()=>checkPaymentStatus),
     "completeOnboarding": (()=>completeOnboarding),
     "finalizeOnboarding": (()=>finalizeOnboarding),
-    "submitOnboarding": (()=>submitOnboarding),
     "updateProfile": (()=>updateProfile)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/server-reference.js [app-rsc] (ecmascript)");
@@ -161,7 +160,6 @@ async function completeOnboarding(formData) {
         const { data: existingOnboarding } = await supabase.from("user_onboarding").select("*").eq("user_id", user.id).single();
         const onboardingData = {
             user_id: user.id,
-            completed_at: new Date().toISOString(),
             answers: {
                 userType,
                 referralSource,
@@ -176,7 +174,7 @@ async function completeOnboarding(formData) {
             referral_source: referralSource,
             audio_purpose: audioPurpose,
             mic_permission: micPermission,
-            // Don't override calendar_connected if it was already set during the flow
+            // Don't set completed_at yet - that happens in finalizeOnboarding
             updated_at: new Date().toISOString()
         };
         let onboardingError;
@@ -201,20 +199,19 @@ async function completeOnboarding(formData) {
         // Update user profile if needed
         const { error: profileError } = await supabase.from("profiles").upsert({
             id: user.id,
-            onboarding_completed: true,
+            onboarding_completed: false,
             updated_at: new Date().toISOString()
         });
         if (profileError) {
             console.error("Profile update error:", profileError);
         // Don't return error here as onboarding data was saved successfully
         }
-        console.log("✅ Simplified onboarding answers saved successfully for user:", user.id, {
+        console.log("✅ Onboarding answers saved successfully for user:", user.id, {
             userType,
             referralSource
         });
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$cache$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["revalidatePath"])("/", "layout");
-        // Don't redirect to dashboard yet - user still needs to connect calendar
-        // The frontend will handle moving to the next step
+        // Don't redirect here - let the frontend handle the redirect to calendar connection
         return {
             success: true,
             message: "Answers submitted successfully"
@@ -250,7 +247,7 @@ async function checkPaymentStatus(userId) {
 async function finalizeOnboarding(userId) {
     const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["createClient"])();
     try {
-        // Just update the completed_at timestamp since answers are already saved
+        // Update the onboarding record to mark it as completed
         const { error } = await supabase.from("user_onboarding").update({
             completed_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -260,6 +257,15 @@ async function finalizeOnboarding(userId) {
             return {
                 error: error.message
             };
+        }
+        // Update the profile to mark onboarding as completed
+        const { error: profileError } = await supabase.from("profiles").update({
+            onboarding_completed: true,
+            updated_at: new Date().toISOString()
+        }).eq("id", userId);
+        if (profileError) {
+            console.error("Error updating profile onboarding status:", profileError);
+        // Don't return error here as the main onboarding was completed
         }
         console.log("✅ Onboarding finalized successfully for user:", userId);
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$cache$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["revalidatePath"])("/", "layout");
@@ -271,51 +277,17 @@ async function finalizeOnboarding(userId) {
         };
     }
 }
-async function submitOnboarding(userId) {
-    try {
-        console.log("🔄 Starting onboarding submission for user:", userId);
-        const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$server$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["createClient"])();
-        // Get the current onboarding state
-        const { data: onboardingData, error: fetchError } = await supabase.from("user_onboarding").select("*").eq("user_id", userId).single();
-        if (fetchError && fetchError.code !== "PGRST116") {
-            console.error("❌ Error fetching onboarding data:", fetchError);
-            throw new Error("Failed to fetch onboarding data");
-        }
-        // Update or insert the onboarding record
-        const { data, error } = await supabase.from("user_onboarding").upsert({
-            user_id: userId,
-            questions_submitted: true,
-            questions_submitted_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        }).select();
-        if (error) {
-            console.error("❌ Error submitting onboarding:", error);
-            throw new Error("Failed to submit onboarding");
-        }
-        console.log("✅ Onboarding submitted successfully:", data);
-        // Redirect to the connect-account page
-        return {
-            success: true,
-            redirectTo: "/onboarding/connect-account"
-        };
-    } catch (error) {
-        console.error("💥 Error in submitOnboarding:", error);
-        throw error;
-    }
-}
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
     updateProfile,
     completeOnboarding,
     checkPaymentStatus,
-    finalizeOnboarding,
-    submitOnboarding
+    finalizeOnboarding
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(updateProfile, "40456e47ffa0d243b28358a525af33782f47e31018", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(completeOnboarding, "4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(checkPaymentStatus, "40408aa358ff3c32694cfde6f469fcf704c3cdfddb", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(finalizeOnboarding, "40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f", null);
-(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(submitOnboarding, "40ff840b837bbb28f34c50d8821ed248516e628165", null);
 }}),
 "[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <locals>": ((__turbopack_context__) => {
 "use strict";
@@ -324,7 +296,6 @@ var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({});
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)");
-;
 ;
 ;
 ;
@@ -348,8 +319,7 @@ __turbopack_context__.s({
     "4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["completeOnboarding"]),
     "40408aa358ff3c32694cfde6f469fcf704c3cdfddb": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["checkPaymentStatus"]),
     "40456e47ffa0d243b28358a525af33782f47e31018": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateProfile"]),
-    "40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["finalizeOnboarding"]),
-    "40ff840b837bbb28f34c50d8821ed248516e628165": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["submitOnboarding"])
+    "40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["finalizeOnboarding"])
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i('[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => "[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) <locals>');
@@ -363,8 +333,7 @@ __turbopack_context__.s({
     "4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["4017f1ee2c245e3435c2d9ce91fa88e32e84fe98b9"]),
     "40408aa358ff3c32694cfde6f469fcf704c3cdfddb": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["40408aa358ff3c32694cfde6f469fcf704c3cdfddb"]),
     "40456e47ffa0d243b28358a525af33782f47e31018": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["40456e47ffa0d243b28358a525af33782f47e31018"]),
-    "40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f"]),
-    "40ff840b837bbb28f34c50d8821ed248516e628165": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["40ff840b837bbb28f34c50d8821ed248516e628165"])
+    "40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f": (()=>__TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__["40c8632f0a4e1d9841b0ab68b681b842e51af6ea9f"])
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i('[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => "[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) <module evaluation>');
 var __TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f28$auth$292f$onboarding$2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$app$2f28$auth$292f$onboarding$2f$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$exports$3e$__ = __turbopack_context__.i('[project]/.next-internal/server/app/(auth)/onboarding/page/actions.js { ACTIONS_MODULE0 => "[project]/src/app/(auth)/onboarding/actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) <exports>');
