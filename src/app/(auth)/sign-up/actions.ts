@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 
 export async function signup(formData: FormData) {
   console.log("=== SIGNUP ACTION START ===", new Date().toISOString());
@@ -13,8 +12,14 @@ export async function signup(formData: FormData) {
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
   const email = formData.get("email") as string;
+  const paymentLinkTag = formData.get("paymentLinkTag") as string;
 
-  console.log("Signup attempt for email:", email);
+  console.log(
+    "Signup attempt for email:",
+    email,
+    "with payment tag:",
+    paymentLinkTag
+  );
 
   // Validate password match
   if (password !== confirmPassword) {
@@ -25,6 +30,11 @@ export async function signup(formData: FormData) {
   const data = {
     email: email,
     password: password,
+    options: {
+      data: {
+        payment_link_tag: paymentLinkTag || null, // Store in user metadata
+      },
+    },
   };
 
   console.log("Calling supabase.auth.signUp...");
@@ -42,6 +52,7 @@ export async function signup(formData: FormData) {
           email: authData.user.email,
           email_confirmed_at: authData.user.email_confirmed_at,
           created_at: authData.user.created_at,
+          payment_link_tag: authData.user.user_metadata?.payment_link_tag,
         }
       : null,
     session: authData.session
@@ -73,7 +84,9 @@ export async function signup(formData: FormData) {
 
   // Check if we have a session
   if (authData.session) {
-    console.log("User created with session, proceeding to redirect");
+    console.log(
+      "User created with session, proceeding to create onboarding record"
+    );
 
     // Ensure session cookies are properly set by setting the session explicitly
     const { error: setSessionError } = await supabase.auth.setSession({
@@ -87,49 +100,48 @@ export async function signup(formData: FormData) {
       console.log("Session explicitly set on server");
     }
 
-    // Refresh the session to ensure it's properly synchronized
-    const { data: refreshedSession, error: refreshError } =
-      await supabase.auth.getSession();
-    console.log("Session refresh result:", {
-      hasSession: !!refreshedSession.session,
-      error: refreshError?.message,
-    });
-
-    // Create initial onboarding record to avoid confusion in middleware
+    // Create initial onboarding record with nullable fields
     try {
       const { error: onboardingError } = await supabase
         .from("user_onboarding")
         .insert({
           user_id: authData.user?.id,
           payment_completed: false,
-          // Add required fields with default values
-          user_type: "individual", // Default value
+          payment_link_tag: paymentLinkTag || null,
+          // Make all fields explicitly nullable
+          user_type: null,
           team_size: null,
           referral_source: null,
           audio_purpose: null,
-          mic_permission: false,
+          mic_permission: false, // Default value
+          completed_at: null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         });
 
       if (onboardingError) {
-        console.log(
-          "Note: Could not create initial onboarding record:",
-          onboardingError.message
-        );
-        // Don't fail the signup for this - it's not critical
+        console.error("Error creating onboarding record:", onboardingError);
+        // Don't fail signup, but log the error
       } else {
-        console.log("Created initial onboarding record");
+        console.log(
+          "Created initial onboarding record with payment tag:",
+          paymentLinkTag
+        );
       }
     } catch (error) {
-      console.log("Exception creating onboarding record:", error);
+      console.error("Exception creating onboarding record:", error);
     }
 
     console.log("Calling revalidatePath...");
     revalidatePath("/", "layout");
 
-    console.log("About to redirect to session debug page");
-    redirect("/session-debug");
+    // Don't redirect here - let the frontend handle the payment redirect
+    console.log("Signup successful, returning success response");
+    return {
+      success: true,
+      paymentLinkTag: paymentLinkTag,
+      user: authData.user,
+    };
   }
 
   // Fallback - shouldn't happen but handle it

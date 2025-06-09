@@ -126,7 +126,8 @@ async function signup(formData) {
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
     const email = formData.get("email");
-    console.log("Signup attempt for email:", email);
+    const paymentLinkTag = formData.get("paymentLinkTag");
+    console.log("Signup attempt for email:", email, "with payment tag:", paymentLinkTag);
     // Validate password match
     if (password !== confirmPassword) {
         console.log("Password mismatch");
@@ -136,7 +137,12 @@ async function signup(formData) {
     }
     const data = {
         email: email,
-        password: password
+        password: password,
+        options: {
+            data: {
+                payment_link_tag: paymentLinkTag || null
+            }
+        }
     };
     console.log("Calling supabase.auth.signUp...");
     const signUpStartTime = Date.now();
@@ -148,7 +154,8 @@ async function signup(formData) {
             id: authData.user.id,
             email: authData.user.email,
             email_confirmed_at: authData.user.email_confirmed_at,
-            created_at: authData.user.created_at
+            created_at: authData.user.created_at,
+            payment_link_tag: authData.user.user_metadata?.payment_link_tag
         } : null,
         session: authData.session ? {
             access_token: authData.session.access_token ? "present" : "missing",
@@ -175,7 +182,7 @@ async function signup(formData) {
     }
     // Check if we have a session
     if (authData.session) {
-        console.log("User created with session, proceeding to redirect");
+        console.log("User created with session, proceeding to create onboarding record");
         // Ensure session cookies are properly set by setting the session explicitly
         const { error: setSessionError } = await supabase.auth.setSession({
             access_token: authData.session.access_token,
@@ -186,39 +193,40 @@ async function signup(formData) {
         } else {
             console.log("Session explicitly set on server");
         }
-        // Refresh the session to ensure it's properly synchronized
-        const { data: refreshedSession, error: refreshError } = await supabase.auth.getSession();
-        console.log("Session refresh result:", {
-            hasSession: !!refreshedSession.session,
-            error: refreshError?.message
-        });
-        // Create initial onboarding record to avoid confusion in middleware
+        // Create initial onboarding record with nullable fields
         try {
             const { error: onboardingError } = await supabase.from("user_onboarding").insert({
                 user_id: authData.user?.id,
                 payment_completed: false,
-                // Add required fields with default values
-                user_type: "individual",
+                payment_link_tag: paymentLinkTag || null,
+                // Make all fields explicitly nullable
+                user_type: null,
                 team_size: null,
                 referral_source: null,
                 audio_purpose: null,
                 mic_permission: false,
+                completed_at: null,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             });
             if (onboardingError) {
-                console.log("Note: Could not create initial onboarding record:", onboardingError.message);
-            // Don't fail the signup for this - it's not critical
+                console.error("Error creating onboarding record:", onboardingError);
+            // Don't fail signup, but log the error
             } else {
-                console.log("Created initial onboarding record");
+                console.log("Created initial onboarding record with payment tag:", paymentLinkTag);
             }
         } catch (error) {
-            console.log("Exception creating onboarding record:", error);
+            console.error("Exception creating onboarding record:", error);
         }
         console.log("Calling revalidatePath...");
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$cache$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["revalidatePath"])("/", "layout");
-        console.log("About to redirect to session debug page");
-        (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$navigation$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["redirect"])("/session-debug");
+        // Don't redirect here - let the frontend handle the payment redirect
+        console.log("Signup successful, returning success response");
+        return {
+            success: true,
+            paymentLinkTag: paymentLinkTag,
+            user: authData.user
+        };
     }
     // Fallback - shouldn't happen but handle it
     console.log("Unexpected signup state - no session created");

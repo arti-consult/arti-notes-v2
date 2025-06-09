@@ -4,16 +4,32 @@ import { signup } from "./actions";
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState, Suspense } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 function SignUpFormContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
+  // Get payment link tag from URL params
+  const paymentLinkTag = searchParams.get("p");
+
+  // Default payment link (your test link)
+  const defaultPaymentLink =
+    "https://buy.stripe.com/test_fZufZhb5M5uY57l9xlak003";
+
+  // Construct the payment URL based on tag
+  const getPaymentUrl = () => {
+    if (paymentLinkTag) {
+      return `https://buy.stripe.com/${paymentLinkTag}`;
+    }
+    return defaultPaymentLink;
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -52,16 +68,15 @@ function SignUpFormContent() {
       });
 
       if (event === "SIGNED_IN" && session?.user?.email_confirmed_at) {
-        console.log(
-          "SignUp: User signed in, triggering page refresh to let middleware redirect"
-        );
-        // Instead of manually redirecting, refresh the page to trigger middleware
-        window.location.reload();
+        console.log("SignUp: User signed in, redirecting to payment with tag");
+        // Redirect to payment with the payment link tag
+        const paymentUrl = getPaymentUrl();
+        window.location.href = paymentUrl;
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  }, [supabase, paymentLinkTag]);
 
   if (!isMounted) {
     return null;
@@ -95,6 +110,11 @@ function SignUpFormContent() {
         >
           <h2 className="text-3xl font-bold text-white">Create your account</h2>
           <p className="mt-2 text-sm text-gray-400">Join us to get started</p>
+          {paymentLinkTag && (
+            <p className="mt-1 text-xs text-blue-400">
+              Special offer detected! 🎉
+            </p>
+          )}
         </motion.div>
 
         <AnimatePresence>
@@ -128,14 +148,27 @@ function SignUpFormContent() {
           transition={{ duration: 0.5, delay: 0.4 }}
           action={async (formData) => {
             console.log("SignUp: Form submission started");
+            console.log("Payment link tag:", paymentLinkTag);
             setIsLoading(true);
             setError(null);
+
+            // Always add payment link tag to form data (even if null)
+            formData.append("paymentLinkTag", paymentLinkTag || "");
 
             const result = await signup(formData);
             console.log("SignUp: Form submission result:", result);
 
             if (result?.error) {
               setError(result.error);
+              setIsLoading(false);
+            } else if (result?.success && !result?.needsConfirmation) {
+              // Successful signup, redirect to payment
+              console.log("Signup successful, redirecting to payment");
+              const paymentUrl = getPaymentUrl();
+              console.log("Payment URL:", paymentUrl);
+              window.location.href = paymentUrl;
+            } else if (result?.needsConfirmation) {
+              // Email confirmation needed
               setIsLoading(false);
             }
             // If successful, the server action will redirect

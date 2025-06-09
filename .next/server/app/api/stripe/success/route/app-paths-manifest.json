@@ -1,0 +1,3 @@
+{
+  "/api/stripe/success/route": "app/api/stripe/success/route.js"
+}

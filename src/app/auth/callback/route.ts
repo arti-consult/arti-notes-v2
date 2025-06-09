@@ -1,3 +1,4 @@
+// src/app/auth/callback/route.ts
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
       // Check if user has completed payment and onboarding
       const { data: onboarding, error: onboardingError } = await supabase
         .from("user_onboarding")
-        .select("payment_completed, completed_at")
+        .select("payment_completed, completed_at, payment_link_tag")
         .eq("user_id", user.id)
         .maybeSingle(); // Use maybeSingle to handle no records
 
@@ -39,11 +40,14 @@ export async function GET(request: Request) {
 
       const hasCompletedPayment = onboarding?.payment_completed || false;
       const hasCompletedOnboarding = onboarding?.completed_at !== null;
+      const paymentLinkTag =
+        onboarding?.payment_link_tag || user.user_metadata?.payment_link_tag;
 
       console.log("Auth callback - user state:", {
         userId: user.id,
         hasCompletedPayment,
         hasCompletedOnboarding,
+        paymentLinkTag,
         onboardingData: onboarding,
       });
 
@@ -56,11 +60,25 @@ export async function GET(request: Request) {
         // Payment completed but not onboarding
         redirectUrl = "/onboarding";
       } else {
-        // No payment completed yet (includes new users)
-        redirectUrl = "/payment";
+        // No payment completed yet - redirect to appropriate Stripe payment link
+        if (paymentLinkTag) {
+          // Use tagged payment link
+          const taggedPaymentUrl = `https://buy.stripe.com/${paymentLinkTag}`;
+          console.log("Redirecting to tagged payment link:", taggedPaymentUrl);
+          return NextResponse.redirect(taggedPaymentUrl);
+        } else {
+          // Use default payment link
+          const defaultPaymentUrl =
+            "https://buy.stripe.com/test_8x228r7TA4qU57l4d1ak002";
+          console.log(
+            "Redirecting to default payment link:",
+            defaultPaymentUrl
+          );
+          return NextResponse.redirect(defaultPaymentUrl);
+        }
       }
 
-      // Build redirect URL
+      // Build redirect URL for internal routes
       const baseUrl = isLocalEnv
         ? origin
         : forwardedHost

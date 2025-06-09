@@ -1,3 +1,4 @@
+// src/app/(auth)/onboarding/actions.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -71,6 +72,11 @@ export async function completeOnboarding(formData: FormData) {
         micPermission,
       },
       payment_completed: paymentCompleted,
+      user_type: userType,
+      team_size: teamSize,
+      referral_source: referralSource,
+      audio_purpose: audioPurpose,
+      mic_permission: micPermission,
       updated_at: new Date().toISOString(),
     };
 
@@ -84,10 +90,11 @@ export async function completeOnboarding(formData: FormData) {
         .eq("user_id", user.id);
       onboardingError = error;
     } else {
-      // Insert new record
-      const { error } = await supabase
-        .from("user_onboarding")
-        .insert(onboardingData);
+      // Insert new record (shouldn't happen in normal flow, but handle it)
+      const { error } = await supabase.from("user_onboarding").insert({
+        ...onboardingData,
+        payment_link_tag: user.user_metadata?.payment_link_tag || null,
+      });
       onboardingError = error;
     }
 
@@ -108,6 +115,8 @@ export async function completeOnboarding(formData: FormData) {
       // Don't return error here as onboarding data was saved successfully
     }
 
+    console.log("✅ Onboarding completed successfully for user:", user.id);
+
     revalidatePath("/", "layout");
     redirect("/dashboard");
   } catch (error) {
@@ -125,7 +134,7 @@ export async function checkPaymentStatus(userId: string) {
   try {
     const { data, error } = await supabase
       .from("user_onboarding")
-      .select("payment_completed")
+      .select("payment_completed, payment_link_tag")
       .eq("user_id", userId)
       .single();
 
@@ -136,15 +145,55 @@ export async function checkPaymentStatus(userId: string) {
 
     return {
       paymentCompleted: data?.payment_completed || false,
+      paymentLinkTag: data?.payment_link_tag || null,
     };
   } catch (error) {
     console.error("Error checking payment status:", error);
     return {
       paymentCompleted: false,
+      paymentLinkTag: null,
       error:
         error instanceof Error
           ? error.message
           : "Failed to check payment status",
+    };
+  }
+}
+
+// New function to verify payment completion (can be called from Stripe webhook)
+export async function markPaymentCompleted(
+  userId: string,
+  stripeSessionId?: string
+) {
+  const supabase = await createClient();
+
+  try {
+    const updateData: any = {
+      payment_completed: true,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (stripeSessionId) {
+      updateData.stripe_session_id = stripeSessionId;
+    }
+
+    const { error } = await supabase
+      .from("user_onboarding")
+      .update(updateData)
+      .eq("user_id", userId);
+
+    if (error) {
+      console.error("Error marking payment as completed:", error);
+      return { error: error.message };
+    }
+
+    console.log("✅ Payment marked as completed for user:", userId);
+    return { success: true };
+  } catch (error) {
+    console.error("Unexpected error marking payment as completed:", error);
+    return {
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
     };
   }
 }

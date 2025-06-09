@@ -1159,10 +1159,6 @@
     height: 100svh;
   }
 
-  .max-h-32 {
-    max-height: calc(var(--spacing) * 32);
-  }
-
   .max-h-64 {
     max-height: calc(var(--spacing) * 64);
   }
@@ -2331,16 +2327,6 @@
     background-color: var(--color-gray-900);
   }
 
-  .bg-gray-900\/50 {
-    background-color: #10182880;
-  }
-
-  @supports (color: color-mix(in lab, red, red)) {
-    .bg-gray-900\/50 {
-      background-color: color-mix(in oklab, var(--color-gray-900) 50%, transparent);
-    }
-  }
-
   .bg-green-100 {
     background-color: var(--color-green-100);
   }
@@ -2981,10 +2967,6 @@
 
   .break-words {
     overflow-wrap: break-word;
-  }
-
-  .break-all {
-    word-break: break-all;
   }
 
   .whitespace-nowrap {

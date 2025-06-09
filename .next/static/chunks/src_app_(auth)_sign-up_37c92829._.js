@@ -46,10 +46,22 @@ var _s = __turbopack_context__.k.signature();
 function SignUpFormContent() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"])();
     const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createClient"])();
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isMounted, setIsMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    // Get payment link tag from URL params
+    const paymentLinkTag = searchParams.get("p");
+    // Default payment link (your test link)
+    const defaultPaymentLink = "https://buy.stripe.com/test_8x228r7TA4qU57l4d1ak002";
+    // Construct the payment URL based on tag
+    const getPaymentUrl = ()=>{
+        if (paymentLinkTag) {
+            return `https://buy.stripe.com/${paymentLinkTag}`;
+        }
+        return defaultPaymentLink;
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SignUpFormContent.useEffect": ()=>{
             setIsMounted(true);
@@ -78,9 +90,10 @@ function SignUpFormContent() {
                         hasSession: !!session
                     });
                     if (event === "SIGNED_IN" && session?.user?.email_confirmed_at) {
-                        console.log("SignUp: User signed in, triggering page refresh to let middleware redirect");
-                        // Instead of manually redirecting, refresh the page to trigger middleware
-                        window.location.reload();
+                        console.log("SignUp: User signed in, redirecting to payment with tag");
+                        // Redirect to payment with the payment link tag
+                        const paymentUrl = getPaymentUrl();
+                        window.location.href = paymentUrl;
                     }
                 }
             }["SignUpFormContent.useEffect"]);
@@ -89,7 +102,8 @@ function SignUpFormContent() {
             })["SignUpFormContent.useEffect"];
         }
     }["SignUpFormContent.useEffect"], [
-        supabase
+        supabase,
+        paymentLinkTag
     ]);
     if (!isMounted) {
         return null;
@@ -124,7 +138,7 @@ function SignUpFormContent() {
                 className: "absolute w-[1200px] h-[1200px] bg-[#145DFC] rounded-full blur-[256px]"
             }, void 0, false, {
                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                lineNumber: 78,
+                lineNumber: 93,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -162,7 +176,7 @@ function SignUpFormContent() {
                                 children: "Create your account"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 96,
+                                lineNumber: 111,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -170,13 +184,21 @@ function SignUpFormContent() {
                                 children: "Join us to get started"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 97,
+                                lineNumber: 112,
                                 columnNumber: 11
+                            }, this),
+                            paymentLinkTag && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "mt-1 text-xs text-blue-400",
+                                children: "Special offer detected! 🎉"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
+                                lineNumber: 114,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                        lineNumber: 90,
+                        lineNumber: 105,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -204,7 +226,7 @@ function SignUpFormContent() {
                                     children: error
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                    lineNumber: 110,
+                                    lineNumber: 130,
                                     columnNumber: 15
                                 }, this),
                                 error.includes("already exists") && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -215,23 +237,23 @@ function SignUpFormContent() {
                                         children: "Sign in instead"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 113,
+                                        lineNumber: 133,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                    lineNumber: 112,
+                                    lineNumber: 132,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                            lineNumber: 102,
+                            lineNumber: 122,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                        lineNumber: 100,
+                        lineNumber: 120,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].form, {
@@ -251,11 +273,19 @@ function SignUpFormContent() {
                             console.log("SignUp: Form submission started");
                             setIsLoading(true);
                             setError(null);
+                            // Add payment link tag to form data
+                            if (paymentLinkTag) {
+                                formData.append("paymentLinkTag", paymentLinkTag);
+                            }
                             const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$sign$2d$up$2f$data$3a$e71047__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["signup"])(formData);
                             console.log("SignUp: Form submission result:", result);
                             if (result?.error) {
                                 setError(result.error);
                                 setIsLoading(false);
+                            } else if (result?.success && !result?.needsConfirmation) {
+                                // Successful signup, redirect to payment
+                                const paymentUrl = getPaymentUrl();
+                                window.location.href = paymentUrl;
                             }
                         // If successful, the server action will redirect
                         // Don't set loading to false for successful cases
@@ -285,7 +315,7 @@ function SignUpFormContent() {
                                                 children: "Email address"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 152,
+                                                lineNumber: 181,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -297,13 +327,13 @@ function SignUpFormContent() {
                                                 className: "mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200 disabled:opacity-50"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 158,
+                                                lineNumber: 187,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 147,
+                                        lineNumber: 176,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -326,7 +356,7 @@ function SignUpFormContent() {
                                                 children: "Password"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 172,
+                                                lineNumber: 201,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -338,13 +368,13 @@ function SignUpFormContent() {
                                                 className: "mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200 disabled:opacity-50"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 178,
+                                                lineNumber: 207,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 167,
+                                        lineNumber: 196,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -367,7 +397,7 @@ function SignUpFormContent() {
                                                 children: "Confirm Password"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 192,
+                                                lineNumber: 221,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -379,19 +409,19 @@ function SignUpFormContent() {
                                                 className: "mt-1 block w-full px-3 py-2 bg-black border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-[#145DFC] focus:border-[#145DFC] text-white transition-colors duration-200 disabled:opacity-50"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 198,
+                                                lineNumber: 227,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 187,
+                                        lineNumber: 216,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 146,
+                                lineNumber: 175,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -418,7 +448,7 @@ function SignUpFormContent() {
                                         className: "h-4 w-4 text-[#145DFC] focus:ring-[#145DFC] border-gray-700 rounded bg-black disabled:opacity-50"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 215,
+                                        lineNumber: 244,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -433,7 +463,7 @@ function SignUpFormContent() {
                                                 children: "Terms of Service"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 225,
+                                                lineNumber: 254,
                                                 columnNumber: 15
                                             }, this),
                                             " ",
@@ -445,19 +475,19 @@ function SignUpFormContent() {
                                                 children: "Privacy Policy"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                                lineNumber: 232,
+                                                lineNumber: 261,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 223,
+                                        lineNumber: 252,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 209,
+                                lineNumber: 238,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -480,12 +510,12 @@ function SignUpFormContent() {
                                     children: isLoading ? "Creating account..." : "Sign up"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 275,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 241,
+                                lineNumber: 270,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -513,24 +543,24 @@ function SignUpFormContent() {
                                             children: "Sign in"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                            lineNumber: 263,
+                                            lineNumber: 292,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                    lineNumber: 261,
+                                    lineNumber: 290,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 255,
+                                lineNumber: 284,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                        lineNumber: 125,
+                        lineNumber: 145,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -557,12 +587,12 @@ function SignUpFormContent() {
                                             className: "w-full border-t border-gray-700"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 310,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 280,
+                                        lineNumber: 309,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -572,18 +602,18 @@ function SignUpFormContent() {
                                             children: "Or continue with"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                            lineNumber: 284,
+                                            lineNumber: 313,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 283,
+                                        lineNumber: 312,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 279,
+                                lineNumber: 308,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -603,12 +633,12 @@ function SignUpFormContent() {
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                            lineNumber: 298,
+                                            lineNumber: 327,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 291,
+                                        lineNumber: 320,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -625,42 +655,43 @@ function SignUpFormContent() {
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                            lineNumber: 308,
+                                            lineNumber: 337,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                        lineNumber: 301,
+                                        lineNumber: 330,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                                lineNumber: 290,
+                                lineNumber: 319,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                        lineNumber: 273,
+                        lineNumber: 302,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                lineNumber: 84,
+                lineNumber: 99,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-        lineNumber: 71,
+        lineNumber: 86,
         columnNumber: 5
     }, this);
 }
-_s(SignUpFormContent, "poemzCqb4ryGe0qIF10s/RJr+x4=", false, function() {
+_s(SignUpFormContent, "SqHr/KBF+IXqqrIiiSpC/tvs+bg=", false, function() {
     return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"]
     ];
 });
 _c = SignUpFormContent;
@@ -695,7 +726,7 @@ function SignUpFormFallback() {
                 className: "absolute w-[1200px] h-[1200px] bg-[#145DFC] rounded-full blur-[256px]"
             }, void 0, false, {
                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                lineNumber: 326,
+                lineNumber: 355,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -719,7 +750,7 @@ function SignUpFormFallback() {
                             children: "Create your account"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                            lineNumber: 339,
+                            lineNumber: 368,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -727,24 +758,24 @@ function SignUpFormFallback() {
                             children: "Loading..."
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                            lineNumber: 340,
+                            lineNumber: 369,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                    lineNumber: 338,
+                    lineNumber: 367,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-                lineNumber: 332,
+                lineNumber: 361,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-        lineNumber: 319,
+        lineNumber: 348,
         columnNumber: 5
     }, this);
 }
@@ -753,17 +784,17 @@ function SignUpPage() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Suspense"], {
         fallback: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SignUpFormFallback, {}, void 0, false, {
             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-            lineNumber: 349,
+            lineNumber: 378,
             columnNumber: 25
         }, void 0),
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SignUpFormContent, {}, void 0, false, {
             fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-            lineNumber: 350,
+            lineNumber: 379,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(auth)/sign-up/page.tsx",
-        lineNumber: 349,
+        lineNumber: 378,
         columnNumber: 5
     }, this);
 }
